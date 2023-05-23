@@ -16,7 +16,7 @@ public class BoardController {
     private BoardService boardService;
 
     /* 게시글 목록 */
-    @GetMapping("/")
+    @GetMapping("/qna")
     public String list(Model model, @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
         List<BoardDto> boardList = boardService.getBoardlist(pageNum);
         Integer[] pageList = boardService.getPageList(pageNum);
@@ -29,7 +29,7 @@ public class BoardController {
 
 
     /* 게시글 상세 */
-    @GetMapping("/post/{no}")
+    @GetMapping("/qna/post/{no}")
     public String detail(@PathVariable("no") Long no, Model model) {
         BoardDto boardDTO = boardService.getPost(no);
 
@@ -39,7 +39,7 @@ public class BoardController {
 
 
     /* 게시글 쓰기 */
-    @GetMapping("/post")
+    @GetMapping("/qna/post")
     public String write() {
         return "board/write.html";
     }
@@ -53,7 +53,7 @@ public class BoardController {
 
 
     /* 게시글 수정 */
-    @GetMapping("/post/edit/{no}")
+    @GetMapping("qna/post/edit/{no}")
     public String edit(@PathVariable("no") Long no, Model model) {
         BoardDto boardDTO = boardService.getPost(no);
 
@@ -61,7 +61,7 @@ public class BoardController {
         return "board/update.html";
     }
 
-    @PutMapping("/post/edit/{no}")
+    @PutMapping("qna/post/edit/{no}")
     public String update(BoardDto boardDTO) {
         boardService.savePost(boardDTO);
 
@@ -69,14 +69,14 @@ public class BoardController {
     }
 
     /* 게시글 삭제 */
-    @DeleteMapping("/post/{no}")
+    @DeleteMapping("qna/post/{no}")
     public String delete(@PathVariable("no") Long no) {
         boardService.deletePost(no);
 
         return "redirect:/";
     }
 
-    @GetMapping("/board/search")
+    @GetMapping("qna/board/search")
     public String search(@RequestParam(value="keyword") String keyword, Model model) {
         List<BoardDto> boardDtoList = boardService.searchPosts(keyword);
 
