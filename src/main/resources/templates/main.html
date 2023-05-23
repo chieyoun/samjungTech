@@ -221,53 +221,81 @@
 </section>
 
 <!-- Services-->
-<section class="page-section" id="product_intro">
-    <div class="container px-4 px-lg-5">
-        <h2 class="text-center mt-0">제품소개</h2>
-        <hr class="divider" />
-        <div class="row gx-4 gx-lg-5">
-            <div class="col-lg-3 col-md-6 text-center">
-                <a href="d-ups.html">
-                    <div class="mt-5">
-                        <div class="mb-2"><img src="/assets/img/d-ups.png"></div>
-                        <h3 class="h4 mb-2">디지털 UPS</h3>
+<!--<section class="page-section" id="product_intro">-->
+<!--    <div class="container px-4 px-lg-5">-->
+<!--        <h2 class="text-center mt-0">제품소개</h2>-->
+<!--        <hr class="divider" />-->
+<!--        <div class="row gx-4 gx-lg-5">-->
+<!--            <div class="col-lg-3 col-md-6 text-center">-->
+<!--                <a href="d-ups.html">-->
+<!--                    <div class="mt-5">-->
+<!--                        <div class="mb-2"><img src="/assets/img/d-ups.png"></div>-->
+<!--                        <h3 class="h4 mb-2">디지털 UPS</h3>-->
+<!--                    </div>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--            <div class="col-lg-3 col-md-6 text-center">-->
+<!--                <a href="r-ups.html">-->
+<!--                    <div class="mt-5">-->
+<!--                        <div class="mb-2"><img src="/assets/img/r-ups.png"></div>-->
+<!--                        <h3 class="h4 mb-2">렉장비용 UPS</h3>-->
+<!--                    </div>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--            <div class="col-lg-3 col-md-6 text-center">-->
+<!--                <a href="hfu.html">-->
+<!--                    <div class="mt-5">-->
+<!--                        <div class="mb-2"><img src="/assets/img/HFU.PNG"></div>-->
+<!--                        <h3 class="h4 mb-2">HFU</h3>-->
+<!--                    </div>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--            <div class="col-lg-3 col-md-6 text-center">-->
+<!--                <a href="aiu-n.html">-->
+<!--                    <div class="mt-5">-->
+<!--                        <div class="mb-2"><img src="/assets/img/AIU-N.PNG"></div>-->
+<!--                        <h3 class="h4 mb-2">AIU-N</h3>-->
+<!--                    </div>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--            <div class="col-lg-3 col-md-6 text-center">-->
+<!--                <a href="aiu.html">-->
+<!--                    <div class="mt-5">-->
+<!--                        <div class="mb-2"><img src="/assets/img/AIU.PNG"></div>-->
+<!--                        <h3 class="h4 mb-2">AIU</h3>-->
+<!--                    </div>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+<section class="py-5" id="product_intro">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+            <!-- 첫번째 아이템 -->
+            <div class="col mb-5" th:each="item : ${items}">
+                <div class="card h-100">
+                    <!-- Product image-->
+                    <img class="card-img-top" th:src="@{${item.getImgPath()}}" alt="..." />
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name\-->
+                            <h5 class="fw-bolder" th:text="${item.getName()}">상품이름</h5>
+                            <!-- Product price-->
+                            <p th:text="|${item.getPrice()} 원|">상품 가격</p>
+                        </div>
                     </div>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 text-center">
-                <a href="r-ups.html">
-                    <div class="mt-5">
-                        <div class="mb-2"><img src="/assets/img/r-ups.png"></div>
-                        <h3 class="h4 mb-2">렉장비용 UPS</h3>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/item/view/{id}(id=${item.getId()})}">상세보기</a></div>
                     </div>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 text-center">
-                <a href="hfu.html">
-                    <div class="mt-5">
-                        <div class="mb-2"><img src="/assets/img/HFU.PNG"></div>
-                        <h3 class="h4 mb-2">HFU</h3>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 text-center">
-                <a href="aiu-n.html">
-                    <div class="mt-5">
-                        <div class="mb-2"><img src="/assets/img/AIU-N.PNG"></div>
-                        <h3 class="h4 mb-2">AIU-N</h3>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-3 col-md-6 text-center">
-                <a href="aiu.html">
-                    <div class="mt-5">
-                        <div class="mb-2"><img src="/assets/img/AIU.PNG"></div>
-                        <h3 class="h4 mb-2">AIU</h3>
-                    </div>
-                </a>
+                </div>
             </div>
         </div>
     </div>
+        <a href="/nonlogin/item/list">더보기</a>
 </section>
 
 <!-- support -->
