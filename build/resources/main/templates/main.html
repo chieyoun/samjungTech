@@ -174,7 +174,7 @@
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" th:href="@{/}"><img src="assets/img/logo.PNG"></a>
+        <a class="navbar-brand" th:href="@{/}"><img src="asset/logo.PNG"></a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto my-2 my-lg-0">
@@ -289,7 +289,7 @@
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/item/view/{id}(id=${item.getId()})}">상세보기</a></div>
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/item/view/nonlogin/{id}(id=${item.getId()})}">상세보기</a></div>
                     </div>
                 </div>
             </div>

@@ -80,14 +80,17 @@
         <div class="row gx-4 gx-lg-5 align-items-center">
             <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" th:src="@{${item.getImgPath()}}" alt="..." /></div>
             <div class="col-md-6">
-                <div class="small mb-1" th:text="|판매자 : ${item.getSeller().getUsername()}|">판매자 이름</div>
-                <div class="small mb-1" th:if="${item.getIsSoldout()} == 0" th:text="|재고 : ${item.getStock()}개|">재고</div>
-                <div class="small mb-1" th:unless="${item.getIsSoldout()} == 0" th:text="|품절|">재고</div>
+                <div class="small mb-1" th:text="|담당자 : ${item.getSeller().getUsername()}|">담당자 이름</div>
+<!--                <div class="small mb-1" th:if="${item.getIsSoldout()} == 0" th:text="|재고 : ${item.getStock()}개|">재고</div>-->
+<!--                <div class="small mb-1" th:unless="${item.getIsSoldout()} == 0" th:text="|품절|">재고</div>-->
                 <h1 class="display-5 fw-bolder" th:text="${item.getName()}">상품 이름</h1>
                 <div class="fs-5 mb-5">
-                    <span th:text="|${item.getPrice()} 원|">상품 가격</span>
+<!--                    <span th:text="|${item.getPrice()} 원|">상품 가격</span>-->
+<!--                    <p class="lead" th:text="${item.getEditor()}">상품 설명</p>-->
+
                 </div>
                 <p class="lead" th:text="${item.getEditor()}">상품 설명</p>
+<!--                <p class="lead">상품 설명입니다.</p>-->
 
 
                 <form class="d-flex" sec:authorize="hasRole('ROLE_SELLER')" th:if="${item.getSeller().getId()} == ${user.getId()}">

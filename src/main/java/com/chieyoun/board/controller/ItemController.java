@@ -1,6 +1,5 @@
 package com.chieyoun.board.controller;
 
-
 import com.chieyoun.board.config.auth.PrincipalDetails;
 import com.chieyoun.board.domain.cart.Cart;
 import com.chieyoun.board.domain.cartitem.CartItem;
@@ -97,7 +96,11 @@ public class ItemController {
     @GetMapping("/item/modify/{id}")
     public String itemModifyForm(@PathVariable("id") Integer id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         if(principalDetails.getUser().getRole().equals("ROLE_SELLER")) {
-            // 판매자
+            // 판매자''
+
+
+
+
             User user = itemService.itemView(id).getSeller();
             // 상품을 올린 판매자 id와 현재 로그인 중인 판매자의 id가 같아야 수정 가능
             if(user.getId() == principalDetails.getUser().getId()) {
@@ -176,7 +179,6 @@ public class ItemController {
         // 로그인 안 한 유저
         model.addAttribute("item", itemService.itemView(id));
         return "itemView";
-
     }
 
     // 상품 삭제 - 판매자만 가능
@@ -202,7 +204,7 @@ public class ItemController {
 
     // 상품 리스트 페이지 - 로그인 유저
     @GetMapping("/item/list")
-    public String itemList(Model model, @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+    public String itemList(Model model, @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                            String searchKeyword, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         User user = userPageService.findUser(principalDetails.getUser().getId());
@@ -230,7 +232,7 @@ public class ItemController {
 
     // 상품 리스트 페이지 - 로그인 안 한 유저
     @GetMapping("/nonlogin/item/list")
-    public String itemList(Model model, @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+    public String itemList(Model model, @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                            String searchKeyword) {
 
         Page<Item> items = null;
