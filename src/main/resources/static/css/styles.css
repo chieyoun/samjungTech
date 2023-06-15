@@ -11043,3 +11043,9 @@ ul {
 .cursor:hover {
   background-color: #f0f0f0;
 }
+
+.no-padding {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 23px;
+}

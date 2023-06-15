@@ -46,12 +46,13 @@
     <div class="container px-4 px-lg-5 h-100">
         <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
             <div class="col-lg-8 align-self-end">
-                <h1 class="text-white font-weight-bold">삼정테크</h1>
-                <hr class="divider" />
+<!--                <h1 class="text-white font-weight-bold">삼정테크</h1> &lt;!&ndash;글자 대신 사진&ndash;&gt;-->
+<!--                <hr class="divider" />-->
+                <img src="/img/logotext.png">
             </div>
             <div class="col-lg-8 align-self-baseline">
                 <p class="text-white-75 mb-5">모든 전자장비의 시스템 운영에 일치하는 최고급 수준의 양질의 전력을 공급할 수 있도록 설계, 제작, 설치 및 운영하는 일을 주 사업으로 하고 있습니다.</p>
-                <a class="btn btn-primary btn-xl" href="#about">회사소개</a>
+<!--                <a class="btn btn-primary btn-xl" href="#about">회사소개</a>-->
             </div>
         </div>
     </div>
@@ -140,11 +141,24 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><a href="detail.html">테스트 1</a></td>
-                        <td>2023-04-25</td>
+                    <tr th:each="board : ${boardList}">
+                        <td>
+                            <span th:text="${board.id}"></span>
+                        </td>
+                        <td>
+                            <a th:href="@{'/qna/post/' + ${board.id}}">
+                                <span th:text="${board.title}"></span>
+                            </a>
+                        </td>
+                        <td>
+                            <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
+                        </td>
                     </tr>
+<!--                    <tr>-->
+<!--                        <td>1</td>-->
+<!--                        <td><a href="detail.html">테스트 1</a></td>-->
+<!--                        <td>2023-04-25</td>-->
+<!--                    </tr>-->
 
                     <tr>
                         <td>2</td>
@@ -152,23 +166,23 @@
                         <td>2023-04-25</td>
                     </tr>
 
-                    <tr>
-                        <td>3</td>
-                        <td>테스트 3</td>
-                        <td>2023-04-25</td>
-                    </tr>
+<!--                    <tr>-->
+<!--                        <td>3</td>-->
+<!--                        <td>테스트 3</td>-->
+<!--                        <td>2023-04-25</td>-->
+<!--                    </tr>-->
 
-                    <tr>
-                        <td>4</td>
-                        <td>테스트 4</td>
-                        <td>2023-04-25</td>
-                    </tr>
+<!--                    <tr>-->
+<!--                        <td>4</td>-->
+<!--                        <td>테스트 4</td>-->
+<!--                        <td>2023-04-25</td>-->
+<!--                    </tr>-->
 
-                    <tr>
-                        <td>5</td>
-                        <td>테스트 5</td>
-                        <td>2023-04-25</td>
-                    </tr>
+<!--                    <tr>-->
+<!--                        <td>5</td>-->
+<!--                        <td>테스트 5</td>-->
+<!--                        <td>2023-04-25</td>-->
+<!--                    </tr>-->
                     </tbody>
                 </table>
             </div>
@@ -184,19 +198,19 @@
                             <ul>
                                 <li>
                                     <div class="faq-box__question">
-                                        <span>질문 1</span>
+                                        <span>제품은 어떤 것이 있나요?</span>
                                     </div>
                                     <div class="faq-box__answer">
-                                        답변 1
+                                        디지털 UPS, 렉장비용 UPS, HFU, AIU-N, AIU가 있습니다.
                                     </div>
                                 </li>
 
                                 <li>
                                     <div class="faq-box__question">
-                                        <span>질문 2</span>
+                                        <span>제품 사양은 어떻게 되나요?</span>
                                     </div>
                                     <div class="faq-box__answer">
-                                        답변 2
+                                        제품 소개에 있는 제품 이미지를 클릭하시면 제품 사양을 확인하실 수 있습니다.
                                     </div>
                                 </li>
 
@@ -268,7 +282,8 @@
                     </div>
 
                     <div class="d-grid">
-                        <input class="btn btn-primary btn-xl" type="button" onclick="check()" value="제출">
+<!--                        <input class="btn btn-primary btn-xl" type="button" onclick="check()" value="제출">-->
+                        <input class="btn btn-primary btn-xl no-padding" type="button" onclick="check()" value="제출">
                     </div>
                 </form>
             </div>
