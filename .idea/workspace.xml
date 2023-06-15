@@ -4,9 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="41206d8d-082f-4436-99fc-9abd45071831" name="Changes" comment="230615 - 공지사항 기능 추가">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/board/detail.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/board/write.html" afterDir="false" />
+    <list default="true" id="41206d8d-082f-4436-99fc-9abd45071831" name="Changes" comment="230615 - 견적 문의 이메일 전송 추가">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/entity/UserEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/repository/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/service/MyUserDetailsService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/service/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/user/add-save.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/user/add.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/user/admin.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/user/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/user/mypage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileContent/fileContent.lock" afterDir="false" />
@@ -16,12 +25,64 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/static/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/index.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/resources/main/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/seller/itemForm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/seller/itemManage.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/seller/itemModify.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/seller/saleList.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/seller/sellerPage.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/user/cash.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/user/userCart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/user/userOrderList.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/user/userPage.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/config/auth/PrincipalDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/MyUserDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/config/auth/PrincipalDetailsService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/AuthController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/BoardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/BoardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/ItemController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/SellerPageController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/UserPageController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/board/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/board/BoardRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/repository/BoardRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/board/Time.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/Time.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/cart/Cart.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/cart/CartRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/cartitem/CartItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/cartitem/CartItemRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/item/Item.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/item/ItemRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/order/Order.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/order/OrderRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/orderitem/OrderItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/orderitem/OrderItemRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/sale/Sale.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/sale/SaleRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/saleitem/SaleItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/saleitem/SaleItemRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/user/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/user/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/service/AuthService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/service/BoardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/service/BoardService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/service/CartService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/service/ItemService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/service/OrderService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/service/SaleService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/service/UserPageService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/web/dto/auth/BoardDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/dto/BoardDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/web/dto/auth/SignupDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/scripts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/itemForm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/itemManage.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/itemModify.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/saleList.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/sellerPage.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/cash.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/userCart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/userOrderList.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/userPage.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,27 +135,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/hcy/202301/samjungTech&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/hcy/202301/samjungTech/src/main/resources/templates/user",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\hcy\202301\samjungTech\src\main\resources\templates\user" />
+      <recent name="C:\Users\hcy\202301\samjungTech\src\main\java\com\chieyoun\board\service" />
+      <recent name="C:\Users\hcy\202301\samjungTech\src\main\java\com\chieyoun\board\domain" />
       <recent name="C:\Users\hcy\202301\samjungTech\src\main\resources\templates" />
       <recent name="C:\Users\hoooo\github_workspace\samjungTech" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\hcy\202301\samjungTech\src\main\resources\templates\board" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.chieyoun.board.repository" />
+      <recent name="com.chieyoun.board.entity" />
+      <recent name="com.chieyoun.board.controller" />
     </key>
   </component>
   <component name="RunManager">
@@ -161,7 +230,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686280254777</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="230615 - 공지사항 기능 추가">
+      <created>1686811370108</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1686811370108</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -184,6 +260,7 @@
     <MESSAGE value="230523 - 사진 추가 및 경로 설정" />
     <MESSAGE value="230609 - 제품 상세페이지 추가 및 경로 설정" />
     <MESSAGE value="230615 - 공지사항 기능 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="230615 - 공지사항 기능 추가" />
+    <MESSAGE value="230615 - 견적 문의 이메일 전송 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="230615 - 견적 문의 이메일 전송 추가" />
   </component>
 </project>

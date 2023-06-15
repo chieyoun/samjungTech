@@ -2,7 +2,7 @@ package com.chieyoun.board.controller;
 
 
 import com.chieyoun.board.service.BoardService;
-import com.chieyoun.board.web.dto.auth.BoardDto;
+import com.chieyoun.board.dto.BoardDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

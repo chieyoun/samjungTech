@@ -1,9 +1,9 @@
 package com.chieyoun.board.service;
 
 
-import com.chieyoun.board.domain.board.Board;
-import com.chieyoun.board.domain.board.BoardRepository;
-import com.chieyoun.board.web.dto.auth.BoardDto;
+import com.chieyoun.board.domain.Board;
+import com.chieyoun.board.repository.BoardRepository;
+import com.chieyoun.board.dto.BoardDto;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

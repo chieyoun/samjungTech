@@ -93,7 +93,7 @@ function check() {
         return null;
     } else {
         alert("견적 문의가 완료되었습니다.")
-        // document.contactForm.submit();
+         document.contactForm.sendMail();
     }
 }
 
