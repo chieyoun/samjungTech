@@ -74,7 +74,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
-function check() {
+function sendMail(){
     if (document.contactForm.name.value == "") {
         alert("이름을 입력해주세요.");
         document.contactForm.name.focus();
@@ -92,21 +92,52 @@ function check() {
         document.contactForm.message.focus();
         return null;
     } else {
-        alert("견적 문의가 완료되었습니다.")
-         document.contactForm.sendMail();
+         var params = {
+             from_name: document.getElementById("name").value,
+             email_id: document.getElementById("email").value,
+             message: document.getElementById("message").value,
+             phone: document.getElementById("phone").value,
+
+         };
+         emailjs.send("service_2uzb04c", "template_3br2c18", params).then(function (res) {
+         alert("견적 문의가 완료되었습니다.");
+        })
     }
 }
 
-function admincheck() {
-    if (document.contactForm.email.value == "") {
-        alert("이메일을 입력해주세요.");
-        document.contactForm.email.focus();
-        return null;
-    } else if (document.contactForm.password.value == "") {
-        alert("비밀번호를 입력해주세요.");
-        document.contactForm.password.focus();
-        return null;
-    } else {
-        document.contactForm.submit();
-    }
-}
+//function check() {
+//    if (document.contactForm.name.value == "") {
+//        alert("이름을 입력해주세요.");
+//        document.contactForm.name.focus();
+//        return null;
+//    } else if (document.contactForm.email.value == "") {
+//        alert("이메일을 입력해주세요.");
+//        document.contactForm.email.focus();
+//        return null;
+//    } else if (document.contactForm.phone.value == "") {
+//        alert("연락처를 입력해주세요.");
+//        document.contactForm.phone.focus();
+//        return null;
+//    } else if (document.contactForm.message.value == "") {
+//        alert("기초사양을 입력해주세요.");
+//        document.contactForm.message.focus();
+//        return null;
+//    } else {
+//        alert("견적 문의가 완료되었습니다.")
+//         document.contactForm.sendMail();
+//    }
+//}
+
+//function admincheck() {
+//    if (document.contactForm.email.value == "") {
+//        alert("이메일을 입력해주세요.");
+//        document.contactForm.email.focus();
+//        return null;
+//    } else if (document.contactForm.password.value == "") {
+//        alert("비밀번호를 입력해주세요.");
+//        document.contactForm.password.focus();
+//        return null;
+//    } else {
+//        document.contactForm.submit();
+//    }
+//}

@@ -1,5 +1,6 @@
-package com.chieyoun.board.domain;
+package com.chieyoun.board.entity;
 
+import com.chieyoun.board.domain.Time;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,8 +11,8 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-@Table(name = "board")
-public class Board extends Time {
+@Table(name = "board_entity")
+public class BoardEntity extends Time {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -27,7 +28,7 @@ public class Board extends Time {
     private String content;
 
     @Builder
-    public Board(Long id, String title, String content, String writer) {
+    public BoardEntity(Long id, String title, String content, String writer) {
         this.id = id;
         this.writer = writer;
         this.title = title;

@@ -1,6 +1,6 @@
 package com.chieyoun.board.dto;
 
-import com.chieyoun.board.domain.Board;
+import com.chieyoun.board.entity.BoardEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -17,8 +17,8 @@ public class BoardDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
-    public Board toEntity(){
-        Board boardEntity = Board.builder()
+    public BoardEntity toEntity(){
+        BoardEntity boardEntity = BoardEntity.builder()
                 .id(id)
                 .writer(writer)
                 .title(title)

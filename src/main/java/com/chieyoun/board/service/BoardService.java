@@ -1,7 +1,7 @@
 package com.chieyoun.board.service;
 
 
-import com.chieyoun.board.domain.Board;
+import com.chieyoun.board.entity.BoardEntity;
 import com.chieyoun.board.repository.BoardRepository;
 import com.chieyoun.board.dto.BoardDto;
 import lombok.AllArgsConstructor;
@@ -25,12 +25,12 @@ public class BoardService {
 
     @Transactional
     public List<BoardDto> getBoardlist(Integer pageNum) {
-        Page<Board> page = boardRepository.findAll(PageRequest.of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.ASC, "createdDate")));
+        Page<BoardEntity> page = boardRepository.findAll(PageRequest.of(pageNum - 1, PAGE_POST_COUNT, Sort.by(Sort.Direction.ASC, "createdDate")));
 
-        List<Board> boardEntities = page.getContent();
+        List<BoardEntity> boardEntities = page.getContent();
         List<BoardDto> boardDtoList = new ArrayList<>();
 
-        for (Board boardEntity : boardEntities) {
+        for (BoardEntity boardEntity : boardEntities) {
             boardDtoList.add(this.convertEntityToDto(boardEntity));
         }
 
@@ -44,8 +44,8 @@ public class BoardService {
 
     @Transactional
     public BoardDto getPost(Long id) {
-        Optional<Board> boardEntityWrapper = boardRepository.findById(id);
-        Board boardEntity = boardEntityWrapper.get();
+        Optional<BoardEntity> boardEntityWrapper = boardRepository.findById(id);
+        BoardEntity boardEntity = boardEntityWrapper.get();
 
         return this.convertEntityToDto(boardEntity);
     }
@@ -62,12 +62,12 @@ public class BoardService {
 
     @Transactional
     public List<BoardDto> searchPosts(String keyword) {
-        List<Board> boardEntities = boardRepository.findByTitleContaining(keyword);
+        List<BoardEntity> boardEntities = boardRepository.findByTitleContaining(keyword);
         List<BoardDto> boardDtoList = new ArrayList<>();
 
         if (boardEntities.isEmpty()) return boardDtoList;
 
-        for (Board boardEntity : boardEntities) {
+        for (BoardEntity boardEntity : boardEntities) {
             boardDtoList.add(this.convertEntityToDto(boardEntity));
         }
 
@@ -99,7 +99,7 @@ public class BoardService {
         return pageList;
     }
 
-    private BoardDto convertEntityToDto(Board boardEntity) {
+    private BoardDto convertEntityToDto(BoardEntity boardEntity) {
         return BoardDto.builder()
                 .id(boardEntity.getId())
                 .title(boardEntity.getTitle())

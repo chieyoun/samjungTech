@@ -23,7 +23,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
     (function(){
-        emailjs.init("-8qTjMQKFu-Zi4bCZ");
+        emailjs.init("Xu4zXyTG8Bri5lUv2");
     })();
     </script>
 </head>
@@ -64,7 +64,6 @@
     </div>
 </header>
 
-<!-- About-->
 <section class="page-section bg-primary" id="about">
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -147,53 +146,26 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="board : ${boardList}">
-                        <td>
-                            <span th:text="${board.id}"></span>
-                        </td>
-                        <td>
-                            <a th:href="@{'/qna/post/' + ${board.id}}">
-                                <span th:text="${board.title}"></span>
-                            </a>
-                        </td>
-                        <td>
-                            <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
-                        </td>
-                    </tr>
-<!--                    <tr>-->
-<!--                        <td>1</td>-->
-<!--                        <td><a href="detail.html">테스트 1</a></td>-->
-<!--                        <td>2023-04-25</td>-->
-<!--                    </tr>-->
-
-<!--                    <tr>-->
-<!--                        <td>2</td>-->
-<!--                        <td>테스트 2</td>-->
-<!--                        <td>2023-04-25</td>-->
-<!--                    </tr>-->
-
-<!--                    <tr>-->
-<!--                        <td>3</td>-->
-<!--                        <td>테스트 3</td>-->
-<!--                        <td>2023-04-25</td>-->
-<!--                    </tr>-->
-
-<!--                    <tr>-->
-<!--                        <td>4</td>-->
-<!--                        <td>테스트 4</td>-->
-<!--                        <td>2023-04-25</td>-->
-<!--                    </tr>-->
-
-<!--                    <tr>-->
-<!--                        <td>5</td>-->
-<!--                        <td>테스트 5</td>-->
-<!--                        <td>2023-04-25</td>-->
-<!--                    </tr>-->
+                        <tr th:each="board : ${boardList}">
+                            <td>
+                                <span th:text="${board.id}"></span>
+                            </td>
+                            <td>
+                                <a th:href="@{'/qna/post/' + ${board.id}}">
+                                    <span th:text="${board.title}"></span>
+                                </a>
+                            </td>
+                            <td>
+                                <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div style="height: 100px;"></div>
+            <div style="height: 50px"></div>
+            <hr>
+            <div style="height: 50px;"></div>
 
             <div class="table-responsive">
                 <h4 style="text-align: center;">FAQ</h4>
@@ -217,33 +189,6 @@
                                     </div>
                                     <div class="faq-box__answer">
                                         제품 소개에 있는 제품 이미지를 클릭하시면 제품 사양을 확인하실 수 있습니다.
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="faq-box__question">
-                                        <span>질문 3</span>
-                                    </div>
-                                    <div class="faq-box__answer">
-                                        답변 3
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="faq-box__question">
-                                        <span>질문 4</span>
-                                    </div>
-                                    <div class="faq-box__answer">
-                                        답변 4
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="faq-box__question">
-                                        <span>질문 5</span>
-                                    </div>
-                                    <div class="faq-box__answer">
-                                        답변 5
                                     </div>
                                 </li>
                             </ul>
@@ -301,67 +246,9 @@
 <!-- Footer-->
 <footer class="bg-light py-5">
     <div class="container px-4 px-lg-5">
-        <!-- <div class="small text-center text-muted">Copyright &copy; 2023 - Company Name</div> -->
-        <div class="small text-center text-muted"><a href="login">ADMIN</a>&nbsp;&nbsp;&nbsp;&nbsp;대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div>
-<!--        <div class="small text-center text-muted">대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div>-->
+<!--        <div class="small text-center text-muted"><a href="login">ADMIN</a>&nbsp;&nbsp;&nbsp;&nbsp;대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div>-->
+        <div class="small text-center text-muted">대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div>
     </div>
 </footer>
-
-<!--<script>-->
-<!--    function sendMail(){-->
-<!--        var params = {-->
-<!--            from_name: document.getElementById("name").value,-->
-<!--            email_id: document.getElementById("email").value,-->
-<!--            phone: document.getElementById("phone").value,-->
-<!--            message: document.getElementById("message").value-->
-<!--        };-->
-
-<!--        emailjs.send("service_p9s4twt", "template_cz9grem", params).then(function (res) {-->
-<!--            alert("Sucess! " + res.status);-->
-<!--        })-->
-<!--    }-->
-<!--</script>-->
-
-<script>
-    function sendMail(){
-        if (document.contactForm.name.value == "") {
-            alert("이름을 입력해주세요.");
-            document.contactForm.name.focus();
-            return null;
-        } else if (document.contactForm.email.value == "") {
-            alert("이메일을 입력해주세요.");
-            document.contactForm.email.focus();
-            return null;
-        } else if (document.contactForm.phone.value == "") {
-            alert("연락처를 입력해주세요.");
-            document.contactForm.phone.focus();
-            return null;
-        } else if (document.contactForm.message.value == "") {
-            alert("기초사양을 입력해주세요.");
-            document.contactForm.message.focus();
-            return null;
-        } else {
-
-             var params = {
-                from_name: document.getElementById("name").value,
-                email_id: document.getElementById("email").value,
-                message: document.getElementById("message").value + "\n고객님의 연락처: " + document.getElementById("phone").value,
-            };
-
-            emailjs.send("service_p9s4twt", "template_cz9grem", params).then(function (res) {
-                alert("견적 문의가 완료되었습니다.");
-            })
-        }
-    }
-</script>
-
-
-<!--<script>-->
-<!--    const footer = document.querySelector('footer');-->
-
-<!--    fetch('./footer.html')-->
-<!--    .then(res => res.text())-->
-<!--    .then(data => footer.innerHTML = data);-->
-<!--</script>-->
 </body>
 </html>

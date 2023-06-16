@@ -41,6 +41,8 @@
     </div>
 </nav>
 
+<div style="height: 150px;"></div>
+
 <div class="container" style="width: 60%;">
     <div style="margin: 100px"></div>
     <table>
@@ -49,10 +51,22 @@
         </tr>
 
         <tr>
+            <td><span style="color: grey" th:text="${#temporals.format(boardDto.createdDate, 'yyyy-MM-dd HH:mm')}"></span></td>
+        </tr>
+
+        <tr>
             <td colspan="2"><span th:text="${boardDto.content}"></span></td>
         </tr>
     </table>
 </div>
+
+<!-- Footer-->
+<footer class="bg-light py-5">
+    <div class="container px-4 px-lg-5">
+        <!--        <div class="small text-center text-muted"><a href="login">ADMIN</a>&nbsp;&nbsp;&nbsp;&nbsp;대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div>-->
+        <div class="small text-center text-muted">대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div>
+    </div>
+</footer>
 
 <!-- 변수 셋팅 -->
 <script th:inline="javascript">

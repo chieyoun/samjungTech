@@ -9,5 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class samjungTechApplication {
     public static void main(String[] args) {
         SpringApplication.run(samjungTechApplication.class, args);
+        System.out.println("실행 완료");
     }
 }
