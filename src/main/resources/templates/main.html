@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -57,7 +57,7 @@
                 <img src="/img/logotext.png">
             </div>
             <div class="col-lg-8 align-self-baseline">
-                <p class="text-white-75 mb-5">모든 전자장비의 시스템 운영에 일치하는 최고급 수준의 양질의 전력을 공급할 수 있도록 설계, 제작, 설치 및 운영하는 일을 주 사업으로 하고 있습니다.</p>
+                <p class="text-white-75 mb-5"><b>모든 전자장비의 시스템 운영에 일치하는 최고급 수준의 양질의 전력을 공급할 수 있도록 설계, 제작, 설치 및 운영하는 일을 주 사업으로 하고 있습니다.</b></p>
                 <!--                <a class="btn btn-primary btn-xl" href="#about">회사소개</a>-->
             </div>
         </div>
@@ -137,7 +137,11 @@
             <div class="table-responsive" style="text-align: center;">
                 <h4>공지사항</h4>
                 <div style="height: 20px;"></div>
-                <table class="table">
+<!--                <sec:authorize access="!isAnonymous()">-->
+<!--                    <a th:href="@{/qna/post}" >글</a>-->
+<!--                </sec:authorize>-->
+<!--                <a th:href="@{/qna/post}" sec:authorize="!isAuthenticated()">글써</a>-->
+                    <table class="table">
                     <thead>
                     <tr>
                         <th>번호</th>
@@ -233,8 +237,8 @@
                     </div>
 
                     <div class="d-grid">
-                        <!--                        <input class="btn btn-primary btn-xl" type="button" onclick="check()" value="제출">-->
-                        <!--                        <input class="btn btn-primary btn-xl no-padding" type="button" onclick="check()" value="제출">-->
+                        <!--<input class="btn btn-primary btn-xl" type="button" onclick="check()" value="제출">-->
+                        <!--<input class="btn btn-primary btn-xl no-padding" type="button" onclick="check()" value="제출">-->
                         <input class="btn btn-primary btn-xl no-padding" type="button" onclick="sendMail()" value="제출">
                     </div>
                 </form>
@@ -246,8 +250,8 @@
 <!-- Footer-->
 <footer class="bg-light py-5">
     <div class="container px-4 px-lg-5">
-        <!--        <div class="small text-center text-muted"><a href="login">ADMIN</a>&nbsp;&nbsp;&nbsp;&nbsp;대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div>-->
-        <div class="small text-center text-muted">대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div>
+                <div class="small text-center text-muted"><a href="login">ADMIN</a>&nbsp;&nbsp;&nbsp;&nbsp;대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div>
+<!--        <div class="small text-center text-muted">대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div>-->
     </div>
 </footer>
 </body>
