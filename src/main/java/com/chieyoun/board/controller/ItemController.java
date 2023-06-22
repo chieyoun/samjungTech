@@ -32,7 +32,7 @@ public class ItemController {
 
     // 메인 페이지 html 하나로 통일
     // 메인 페이지 (로그인 안 한 유저) /localhost:8080
-    @GetMapping("/")
+    @GetMapping("/item")
     public String mainPageNoneLogin(Model model) {
         // 로그인을 안 한 경우
         List<Item> items = itemService.allItemView();
@@ -40,7 +40,7 @@ public class ItemController {
 
         return "main";
     }
-
+//바꿈
     // 메인 페이지 (로그인 유저) - 판매자, 구매자 로 로그인
     @GetMapping("/main")
     public String mainPage(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
