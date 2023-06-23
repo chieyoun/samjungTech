@@ -1,6 +1,5 @@
 package com.chieyoun.board.controller;
 
-
 import com.chieyoun.board.service.BoardService;
 import com.chieyoun.board.web.dto.auth.BoardDto;
 import lombok.AllArgsConstructor;

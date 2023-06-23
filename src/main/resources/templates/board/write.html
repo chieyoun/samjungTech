@@ -1,16 +1,37 @@
 <!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>글쓰기</title>
+    <link rel="stylesheet" href="/bootstrap-5.3.0-alpha3-dist/css/bootstrap.min.css">
+    <script src="/bootstrap-5.3.0-alpha3-dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div style="margin: 100px">
+        <form action="/post" method="post">
+            <input type="text" name="title" maxlength="95" class="form-control" placeholder="제목을 입력하세요."> <br>
+            <input type="text" name="writer" th:value="관리자" readonly><br>
+            <textarea name="content" maxlength="65000" style="height: 500px" class="form-control" placeholder="내용을 입력하세요."></textarea><br>
+
+            <input type="submit" value="등록" class="btn btn-default" style="background-color: black; color: white;">
+        </form>
+    </div>
+</div>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-    <form  action="/post" method="post">
-        제목 : <input type="text" name="title"> <br>
-        작성자 : <input type="text" name="writer"> <br>
-        <textarea name="content"></textarea><br>
+<form  action="/post" method="post">
+    제목 : <input type="text" name="title"> <br>
+    작성자 : <input type="text" name="writer"> <br>
+    <textarea name="content"></textarea><br>
 
-        <input type="submit" value="등록">
-    </form>
+    <input type="submit" value="등록">
+</form>
 </body>
 </html>
