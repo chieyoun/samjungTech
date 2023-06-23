@@ -1,12 +1,7 @@
 package com.chieyoun.board.domain.user;
 
 
-import com.chieyoun.board.domain.cart.Cart;
 import com.chieyoun.board.domain.item.Item;
-import com.chieyoun.board.domain.order.Order;
-import com.chieyoun.board.domain.orderitem.OrderItem;
-import com.chieyoun.board.domain.sale.Sale;
-import com.chieyoun.board.domain.saleitem.SaleItem;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -45,24 +40,7 @@ public class User {
     private List<Item> items = new ArrayList<>();
 
     // 구매자의 장바구니
-    @OneToOne(mappedBy = "user")
-    private Cart cart;
 
-    // 구매자의 주문
-    @OneToMany(mappedBy = "user")
-    private List<Order> userOrder = new ArrayList<>();
-
-    // 구매자의 주문상품들
-    @OneToMany(mappedBy = "user")
-    private List<OrderItem> userOrderItem = new ArrayList<>();
-
-    // 판매자의 판매상품들
-    @OneToMany(mappedBy = "seller")
-    private List<SaleItem> sellerSaleItem = new ArrayList<>();
-
-    // 판매자의 판매
-    @OneToMany(mappedBy = "seller")
-    private List<Sale> sellerSale;
 
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDate createDate; // 날짜

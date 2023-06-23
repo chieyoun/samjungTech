@@ -40,7 +40,7 @@ public class BoardController {
 
 
     /* 게시글 쓰기 */
-    @GetMapping("/qna/post")
+    @GetMapping("admin/qna/post")
     public String write() {
         return "board/write.html";
     }
@@ -49,12 +49,12 @@ public class BoardController {
     public String write(BoardDto boardDto) {
         boardService.savePost(boardDto);
 
-        return "redirect:/qna/";
+        return "redirect:/";
     }
 
 
     /* 게시글 수정 */
-    @GetMapping("qna/post/edit/{no}")
+    @GetMapping("admin/post/edit/{no}")
     public String edit(@PathVariable("no") Long no, Model model) {
         BoardDto boardDTO = boardService.getPost(no);
 
@@ -62,22 +62,22 @@ public class BoardController {
         return "board/update.html";
     }
 
-    @PutMapping("qna/post/edit/{no}")
+    @PutMapping("admin/post/edit/{no}")
     public String update(BoardDto boardDTO) {
         boardService.savePost(boardDTO);
 
-        return "redirect:/qna/";
+        return "redirect:/";
     }
 
     /* 게시글 삭제 */
-    @DeleteMapping("qna/post/{no}")
+    @DeleteMapping("admin/post/{no}")
     public String delete(@PathVariable("no") Long no) {
         boardService.deletePost(no);
 
-        return "redirect:/qna/";
+        return "redirect:/";
     }
 
-    @GetMapping("qna/board/search")
+    @GetMapping("admin/board/search")
     public String search(@RequestParam(value="keyword") String keyword, Model model) {
         List<BoardDto> boardDtoList = boardService.searchPosts(keyword);
 

@@ -1,11 +1,8 @@
 package com.chieyoun.board.controller;
 
 import com.chieyoun.board.config.auth.PrincipalDetails;
-import com.chieyoun.board.domain.cart.Cart;
-import com.chieyoun.board.domain.cartitem.CartItem;
 import com.chieyoun.board.domain.item.Item;
 import com.chieyoun.board.domain.user.User;
-import com.chieyoun.board.service.CartService;
 import com.chieyoun.board.service.ItemService;
 import com.chieyoun.board.service.UserPageService;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +25,6 @@ public class ItemController {
 
     private final ItemService itemService;
     private final UserPageService userPageService;
-    private final CartService cartService;
-
     // 메인 페이지 html 하나로 통일
     // 메인 페이지 (로그인 안 한 유저) /localhost:8080
     @GetMapping("/item")
@@ -154,18 +149,7 @@ public class ItemController {
             // 구매자
             User user = principalDetails.getUser();
 
-            // 페이지에 접속한 유저를 찾아야 함
-            User loginUser = userPageService.findUser(user.getId());
 
-            int cartCount = 0;
-            Cart userCart = cartService.findUserCart(loginUser.getId());
-            List<CartItem> cartItems = cartService.allUserCartView(userCart);
-
-            for(CartItem cartItem : cartItems) {
-                cartCount += cartItem.getCount();
-            }
-
-            model.addAttribute("cartCount", cartCount);
             model.addAttribute("item", itemService.itemView(id));
             model.addAttribute("user", user);
 

@@ -22,7 +22,7 @@
             http.csrf().disable(); // csrf 토큰 비활성화 코드
 
             http.authorizeRequests()
-                    .antMatchers("/main/**").authenticated() // 로그인을 요구함
+                    .antMatchers("/admin/**").authenticated() // 로그인을 요구함
                     .anyRequest().permitAll() // 그게 아닌 모든 주소는 인증 필요 없음
                     .and()
                     .formLogin()

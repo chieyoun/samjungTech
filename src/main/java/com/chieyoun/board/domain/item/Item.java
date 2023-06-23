@@ -1,6 +1,5 @@
 package com.chieyoun.board.domain.item;
 
-import com.chieyoun.board.domain.cartitem.CartItem;
 import com.chieyoun.board.domain.user.User;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -38,8 +37,6 @@ public class Item {
     @JoinColumn(name = "seller_id")
     private User seller; // 판매자 아이디
 
-    @OneToMany(mappedBy = "item")
-    private List<CartItem> cartItems = new ArrayList<>();
 
     //@OneToMany(mappedBy = "item")
     //private List<OrderItem> orderItems = new ArrayList<>();

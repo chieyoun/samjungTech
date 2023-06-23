@@ -3,10 +3,7 @@ package com.chieyoun.board.controller;
 
 import com.chieyoun.board.config.auth.PrincipalDetails;
 import com.chieyoun.board.domain.item.Item;
-import com.chieyoun.board.domain.sale.Sale;
-import com.chieyoun.board.domain.saleitem.SaleItem;
 import com.chieyoun.board.service.ItemService;
-import com.chieyoun.board.service.SaleService;
 import com.chieyoun.board.service.UserPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,7 +24,6 @@ public class SellerPageController {
 
     private final UserPageService userPageService;
     private final ItemService itemService;
-    private final SaleService saleService;
 
     // 판매자 프로필 페이지 접속
     @GetMapping("/seller/{id}")
@@ -69,23 +65,5 @@ public class SellerPageController {
     }
 
     // 판매 내역 조회 페이지
-    @GetMapping("/seller/salelist/{id}")
-    public String saleList(@PathVariable("id")Integer id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        // 로그인이 되어있는 유저의 id와 판매내역에 접속하는 id가 같아야 함
-        if (principalDetails.getUser().getId() == id) {
 
-            Sale sales = saleService.findSaleById(id);
-            List<SaleItem> saleItemList = saleService.findSellerSaleItems(id);
-
-            model.addAttribute("sales", sales);
-            model.addAttribute("totalCount", sales.getTotalCount());
-            model.addAttribute("sellerSaleItems", saleItemList);
-            model.addAttribute("seller", userPageService.findUser(id));
-
-            return "seller/saleList";
-        }
-        else {
-            return "redirect:/main";
-        }
-    }
 }

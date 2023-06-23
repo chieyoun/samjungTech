@@ -16,9 +16,6 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final CartService cartService;
-    private final OrderService orderService;
-    private final SaleService saleService;
 
     @Transactional
     public User signup(User user) {
@@ -30,12 +27,6 @@ public class AuthService {
 
         User userEntity = userRepository.save(user);
 
-        if (Objects.equals(userEntity.getRole(), "ROLE_SELLER")) {
-            saleService.createSale(user);
-        } else if (Objects.equals(user.getRole(), "ROLE_USER")){
-            cartService.createCart(user);
-            orderService.createOrder(user);
-        }
 
         return userEntity;
     }

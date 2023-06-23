@@ -1,7 +1,6 @@
 package com.chieyoun.board.service;
 
 
-import com.chieyoun.board.domain.cartitem.CartItem;
 import com.chieyoun.board.domain.item.Item;
 import com.chieyoun.board.domain.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +19,7 @@ import java.util.UUID;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-    private final CartService cartService;
-    private final SaleService saleService;
+//    private final CartService cartService;
 
     // 상품 등록
     public void saveItem(Item item, MultipartFile imgFile) throws Exception {
@@ -90,11 +88,11 @@ public class ItemService {
     @Transactional
     public void itemDelete(Integer id) {
         // cartItem 중에 해당 id 를 가진 item 찾기
-        List<CartItem> items = cartService.findCartItemByItemId(id);
-
-        for(CartItem item : items) {
-            cartService.cartItemDelete(item.getId());
-        }
+//        List<CartItem> items = cartService.findCartItemByItemId(id);
+//
+//        for(CartItem item : items) {
+//            cartService.cartItemDelete(item.getId());
+//        }
 
         itemRepository.deleteById(id);
     }

@@ -187,6 +187,9 @@
 
 <!--            <a class="navbar-brand" th:href="@{/main}" sec:authorize="isAuthenticated()">대충 이름</a>&ndash;&gt;-->
 <!--            <a class="navbar-brand" th:href="@{/}" sec:authorize="!isAuthenticated()">대충 이름2</a>-->
+
+                <li class="nav-item"><a class="nav-link" th:href="@{/signin}">관리자 로그인</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/signup}">관리자 회원가입</a></li>
                 <li class="nav-item"><a class="nav-link" href="#about">회사소개</a></li>
                 <li class="nav-item"><a class="nav-link" href="#product_intro">제품소개</a></li>
                 <li class="nav-item"><a class="nav-link" href="#support">고객지원</a></li>
@@ -312,6 +315,9 @@
         <hr class="divider" />
         <div class="row gx-4 gx-lg-5">
             <div style="height: 30px;"></div>
+
+                <a th:href="@{/admin/qna/post}">글쓰기</a>
+
             <div class="table-responsive" style="text-align: center;">
                 <h4>공지사항</h4>
                 <div style="height: 20px;"></div>
@@ -319,8 +325,6 @@
             </div>
 
 
-
-    <a th:href="@{/qna/post}">글쓰기</a>
 
     <table>
         <thead>
