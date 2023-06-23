@@ -5,14 +5,54 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41206d8d-082f-4436-99fc-9abd45071831" name="Changes" comment="save">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/header.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/layout/default.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileContent/fileContent.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/aiu.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/aiu.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/files/5fc647bc-1783-498d-b31c-4dccdc7b07c4_KakaoTalk_20230322_114955053.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/files/781ad0d3-2f09-4877-a188-599f13ea8f49_삭제금지.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/files/7985f8ad-ebfb-4879-9716-4643f4da7199_삭제금지.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/files/ac663c6a-b1a7-42f2-ab15-02b8122d3bd4_삭제금지.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/files/d945baaa-15b1-4114-9b40-3a97c5be3784_화면 캡처 2023-05-09 191656.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/aiu-n.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/aiu.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/d-ups.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/hfu.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/logotext.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/r-ups.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/aiu-n.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/aiu.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/d-ups.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/hfu.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/itemView.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/itemView.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/r-ups.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/MainController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/5fc647bc-1783-498d-b31c-4dccdc7b07c4_KakaoTalk_20230322_114955053.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/781ad0d3-2f09-4877-a188-599f13ea8f49_삭제금지.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/7985f8ad-ebfb-4879-9716-4643f4da7199_삭제금지.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/ac663c6a-b1a7-42f2-ab15-02b8122d3bd4_삭제금지.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/d945baaa-15b1-4114-9b40-3a97c5be3784_화면 캡처 2023-05-09 191656.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/aiu-n.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/aiu-n.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/aiu.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/aiu.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/d-ups.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/d-ups.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/hfu.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/hfu.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/logotext.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/logotext.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/r-ups.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/r-ups.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/footer.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/footer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/header.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/itemView.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/itemView.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/main.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +94,13 @@
       </state>
     </system>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
@@ -66,24 +113,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/hoooo/github_workspace/samjungTech&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/hoooo/github_workspace/samjungTech",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\static\asset" />
       <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\templates\board" />
       <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\static\files" />
       <recent name="C:\Users\hoooo\github_workspace\samjungTech" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\templates\fragments" />
+      <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\static\files" />
     </key>
   </component>
   <component name="RunManager" selected="Application.samjungTechApplication">
@@ -259,7 +311,21 @@
       <option name="project" value="LOCAL" />
       <updated>1687481580706</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="save">
+      <created>1687483925792</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1687483925792</updated>
+    </task>
+    <task id="LOCAL-00010" summary="save">
+      <created>1687483933655</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1687483933655</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
