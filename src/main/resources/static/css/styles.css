@@ -11050,3 +11050,9 @@ ul {
     padding-bottom: 10px;
     font-size: 23px;
 }
+
+.fixed-bottom {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
