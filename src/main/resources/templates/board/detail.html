@@ -60,37 +60,39 @@
     </table>
 </div>
 
+<div style="height: 200px"></div>
+
 <!-- Footer-->
-<footer class="bg-light py-5">
+<footer class="bg-light py-5 fixed-bottom">
     <div class="container px-4 px-lg-5">
         <!--        <div class="small text-center text-muted"><a href="login">ADMIN</a>&nbsp;&nbsp;&nbsp;&nbsp;대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div>-->
         <div class="small text-center text-muted">대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div>
     </div>
 </footer>
 
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
 
-<h2 th:text="${boardDto.title}"></h2>
-<p th:inline="text">작성일 : [[${#temporals.format(boardDto.createdDate, 'yyyy-MM-dd HH:mm')}]]</p>
+<!--<h2 th:text="${boardDto.title}"></h2>-->
+<!--<p th:inline="text">작성일 : [[${#temporals.format(boardDto.createdDate, 'yyyy-MM-dd HH:mm')}]]</p>-->
 
-<p th:text="${boardDto.content}"></p>
+<!--<p th:text="${boardDto.content}"></p>-->
 
-<!-- 수정/삭제 -->
-<div>
-    <a th:href="@{'/qna/post/edit/' + ${boardDto.id}}">
-        <button>수정</button>
-    </a>
+<!--&lt;!&ndash; 수정/삭제 &ndash;&gt;-->
+<!--<div>-->
+<!--    <a th:href="@{'/qna/post/edit/' + ${boardDto.id}}">-->
+<!--        <button>수정</button>-->
+<!--    </a>-->
 
-    <form id="delete-form" th:action="@{'/qna/post/' + ${boardDto.id}}" method="post">
-        <input type="hidden" name="_method" value="delete"/>
-        <button id="delete-btn">삭제</button>
-    </form>
-</div>
+<!--    <form id="delete-form" th:action="@{'/qna/post/' + ${boardDto.id}}" method="post">-->
+<!--        <input type="hidden" name="_method" value="delete"/>-->
+<!--        <button id="delete-btn">삭제</button>-->
+<!--    </form>-->
+<!--</div>-->
 
 <!-- 변수 셋팅 -->
 <script th:inline="javascript">
