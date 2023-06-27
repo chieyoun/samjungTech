@@ -10935,7 +10935,8 @@ header.masthead {
   background: linear-gradient(to bottom, rgba(254, 224, 205, 0.55) 0%, rgba(254, 224, 205, 0.55) 100%), url("../img/plug-3285062_1920.jpg");
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: scroll;
+  /*background-attachment: scroll;*/
+  background-attachment: fixed;
   background-size: cover;
 }
 header.masthead h1, header.masthead .h1 {
@@ -11055,10 +11056,4 @@ ul {
     position: fixed;
     bottom: 0;
     width: 100%;
-}
-
-
-
-.fixed {
-    background-attachment: fixed;
 }
