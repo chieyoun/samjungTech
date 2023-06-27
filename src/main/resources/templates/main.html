@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/default_layout">
-<!--      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/extras/spring-security "-->
-
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -24,7 +22,7 @@
     <!-- SimpleLightbox plugin CSS-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css" rel="stylesheet" />
+    <link type="text/css" href="css/styles.css" rel="stylesheet" />
 </head>
 <body id="page-top">
 <!-- Navigation-->
@@ -44,6 +42,7 @@
                 <li class="nav-item"><a class="nav-link" href="#product_intro">제품소개</a></li>
                 <li class="nav-item"><a class="nav-link" href="#support">고객지원</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contact">견적문의</a></li>
+
             </ul>
         </div>
     </div>
@@ -148,7 +147,7 @@
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/item/view/nonlogin/{id}(id=${item.getId()})}">상세보기</a></div>
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/item/view/{id}(id=${item.getId()})}">상세보기</a></div>
                     </div>
                 </div>
             </div>
@@ -347,7 +346,7 @@
 <!-- SimpleLightbox plugin JS-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
 <!-- Core theme JS-->
-<script src="js/scripts.js"></script>
+<script type="text/javascript" src="js/scripts.js"></script>
 <!-- 제이쿼리 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 

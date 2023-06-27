@@ -1,0 +1,924 @@
+Index: src/main/java/com/chieyoun/board/controller/ItemController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.chieyoun.board.controller;\r\n\r\nimport com.chieyoun.board.config.auth.PrincipalDetails;\r\nimport com.chieyoun.board.domain.item.Item;\r\nimport com.chieyoun.board.domain.user.User;\r\nimport com.chieyoun.board.service.ItemService;\r\nimport com.chieyoun.board.service.UserPageService;\r\nimport lombok.RequiredArgsConstructor;\r\nimport org.springframework.data.domain.Page;\r\nimport org.springframework.data.domain.Pageable;\r\nimport org.springframework.data.domain.Sort;\r\nimport org.springframework.data.web.PageableDefault;\r\nimport org.springframework.security.core.annotation.AuthenticationPrincipal;\r\nimport org.springframework.stereotype.Controller;\r\nimport org.springframework.ui.Model;\r\nimport org.springframework.web.bind.annotation.GetMapping;\r\nimport org.springframework.web.bind.annotation.PathVariable;\r\nimport org.springframework.web.bind.annotation.PostMapping;\r\nimport org.springframework.web.multipart.MultipartFile;\r\n\r\nimport java.util.List;\r\n@Controller\r\n@RequiredArgsConstructor\r\npublic class ItemController {\r\n\r\n    private final ItemService itemService;\r\n    private final UserPageService userPageService;\r\n    // 메인 페이지 html 하나로 통일\r\n    // 메인 페이지 (로그인 안 한 유저) /localhost:8080\r\n    @GetMapping(\"/item\")\r\n    public String mainPageNoneLogin(Model model) {\r\n        // 로그인을 안 한 경우\r\n        List<Item> items = itemService.allItemView();\r\n        model.addAttribute(\"items\", items);\r\n\r\n        return \"main\";\r\n    }\r\n//바꿈\r\n    // 메인 페이지 (로그인 유저) - 판매자, 구매자 로 로그인\r\n    @GetMapping(\"/main\")\r\n    public String mainPage(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {\r\n        if (principalDetails.getUser().getRole().equals(\"ROLE_SELLER\")) {\r\n            // 판매자\r\n            int sellerId = principalDetails.getUser().getId();\r\n            List<Item> items = itemService.allItemView();\r\n            model.addAttribute(\"items\", items);\r\n            model.addAttribute(\"user\", userPageService.findUser(sellerId));\r\n\r\n            return \"/main\";\r\n        } else {\r\n            // 구매자\r\n            int userId = principalDetails.getUser().getId();\r\n            List<Item> items = itemService.allItemView();\r\n            model.addAttribute(\"items\", items);\r\n            model.addAttribute(\"user\", userPageService.findUser(userId));\r\n\r\n            return \"/main\";\r\n        }\r\n    }\r\n\r\n    // 상품 등록 페이지 - 판매자만 가능\r\n    @GetMapping(\"/item/new\")\r\n    public String itemSaveForm(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {\r\n        if(principalDetails.getUser().getRole().equals(\"ROLE_SELLER\")) {\r\n            // 판매자\r\n            model.addAttribute(\"user\", principalDetails.getUser());\r\n\r\n            return \"/seller/itemForm\";\r\n        } else {\r\n            // 일반 회원이면 거절 -> main\r\n            return \"redirect:/main\";\r\n        }\r\n    }\r\n\r\n    // 상품 등록 (POST) - 판매자만 가능\r\n    @PostMapping(\"/item/new/pro\")\r\n    public String itemSave(Item item, @AuthenticationPrincipal PrincipalDetails principalDetails, MultipartFile imgFile) throws Exception {\r\n        if(principalDetails.getUser().getRole().equals(\"ROLE_SELLER\")) {\r\n            // 판매자\r\n            item.setSeller(principalDetails.getUser());\r\n            itemService.saveItem(item, imgFile);\r\n\r\n            return \"redirect:/main\";\r\n        } else {\r\n            // 일반 회원이면 거절 -> main\r\n            return \"redirect:/main\";\r\n        }\r\n    }\r\n\r\n    // 상품 수정 페이지 - 판매자만 가능\r\n    @GetMapping(\"/item/modify/{id}\")\r\n    public String itemModifyForm(@PathVariable(\"id\") Integer id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {\r\n        if(principalDetails.getUser().getRole().equals(\"ROLE_SELLER\")) {\r\n            // 판매자''\r\n\r\n\r\n\r\n\r\n            User user = itemService.itemView(id).getSeller();\r\n            // 상품을 올린 판매자 id와 현재 로그인 중인 판매자의 id가 같아야 수정 가능\r\n            if(user.getId() == principalDetails.getUser().getId()) {\r\n\r\n                model.addAttribute(\"item\", itemService.itemView(id));\r\n                model.addAttribute(\"user\", principalDetails.getUser());\r\n\r\n                return \"/seller/itemModify\";\r\n            } else {\r\n                return \"redirect:/main\";\r\n            }\r\n        } else {\r\n            // 일반 회원이면 거절 -> main\r\n            return \"redirect:/main\";\r\n        }\r\n    }\r\n\r\n    // 상품 수정 (POST) - 판매자만 가능\r\n    @PostMapping(\"/item/modify/pro/{id}\")\r\n    public String itemModify(Item item, @PathVariable(\"id\") Integer id, @AuthenticationPrincipal PrincipalDetails principalDetails, MultipartFile imgFile) throws Exception{\r\n        if(principalDetails.getUser().getRole().equals(\"ROLE_SELLER\")) {\r\n            // 판매자\r\n            User user = itemService.itemView(id).getSeller();\r\n\r\n            if(user.getId() == principalDetails.getUser().getId()) {\r\n                // 상품을 올린 판매자 id와 현재 로그인 중인 판매자의 id가 같아야 수정 가능\r\n                itemService.itemModify(item, id, imgFile);\r\n\r\n                return \"redirect:/main\";\r\n            } else {\r\n                return \"redirect:/main\";\r\n            }\r\n        } else {\r\n            // 일반 회원이면 거절 -> main\r\n            return \"redirect:/main\";\r\n        }\r\n    }\r\n\r\n    // 상품 상세 페이지 - 판매자, 구매자 가능\r\n    @GetMapping(\"/item/view/{itemId}\")\r\n    public String ItemView(Model model, @PathVariable(\"itemId\") Integer id, @AuthenticationPrincipal PrincipalDetails principalDetails) {\r\n        if(principalDetails.getUser().getRole().equals(\"ROLE_SELLER\")) {\r\n            // 판매자\r\n            User user = principalDetails.getUser();\r\n\r\n            model.addAttribute(\"item\", itemService.itemView(id));\r\n            model.addAttribute(\"user\", user);\r\n\r\n            return \"itemView\";\r\n        } else {\r\n            // 구매자\r\n            User user = principalDetails.getUser();\r\n\r\n\r\n            model.addAttribute(\"item\", itemService.itemView(id));\r\n            model.addAttribute(\"user\", user);\r\n\r\n            return \"itemView\";\r\n        }\r\n    }\r\n\r\n    // 상품 상세 페이지 - 로그인 안 한 유저\r\n    @GetMapping(\"/item/view/nonlogin/{id}\")\r\n    public String nonLoginItemView(Model model, @PathVariable(\"id\") Integer id) {\r\n        // 로그인 안 한 유저\r\n        model.addAttribute(\"item\", itemService.itemView(id));\r\n        return \"itemView\";\r\n    }\r\n\r\n    // 상품 삭제 - 판매자만 가능\r\n    @GetMapping(\"/item/delete/{id}\")\r\n    public String itemDelete(@PathVariable(\"id\") Integer id, @AuthenticationPrincipal PrincipalDetails principalDetails) {\r\n        if(principalDetails.getUser().getRole().equals(\"ROLE_SELLER\")) {\r\n            // 판매자\r\n            User user = itemService.itemView(id).getSeller();\r\n\r\n            if(user.getId() == principalDetails.getUser().getId()) {\r\n                // 상품을 올린 판매자 id와 현재 로그인 중인 판매자의 id가 같아야 삭제 가능\r\n                itemService.itemDelete(id);\r\n\r\n                return \"redirect:/main\";\r\n            } else {\r\n                return \"redirect:/main\";\r\n            }\r\n        } else {\r\n            // 일반 회원이면 거절 -> main\r\n            return \"redirect:/main\";\r\n        }\r\n    }\r\n\r\n    // 상품 리스트 페이지 - 로그인 유저\r\n    @GetMapping(\"/item/list\")\r\n    public String itemList(Model model, @PageableDefault(page = 0, size = 10, sort = \"id\", direction = Sort.Direction.ASC) Pageable pageable,\r\n                           String searchKeyword, @AuthenticationPrincipal PrincipalDetails principalDetails) {\r\n\r\n        User user = userPageService.findUser(principalDetails.getUser().getId());\r\n\r\n        Page<Item> items = null;\r\n\r\n        if (searchKeyword == null) {  // 검색이 들어왔을 때\r\n            items = itemService.allItemViewPage(pageable);\r\n        } else {  // 검색이 들어오지 않았을 때\r\n            items = itemService.itemSearchList(searchKeyword, pageable);\r\n        }\r\n\r\n        int nowPage = items.getPageable().getPageNumber() + 1;\r\n        int startPage = Math.max(nowPage - 4, 1);\r\n        int endPage = Math.min(nowPage + 5, items.getTotalPages());\r\n\r\n        model.addAttribute(\"items\", items);\r\n        model.addAttribute(\"nowPage\", nowPage);\r\n        model.addAttribute(\"startPage\", startPage);\r\n        model.addAttribute(\"endPage\", endPage);\r\n        model.addAttribute(\"user\", user);\r\n\r\n        return \"itemList\";\r\n    }\r\n\r\n    // 상품 리스트 페이지 - 로그인 안 한 유저\r\n    @GetMapping(\"/nonlogin/item/list\")\r\n    public String itemList(Model model, @PageableDefault(page = 0, size = 10, sort = \"id\", direction = Sort.Direction.ASC) Pageable pageable,\r\n                           String searchKeyword) {\r\n\r\n        Page<Item> items = null;\r\n\r\n        if (searchKeyword == null) {  // 검색이 들어왔을 때\r\n            items = itemService.allItemViewPage(pageable);\r\n        } else {  // 검색이 들어오지 않았을 때\r\n            items = itemService.itemSearchList(searchKeyword, pageable);\r\n        }\r\n\r\n        int nowPage = items.getPageable().getPageNumber() + 1;\r\n        int startPage = Math.max(nowPage - 4, 1);\r\n        int endPage = Math.min(nowPage + 5, items.getTotalPages());\r\n\r\n        model.addAttribute(\"items\", items);\r\n        model.addAttribute(\"nowPage\", nowPage);\r\n        model.addAttribute(\"startPage\", startPage);\r\n        model.addAttribute(\"endPage\", endPage);\r\n\r\n        return \"itemList\";\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/chieyoun/board/controller/ItemController.java b/src/main/java/com/chieyoun/board/controller/ItemController.java
+--- a/src/main/java/com/chieyoun/board/controller/ItemController.java	(revision 368b25a9d24038b32433b6196e144806b3126024)
++++ b/src/main/java/com/chieyoun/board/controller/ItemController.java	(date 1687490521085)
+@@ -27,14 +27,14 @@
+     private final UserPageService userPageService;
+     // 메인 페이지 html 하나로 통일
+     // 메인 페이지 (로그인 안 한 유저) /localhost:8080
+-    @GetMapping("/item")
+-    public String mainPageNoneLogin(Model model) {
+-        // 로그인을 안 한 경우
+-        List<Item> items = itemService.allItemView();
+-        model.addAttribute("items", items);
+-
+-        return "main";
+-    }
++//    @GetMapping("/item")
++//    public String mainPageNoneLogin(Model model) {
++//        // 로그인을 안 한 경우
++//        List<Item> items = itemService.allItemView();
++//        model.addAttribute("items", items);
++//
++//        return "main";
++//    }
+ //바꿈
+     // 메인 페이지 (로그인 유저) - 판매자, 구매자 로 로그인
+     @GetMapping("/main")
+@@ -158,12 +158,12 @@
+     }
+ 
+     // 상품 상세 페이지 - 로그인 안 한 유저
+-    @GetMapping("/item/view/nonlogin/{id}")
+-    public String nonLoginItemView(Model model, @PathVariable("id") Integer id) {
+-        // 로그인 안 한 유저
+-        model.addAttribute("item", itemService.itemView(id));
+-        return "itemView";
+-    }
++//    @GetMapping("/item/view/nonlogin/{id}")
++//    public String nonLoginItemView(Model model, @PathVariable("id") Integer id) {
++//        // 로그인 안 한 유저
++//        model.addAttribute("item", itemService.itemView(id));
++//        return "itemView";
++//    }
+ 
+     // 상품 삭제 - 판매자만 가능
+     @GetMapping("/item/delete/{id}")
+@@ -215,27 +215,27 @@
+     }
+ 
+     // 상품 리스트 페이지 - 로그인 안 한 유저
+-    @GetMapping("/nonlogin/item/list")
+-    public String itemList(Model model, @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+-                           String searchKeyword) {
+-
+-        Page<Item> items = null;
+-
+-        if (searchKeyword == null) {  // 검색이 들어왔을 때
+-            items = itemService.allItemViewPage(pageable);
+-        } else {  // 검색이 들어오지 않았을 때
+-            items = itemService.itemSearchList(searchKeyword, pageable);
+-        }
+-
+-        int nowPage = items.getPageable().getPageNumber() + 1;
+-        int startPage = Math.max(nowPage - 4, 1);
+-        int endPage = Math.min(nowPage + 5, items.getTotalPages());
+-
+-        model.addAttribute("items", items);
+-        model.addAttribute("nowPage", nowPage);
+-        model.addAttribute("startPage", startPage);
+-        model.addAttribute("endPage", endPage);
+-
+-        return "itemList";
+-    }
++//    @GetMapping("/nonlogin/item/list")
++//    public String itemList(Model model, @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
++//                           String searchKeyword) {
++//
++//        Page<Item> items = null;
++//
++//        if (searchKeyword == null) {  // 검색이 들어왔을 때
++//            items = itemService.allItemViewPage(pageable);
++//        } else {  // 검색이 들어오지 않았을 때
++//            items = itemService.itemSearchList(searchKeyword, pageable);
++//        }
++//
++//        int nowPage = items.getPageable().getPageNumber() + 1;
++//        int startPage = Math.max(nowPage - 4, 1);
++//        int endPage = Math.min(nowPage + 5, items.getTotalPages());
++//
++//        model.addAttribute("items", items);
++//        model.addAttribute("nowPage", nowPage);
++//        model.addAttribute("startPage", startPage);
++//        model.addAttribute("endPage", endPage);
++//
++//        return "itemList";
++//    }
+ }
+Index: src/main/resources/templates/seller/itemForm.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\" xmlns=\"http://www.w3.org/1999/html\" xmlns:sec=\"http://www.thymeleaf.org/extras/spring-security\">\r\n<head>\r\n    <meta charset=\"utf-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />\r\n    <meta name=\"description\" content=\"\" />\r\n    <meta name=\"author\" content=\"\" />\r\n    <title>상품등록</title>\r\n    <!-- Favicon-->\r\n    <link rel=\"icon\" type=\"image/x-icon\" href=\"../../../../../../../Downloads/startbootstrap-shop-item-gh-pages/assets/favicon.ico\" />\r\n    <!-- Bootstrap icons-->\r\n    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css\" rel=\"stylesheet\" />\r\n    <!-- Core theme CSS (includes Bootstrap)-->\r\n    <link href=\"/css/styles.css\" rel=\"stylesheet\" />\r\n\r\n<!--    <script src=\"https://cdn.ckeditor.com/ckeditor5/12.0.0/classic/ckeditor.js\"></script>-->\r\n\r\n\r\n</head>\r\n<body>\r\n<!-- Navigation-->\r\n<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\r\n    <div class=\"container px-4 px-lg-5\">\r\n        <a class=\"navbar-brand\" th:href=\"@{/main}\">대충홈피 이름</a>\r\n        <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\"><span class=\"navbar-toggler-icon\"></span></button>\r\n        <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\r\n            <ul class=\"navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4\">\r\n                <li class=\"nav-item\"><a class=\"nav-link active\" aria-current=\"page\" th:href=\"@{/main}\">Home</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"#\" th:href=\"@{/item/new}\">Upload</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"#\" th:href=\"@{/seller/manage/{id}(id=${user.getId()})}\">Manage</a></li>\r\n            </ul>\r\n            <form class=\"d-flex\">\r\n<!--                <a class=\"btn btn-outline-dark\" href=\"#\" th:text=\"|현재수익 : ${user.getCoin()} ₩|\">-->\r\n<!--                    현재잔액 : 10000 ₩-->\r\n<!--                </a>-->\r\n                <a class=\"btn btn-outline-dark\" th:href=\"@{/seller/{id}(id=${user.getId()})}\" th:text=\"|${user.getName()}님 환영합니다.|\">\r\n                    관리자 페이지\r\n                </a>\r\n                <a class=\"btn btn-outline-dark\" th:href=\"@{/logout}\">\r\n                    로그아웃\r\n                </a>\r\n            </form>\r\n        </div>\r\n    </div>\r\n</nav>\r\n<!-- Product section-->\r\n<section class=\"py-5\">\r\n    <div class=\"container px-4 px-lg-5 my-5\">\r\n        <div class=\"row gx-4 gx-lg-5 align-items-center\">\r\n    <!--<div class=\"col-md-7 col-lg-8 container\">-->\r\n        <form th:action=\"@{/item/new/pro}\" method=\"post\" enctype=\"multipart/form-data\">\r\n            <div class=\"row g-3\">\r\n                <hr/>\r\n                <div class=\"col-12\">\r\n                    <!--<label class=\"form-label\">상품 상태</label>\r\n                    <select name=\"isSoldout\">\r\n                        <option value=\"\">선택</option>\r\n                        <option value=\"SELL\">판매중</option>\r\n                        <option value=\"SOLDOUT\">품절</option>\r\n                    </select>-->\r\n                    <label class=\"form-label\" for=\"isSoldout\">상품 상태</label><br/>\r\n                    <input type=\"radio\" name=\"isSoldout\" id=\"isSoldout\" value=\"0\">판매중<br/>\r\n                    <input type=\"radio\" name=\"isSoldout\" id=\"isSoldout\" value=\"1\">품절<br/>\r\n                    <div class=\"invalid-feedback\">\r\n                        Input is empty.\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"col-12\">\r\n                    <label for=\"name\" class=\"form-label\">상품 이름</label>\r\n                    <input type=\"text\" class=\"form-control\" id=\"name\" name=\"name\" placeholder=\"상품 이름을 입력하세요.\">\r\n                    <div class=\"invalid-feedback\">\r\n                        Your name is required.\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"col-12\">\r\n                    <label class=\"form-label\">상품 설명</label>\r\n<!--                    <input type=\"text\" class=\"form-control\" name=\"text\" id=\"text\" placeholder=\"상품 설명을 입력하세요.\">-->\r\n                    <textarea class=\"form-control\" name=\"text\" id=\"editor\"></textarea>\r\n\r\n                    <script src=\"https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js\"></script>\r\n                    <script>\r\n                      ClassicEditor.create( document.querySelector( '#editor' ) );\r\n                    </script>\r\n\r\n                    <div class=\"invalid-feedback\">\r\n                        Input is empty.\r\n                    </div>\r\n                </div>\r\n\r\n\r\n\r\n\r\n                <div class=\"col-12\">\r\n                    <label for=\"price\" class=\"form-label\">상품 가격</label>\r\n                    <input type=\"text\" class=\"form-control\" id=\"price\" name=\"price\" placeholder=\"상품 가격을 입력하세요.\">\r\n                    <div class=\"invalid-feedback\">\r\n                        Input is empty.\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"col-12\">\r\n                    <label for=\"stock\" class=\"form-label\">상품 재고</label>\r\n                    <input type=\"text\" class=\"form-control\" id=\"stock\" name=\"stock\"\r\n                           placeholder=\"상품 재고를 입력하세요.\">\r\n                    <div class=\"invalid-feedback\">\r\n                        Input is empty.\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"col-12\">\r\n                    <label class=\"form-label\">상품 이미지 업로드</label>\r\n                    <input type=\"file\" class=\"form-control\" id=\"imgFile\" name=\"imgFile\">\r\n                </div>\r\n            </div>\r\n            <hr class=\"my-4\">\r\n            <button class=\"w-100 btn btn-primary btn-lg mb-3\" type=\"submit\">상품 등록</button>\r\n        </form>\r\n    </div>\r\n    </div>\r\n</section>\r\n\r\n<footer class=\"my-5 pt-5 text-muted text-center text-small\">\r\n    <p class=\"mb-1\">&copy; 그 대충카피라이터 넣는곳</p>\r\n</footer>\r\n\r\n</body>\r\n<script src=\"${pageContext.request.contextPath}/resources/common/js/ckeditor.js\"></script>\r\n\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/seller/itemForm.html b/src/main/resources/templates/seller/itemForm.html
+--- a/src/main/resources/templates/seller/itemForm.html	(revision 368b25a9d24038b32433b6196e144806b3126024)
++++ b/src/main/resources/templates/seller/itemForm.html	(date 1687831735118)
+@@ -77,7 +77,7 @@
+                 <div class="col-12">
+                     <label class="form-label">상품 설명</label>
+ <!--                    <input type="text" class="form-control" name="text" id="text" placeholder="상품 설명을 입력하세요.">-->
+-                    <textarea class="form-control" name="text" id="editor"></textarea>
++                    <textarea class="form-control" name="editor" id="editor"></textarea>
+ 
+                     <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+                     <script>
+Index: src/main/resources/templates/main.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"ko\" xmlns:layout=\"http://www.ultraq.net.nz/thymeleaf/layout\" layout:decorator=\"layout/default_layout\">\r\n<!--      xmlns:th=\"http://www.thymeleaf.org\" xmlns=\"http://www.w3.org/1999/html\" xmlns:sec=\"http://www.thymeleaf.org/extras/spring-security \"-->\r\n\r\n<head>\r\n    <meta charset=\"utf-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />\r\n    <meta name=\"description\" content=\"\" />\r\n    <meta name=\"author\" content=\"\" />\r\n    <title>삼정테크</title>\r\n    <!-- Favicon-->\r\n    <link rel=\"icon\" type=\"image/x-icon\" href=\"assets/favicon.ico\" />\r\n    <!-- Bootstrap Icons-->\r\n    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css\" rel=\"stylesheet\" />\r\n\r\n    <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css\" integrity=\"sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS\" crossorigin=\"anonymous\">\r\n    <script src=\"https://code.jquery.com/jquery-3.3.1.slim.min.js\" integrity=\"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo\" crossorigin=\"anonymous\"></script>\r\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js\" integrity=\"sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut\" crossorigin=\"anonymous\"></script>\r\n    <script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js\" integrity=\"sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k\" crossorigin=\"anonymous\"></script>\r\n\r\n    <!-- Google fonts-->\r\n    <!-- <link href=\"https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700\" rel=\"stylesheet\" />\r\n    <link href=\"https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic\" rel=\"stylesheet\" type=\"text/css\" /> -->\r\n    <!-- SimpleLightbox plugin CSS-->\r\n    <link href=\"https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css\" rel=\"stylesheet\" />\r\n    <!-- Core theme CSS (includes Bootstrap)-->\r\n    <link href=\"css/styles.css\" rel=\"stylesheet\" />\r\n</head>\r\n<body id=\"page-top\">\r\n<!-- Navigation-->\r\n<nav class=\"navbar navbar-expand-lg navbar-light fixed-top py-3\" id=\"mainNav\">\r\n    <div class=\"container px-4 px-lg-5\">\r\n        <a class=\"navbar-brand\" th:href=\"@{/}\"><img src=\"https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true\"></a>\r\n        <button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarResponsive\" aria-controls=\"navbarResponsive\" aria-expanded=\"false\" aria-label=\"Toggle navigation\"><span class=\"navbar-toggler-icon\"></span></button>\r\n        <div class=\"collapse navbar-collapse\" id=\"navbarResponsive\">\r\n            <ul class=\"navbar-nav ms-auto my-2 my-lg-0\">\r\n\r\n<!--            <a class=\"navbar-brand\" th:href=\"@{/main}\" sec:authorize=\"isAuthenticated()\">대충 이름</a>&ndash;&gt;-->\r\n<!--            <a class=\"navbar-brand\" th:href=\"@{/}\" sec:authorize=\"!isAuthenticated()\">대충 이름2</a>-->\r\n                <li class=\"nav-item\"><a class=\"nav-link\" th:href=\"@{/item/new}\">item</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" th:href=\"@{/signin}\">관리자 로그인</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" th:href=\"@{/signup}\">관리자 회원가입</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"#about\">회사소개</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"#product_intro\">제품소개</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"#support\">고객지원</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"#contact\">견적문의</a></li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</nav>\r\n\r\n<!-- Masthead-->\r\n<header class=\"masthead\">\r\n    <div class=\"container px-4 px-lg-5 h-100\">\r\n        <div class=\"row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center\">\r\n            <div class=\"col-lg-8 align-self-end\">\r\n                <h1 class=\"text-white font-weight-bold\">삼정테크</h1>\r\n                <hr class=\"divider\" />\r\n            </div>\r\n            <div class=\"col-lg-8 align-self-baseline\">\r\n                <p class=\"text-white-75 mb-5\">모든 전자장비의 시스템 운영에 일치하는 최고급 수준의 양질의 전력을 공급할 수 있도록 설계, 제작, 설치 및 운영하는 일을 주 사업으로 하고 있습니다.</p>\r\n                <a class=\"btn btn-primary btn-xl\" href=\"#about\">회사소개</a>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</header>\r\n\r\n<!-- About-->\r\n<section class=\"page-section bg-primary\" id=\"about\">\r\n    <div class=\"container px-4 px-lg-5\">\r\n        <div class=\"row gx-4 gx-lg-5 justify-content-center\">\r\n            <div class=\"col-lg-8 text-center\">\r\n                <h2 class=\"text-white mt-0\">삼정테크</h2>\r\n                <hr class=\"divider divider-light\" />\r\n                <p class=\"text-white-75 mb-4\">모든 전자장비는 매우 예민하고 정교한 시스템으로 구성되어 있기 때문에 전자장비에 공급되는 전원의 질은 자연고급화, 안정화가 절대 필요요건으로 되었으며, 전원 불안정(정전압 및 주파수변동, 순시, 전압강하, 순간정전 등)으로 인한 전자장비의 동작불안, 오동작, 데이터 손상 및 정보전달의 중단 등이 발생되는 경우 이로인해 막대한 시간과 경제적 손실을 초래하게됩니다.</p>\r\n                <p class=\"text-white-75 mb-4\">당사는 이러한 고객의 요구를 충족시키기 위해 무결점 선언 및 지속적인 연구개발로 고품질의 제품을 공급하고자 최선의 노력을 하고 있으며, 여러 기술력으로 무정전 전원장치를 제작하고 있습니다.</p>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</section>\r\n\r\n<!-- Services-->\r\n<!--<section class=\"page-section\" id=\"product_intro\">-->\r\n<!--    <div class=\"container px-4 px-lg-5\">-->\r\n<!--        <h2 class=\"text-center mt-0\">제품소개</h2>-->\r\n<!--        <hr class=\"divider\" />-->\r\n<!--        <div class=\"row gx-4 gx-lg-5\">-->\r\n<!--            <div class=\"col-lg-3 col-md-6 text-center\">-->\r\n<!--                <a href=\"d-ups.html\">-->\r\n<!--                    <div class=\"mt-5\">-->\r\n<!--                        <div class=\"mb-2\"><img src=\"/assets/img/d-ups.png\"></div>-->\r\n<!--                        <h3 class=\"h4 mb-2\">디지털 UPS</h3>-->\r\n<!--                    </div>-->\r\n<!--                </a>-->\r\n<!--            </div>-->\r\n<!--            <div class=\"col-lg-3 col-md-6 text-center\">-->\r\n<!--                <a href=\"r-ups.html\">-->\r\n<!--                    <div class=\"mt-5\">-->\r\n<!--                        <div class=\"mb-2\"><img src=\"/assets/img/r-ups.png\"></div>-->\r\n<!--                        <h3 class=\"h4 mb-2\">렉장비용 UPS</h3>-->\r\n<!--                    </div>-->\r\n<!--                </a>-->\r\n<!--            </div>-->\r\n<!--            <div class=\"col-lg-3 col-md-6 text-center\">-->\r\n<!--                <a href=\"hfu.html\">-->\r\n<!--                    <div class=\"mt-5\">-->\r\n<!--                        <div class=\"mb-2\"><img src=\"/assets/img/HFU.PNG\"></div>-->\r\n<!--                        <h3 class=\"h4 mb-2\">HFU</h3>-->\r\n<!--                    </div>-->\r\n<!--                </a>-->\r\n<!--            </div>-->\r\n<!--            <div class=\"col-lg-3 col-md-6 text-center\">-->\r\n<!--                <a href=\"aiu-n.html\">-->\r\n<!--                    <div class=\"mt-5\">-->\r\n<!--                        <div class=\"mb-2\"><img src=\"/assets/img/AIU-N.PNG\"></div>-->\r\n<!--                        <h3 class=\"h4 mb-2\">AIU-N</h3>-->\r\n<!--                    </div>-->\r\n<!--                </a>-->\r\n<!--            </div>-->\r\n<!--            <div class=\"col-lg-3 col-md-6 text-center\">-->\r\n<!--                <a href=\"aiu.html\">-->\r\n<!--                    <div class=\"mt-5\">-->\r\n<!--                        <div class=\"mb-2\"><img src=\"/assets/img/AIU.PNG\"></div>-->\r\n<!--                        <h3 class=\"h4 mb-2\">AIU</h3>-->\r\n<!--                    </div>-->\r\n<!--                </a>-->\r\n<!--            </div>-->\r\n<!--        </div>-->\r\n<!--    </div>-->\r\n<!--</section>-->\r\n<section class=\"py-5\" id=\"product_intro\">\r\n    <div class=\"container px-4 px-lg-5 mt-5\">\r\n        <div class=\"row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center\">\r\n\r\n\r\n            <div class=\"col mb-5\" th:each=\"item : ${items}\">\r\n                <div class=\"card h-100\">\r\n                    <!-- Product image-->\r\n                    <img class=\"card-img-top\" th:src=\"@{${item.getImgPath()}}\" alt=\"...\" />\r\n                    <!-- Product details-->\r\n                    <div class=\"card-body p-4\">\r\n                        <div class=\"text-center\">\r\n                            <!-- Product name\\-->\r\n                            <h5 class=\"fw-bolder\" th:text=\"${item.getName()}\">상품이름</h5>\r\n                            <!-- Product price-->\r\n                            <p th:text=\"|${item.getPrice()} 원|\">상품 가격</p>\r\n                        </div>\r\n                    </div>\r\n                    <!-- Product actions-->\r\n                    <div class=\"card-footer p-4 pt-0 border-top-0 bg-transparent\">\r\n                        <div class=\"text-center\"><a class=\"btn btn-outline-dark mt-auto\" th:href=\"@{/item/view/nonlogin/{id}(id=${item.getId()})}\">상세보기</a></div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n\r\n\r\n        </div>\r\n    </div>\r\n\r\n        <a href=\"/nonlogin/item/list\">더보기</a>\r\n</section>\r\n\r\n<!-- support -->\r\n<div id=\"support\">\r\n    <div class=\"container px-4 px-lg-5\">\r\n\r\n        <h2 class=\"text-center mt-0\">고객지원</h2>\r\n        <hr class=\"divider\" />\r\n        <div class=\"row gx-4 gx-lg-5\">\r\n            <div style=\"height: 30px;\"></div>\r\n\r\n                <a th:href=\"@{/admin/qna/post}\">글쓰기</a>\r\n\r\n            <div class=\"table-responsive\" style=\"text-align: center;\">\r\n                <h4>공지사항</h4>\r\n                <div style=\"height: 20px;\"></div>\r\n\r\n            </div>\r\n\r\n\r\n\r\n    <table>\r\n        <thead>\r\n        <tr>\r\n            <th class=\"one wide\">번호</th>\r\n            <th class=\"ten wide\">글제목</th>\r\n            <th class=\"two wide\">작성자</th>\r\n            <th class=\"three wide\">작성일</th>\r\n\r\n        </tr>\r\n        </thead>\r\n\r\n        <tbody>\r\n        <!-- CONTENTS !-->\r\n        <tr th:each=\"board : ${boardList}\">\r\n            <td>\r\n                <span th:text=\"${board.id}\"></span>\r\n            </td>\r\n            <td>\r\n                <a th:href=\"@{'/qna/post/' + ${board.id}}\">\r\n                    <span th:text=\"${board.title}\"></span>\r\n                </a>\r\n            </td>\r\n            <td>\r\n                <span th:text=\"${board.writer}\"></span>\r\n            </td>\r\n            <td>\r\n                <span th:text=\"${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}\"></span>\r\n\r\n            </td>\r\n        </tr>\r\n        </tbody>\r\n    </table>\r\n\r\n    <div class=\"container\">\r\n        <span th:each=\"pageNum : ${pageList}\" th:inline=\"text\">\r\n            <a th:href=\"@{'/qna/?page=' + ${pageNum}}\">[[${pageNum}]]</a>\r\n        </span>\r\n    </div>\r\n\r\n    <hr>\r\n\r\n    <!-- 검색 form -->\r\n<!--    <form action=\"/qna/board/search\" method=\"GET\">-->\r\n<!--        <div>-->\r\n<!--            <input name=\"keyword\" type=\"text\" placeholder=\"검색어를 입력해주세요\">-->\r\n<!--        </div>-->\r\n\r\n<!--        <button>검색하기</button>-->\r\n<!--    </form>-->\r\n\r\n\r\n            <div style=\"height: 100px;\"></div>\r\n\r\n            <div class=\"table-responsive\">\r\n                <h4 style=\"text-align: center;\">FAQ</h4>\r\n                <div style=\"height: 20px;\"></div>\r\n                <section class=\"section section-faq\">\r\n                    <div class=\"container mx-auto\">\r\n                        <div class=\"faq-box\">\r\n                            <ul>\r\n                                <li>\r\n                                    <div class=\"faq-box__question\">\r\n                                        <span>질문 1</span>\r\n                                    </div>\r\n                                    <div class=\"faq-box__answer\">\r\n                                        답변 1\r\n                                    </div>\r\n                                </li>\r\n\r\n                                <li>\r\n                                    <div class=\"faq-box__question\">\r\n                                        <span>질문 2</span>\r\n                                    </div>\r\n                                    <div class=\"faq-box__answer\">\r\n                                        답변 2\r\n                                    </div>\r\n                                </li>\r\n\r\n                                <li>\r\n                                    <div class=\"faq-box__question\">\r\n                                        <span>질문 3</span>\r\n                                    </div>\r\n                                    <div class=\"faq-box__answer\">\r\n                                        답변 3\r\n                                    </div>\r\n                                </li>\r\n\r\n                                <li>\r\n                                    <div class=\"faq-box__question\">\r\n                                        <span>질문 4</span>\r\n                                    </div>\r\n                                    <div class=\"faq-box__answer\">\r\n                                        답변 4\r\n                                    </div>\r\n                                </li>\r\n\r\n                                <li>\r\n                                    <div class=\"faq-box__question\">\r\n                                        <span>질문 5</span>\r\n                                    </div>\r\n                                    <div class=\"faq-box__answer\">\r\n                                        답변 5\r\n                                    </div>\r\n                                </li>\r\n                            </ul>\r\n                        </div>\r\n                    </div>\r\n                </section>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<!-- Contact-->\r\n<section class=\"page-section\" id=\"contact\">\r\n    <div class=\"container px-4 px-lg-5\">\r\n        <div class=\"row gx-4 gx-lg-5 justify-content-center\">\r\n            <div class=\"col-lg-8 col-xl-6 text-center\">\r\n                <h2 class=\"mt-0\">견적문의</h2>\r\n                <hr class=\"divider\" />\r\n            </div>\r\n        </div>\r\n        <div class=\"row gx-4 gx-lg-5 justify-content-center mb-5\">\r\n            <div class=\"col-lg-6\">\r\n                <form method=\"post\" action=\"/\" name=\"contactForm\">\r\n                    <table>\r\n                        <div class=\"form-floating mb-3\">\r\n                            <input class=\"form-control\" id=\"name\" type=\"text\" placeholder=\"Enter your name\" data-sb-validations=\"required\" />\r\n                            <label for=\"name\">성명</label>\r\n                            <div class=\"invalid-feedback\" data-sb-feedback=\"name:required\">A name is required.</div>\r\n                        </div>\r\n\r\n                        <div class=\"form-floating mb-3\">\r\n                            <input class=\"form-control\" id=\"email\" type=\"email\" placeholder=\"name@example.com\" data-sb-validations=\"required,email\" />\r\n                            <label for=\"email\">이메일</label>\r\n                            <div class=\"invalid-feedback\" data-sb-feedback=\"email:required\">An email is required.</div>\r\n                            <div class=\"invalid-feedback\" data-sb-feedback=\"email:email\">Email is not valid.</div>\r\n                        </div>\r\n\r\n                        <div class=\"form-floating mb-3\">\r\n                            <input class=\"form-control\" id=\"phone\" type=\"tel\" placeholder=\"(123) 456-7890\" data-sb-validations=\"required\" />\r\n                            <label for=\"phone\">연락처</label>\r\n                            <div class=\"invalid-feedback\" data-sb-feedback=\"phone:required\">A phone number is required.</div>\r\n                        </div>\r\n\r\n                        <div class=\"form-floating mb-3\">\r\n                            <textarea class=\"form-control\" id=\"message\" type=\"text\" placeholder=\"Enter your message here\" style=\"height: 10rem\" data-sb-validations=\"required\"></textarea>\r\n                            <label for=\"message\">기초사양</label>\r\n                            <div class=\"invalid-feedback\" data-sb-feedback=\"message:required\">A message is required.</div>\r\n                        </div>\r\n\r\n                        <div class=\"d-grid\">\r\n                            <input class=\"btn btn-primary btn-xl\" type=\"button\" onclick=\"check()\" value=\"제출\">\r\n                        </div>\r\n                    </table>\r\n                </form>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</section>\r\n\r\n<!-- Footer-->\r\n\r\n<!-- Bootstrap core JS-->\r\n<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js\"></script>\r\n<!-- SimpleLightbox plugin JS-->\r\n<script src=\"https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js\"></script>\r\n<!-- Core theme JS-->\r\n<script src=\"js/scripts.js\"></script>\r\n<!-- 제이쿼리 -->\r\n<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n\r\n<script>\r\n            const footer = document.querySelector('footer');\r\n\r\n            fetch('./footer.html')\r\n            .then(res => res.text())\r\n            .then(data => footer.innerHTML = data);\r\n        </script>\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/main.html b/src/main/resources/templates/main.html
+--- a/src/main/resources/templates/main.html	(revision 368b25a9d24038b32433b6196e144806b3126024)
++++ b/src/main/resources/templates/main.html	(date 1687849297333)
+@@ -1,7 +1,5 @@
+ <!DOCTYPE html>
+-<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/default_layout">
+-<!--      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/extras/spring-security "-->
+-
++<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+ <head>
+     <meta charset="utf-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+@@ -24,7 +22,7 @@
+     <!-- SimpleLightbox plugin CSS-->
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
+     <!-- Core theme CSS (includes Bootstrap)-->
+-    <link href="css/styles.css" rel="stylesheet" />
++    <link type="text/css" href="css/styles.css" rel="stylesheet" />
+ </head>
+ <body id="page-top">
+ <!-- Navigation-->
+@@ -44,6 +42,7 @@
+                 <li class="nav-item"><a class="nav-link" href="#product_intro">제품소개</a></li>
+                 <li class="nav-item"><a class="nav-link" href="#support">고객지원</a></li>
+                 <li class="nav-item"><a class="nav-link" href="#contact">견적문의</a></li>
++
+             </ul>
+         </div>
+     </div>
+@@ -148,7 +147,7 @@
+                     </div>
+                     <!-- Product actions-->
+                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/item/view/nonlogin/{id}(id=${item.getId()})}">상세보기</a></div>
++                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/item/view/{id}(id=${item.getId()})}">상세보기</a></div>
+                     </div>
+                 </div>
+             </div>
+@@ -347,7 +346,7 @@
+ <!-- SimpleLightbox plugin JS-->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
+ <!-- Core theme JS-->
+-<script src="js/scripts.js"></script>
++<script type="text/javascript" src="js/scripts.js"></script>
+ <!-- 제이쿼리 -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+ 
+Index: src/main/java/com/chieyoun/board/service/ItemService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.chieyoun.board.service;\r\n\r\n\r\nimport com.chieyoun.board.domain.item.Item;\r\nimport com.chieyoun.board.domain.item.ItemRepository;\r\nimport lombok.RequiredArgsConstructor;\r\nimport org.springframework.data.domain.Page;\r\nimport org.springframework.data.domain.Pageable;\r\nimport org.springframework.stereotype.Service;\r\nimport org.springframework.transaction.annotation.Transactional;\r\nimport org.springframework.web.multipart.MultipartFile;\r\n\r\nimport java.io.File;\r\nimport java.util.List;\r\nimport java.util.UUID;\r\n\r\n@RequiredArgsConstructor\r\n@Service\r\npublic class ItemService {\r\n\r\n    private final ItemRepository itemRepository;\r\n//    private final CartService cartService;\r\n\r\n    // 상품 등록\r\n    public void saveItem(Item item, MultipartFile imgFile) throws Exception {\r\n\r\n        String oriImgName = imgFile.getOriginalFilename();\r\n        String imgName = \"\";\r\n\r\n        String projectPath = System.getProperty(\"user.dir\") + \"/src/main/resources/static/files/\";\r\n\r\n        // UUID 를 이용하여 파일명 새로 생성\r\n        // UUID - 서로 다른 객체들을 구별하기 위한 클래스\r\n        UUID uuid = UUID.randomUUID();\r\n\r\n        String savedFileName = uuid + \"_\" + oriImgName; // 파일명 -> imgName\r\n\r\n        imgName = savedFileName;\r\n\r\n        File saveFile = new File(projectPath, imgName);\r\n\r\n        imgFile.transferTo(saveFile);\r\n\r\n        item.setImgName(imgName);\r\n\r\n        item.setImgPath(\"/files/\" + imgName);\r\n\r\n        itemRepository.save(item);\r\n    }\r\n\r\n    // 상품 개별 불러오기\r\n    public Item itemView(Integer id) {\r\n        return itemRepository.findById(id).get();\r\n    }\r\n\r\n    // 상품 리스트 불러오기\r\n    public List<Item> allItemView() {\r\n        return itemRepository.findAll();\r\n    }\r\n\r\n    // 상품 리스트 페이지용 불러오기\r\n    public Page<Item> allItemViewPage(Pageable pageable) {\r\n        return itemRepository.findAll(pageable);\r\n    }\r\n\r\n    // 상품 수정\r\n    @Transactional\r\n    public void itemModify(Item item, Integer id, MultipartFile imgFile) throws Exception {\r\n\r\n        String projectPath = System.getProperty(\"user.dir\") + \"/src/main/resources/static/files/\";\r\n        UUID uuid = UUID.randomUUID();\r\n        String fileName = uuid + \"_\" + imgFile.getOriginalFilename();\r\n        File saveFile = new File(projectPath, fileName);\r\n        imgFile.transferTo(saveFile);\r\n\r\n        Item update = itemRepository.findItemById(id);\r\n        update.setName(item.getName());\r\n        update.setEditor(item.getEditor());\r\n        update.setPrice(item.getPrice());\r\n        update.setStock(item.getStock());\r\n        update.setIsSoldout(item.getIsSoldout());\r\n        update.setImgName(fileName);\r\n        update.setImgPath(\"/files/\"+fileName);\r\n        itemRepository.save(update);\r\n    }\r\n\r\n    // 상품 삭제\r\n    @Transactional\r\n    public void itemDelete(Integer id) {\r\n        // cartItem 중에 해당 id 를 가진 item 찾기\r\n//        List<CartItem> items = cartService.findCartItemByItemId(id);\r\n//\r\n//        for(CartItem item : items) {\r\n//            cartService.cartItemDelete(item.getId());\r\n//        }\r\n\r\n        itemRepository.deleteById(id);\r\n    }\r\n\r\n    // 상품 검색\r\n    public Page<Item> itemSearchList(String searchKeyword, Pageable pageable) {\r\n\r\n        return itemRepository.findByNameContaining(searchKeyword, pageable);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/chieyoun/board/service/ItemService.java b/src/main/java/com/chieyoun/board/service/ItemService.java
+--- a/src/main/java/com/chieyoun/board/service/ItemService.java	(revision 368b25a9d24038b32433b6196e144806b3126024)
++++ b/src/main/java/com/chieyoun/board/service/ItemService.java	(date 1687489480279)
+@@ -14,6 +14,9 @@
+ import java.util.List;
+ import java.util.UUID;
+ 
++import java.text.SimpleDateFormat;
++import java.util.Date;
++
+ @RequiredArgsConstructor
+ @Service
+ public class ItemService {
+@@ -24,11 +27,37 @@
+     // 상품 등록
+     public void saveItem(Item item, MultipartFile imgFile) throws Exception {
+ 
++        Date now = new Date();
++
++        // 현재 날짜/시간 출력
++        System.out.println(now); // Thu Jun 17 06:57:32 KST 2021
++
++
++        // 포맷팅 정의
++        SimpleDateFormat formatter = new SimpleDateFormat("yyyy:MM:dd");
++
++        // 포맷팅 적용
++        String formatedNow = formatter.format(now);
++
++
++
+         String oriImgName = imgFile.getOriginalFilename();
+         String imgName = "";
+ 
+-        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files/";
++//        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files/"+formatedNow+"/";
++        String projectPath = "C:/Temp/samjung/files";
+ 
++        File Folder = new File(projectPath);
++
++//        if (!Folder.exists()) {
++//            try{
++//                Folder.mkdir(); //폴더 생성합니다.
++//                System.out.println(projectPath+"폴더가 생성되었습니다.");
++//            }
++//            catch(Exception e){
++//                e.getStackTrace();
++//            }
++//        }
+         // UUID 를 이용하여 파일명 새로 생성
+         // UUID - 서로 다른 객체들을 구별하기 위한 클래스
+         UUID uuid = UUID.randomUUID();
+Index: src/main/resources/templates/itemView.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\" xmlns=\"http://www.w3.org/1999/html\" xmlns:sec=\"http://www.thymeleaf.org/extras/spring-security\">\r\n<head>\r\n    <meta charset=\"utf-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />\r\n    <meta name=\"description\" content=\"\" />\r\n    <meta name=\"author\" content=\"\" />\r\n    <title th:text=\"${item.getName()}\">타이틀 - 상품 이름</title>\r\n    <!-- Favicon-->\r\n    <link rel=\"icon\" type=\"image/x-icon\" href=\"../../../../../../../Downloads/startbootstrap-shop-item-gh-pages/assets/favicon.ico\" />\r\n    <!-- Bootstrap icons-->\r\n    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css\" rel=\"stylesheet\" />\r\n    <!-- Core theme CSS (includes Bootstrap)-->\r\n    <link href=\"/css/styles.css\" rel=\"stylesheet\" />\r\n\r\n\r\n\r\n</head>\r\n<body>\r\n<!-- Navigation-->\r\n<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\r\n    <div class=\"container px-4 px-lg-5\">\r\n        <a class=\"navbar-brand\" th:href=\"@{/main}\" sec:authorize=\"isAuthenticated()\">회사이름</a>\r\n        <a class=\"navbar-brand\" th:href=\"@{/}\" sec:authorize=\"!isAuthenticated()\">회사이름</a>\r\n        <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\"><span class=\"navbar-toggler-icon\"></span></button>\r\n        <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\r\n            <ul class=\"navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4\">\r\n                <li class=\"nav-item\"><a class=\"nav-link active\" aria-current=\"page\" th:href=\"@{/main}\" sec:authorize=\"isAuthenticated()\">Home</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link active\" aria-current=\"page\" th:href=\"@{/}\" sec:authorize=\"!isAuthenticated()\">Home</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"#\" th:href=\"@{/item/new}\" sec:authorize=\"hasRole('ROLE_SELLER')\">Upload</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"#\" th:href=\"@{/seller/manage/{id}(id=${user.getId()})}\" sec:authorize=\"hasRole('ROLE_SELLER')\">Manage</a></li>\r\n\r\n            </ul>\r\n            <form th:action=\"@{/signin}\" sec:authorize=\"!isAuthenticated()\">\r\n                <button class=\"btn btn-outline-dark\" type=\"submit\">\r\n                    로그인\r\n                </button>\r\n            </form>\r\n            <form th:action=\"@{/signup}\" sec:authorize=\"!isAuthenticated()\">\r\n                <button class=\"btn btn-outline-dark\" type=\"submit\">\r\n                    회원가입\r\n                </button>\r\n            </form>\r\n\r\n            <form class=\"d-flex\" sec:authorize=\"hasRole('ROLE_USER')\">\r\n<!--                <a class=\"btn btn-outline-dark\" href=\"#\" th:text=\"|현재잔액 : ${user.getCoin()} ₩|\">-->\r\n<!--                    현재잔액 : 10000 ₩-->\r\n<!--                </a>-->\r\n                <a class=\"btn btn-outline-dark\" th:href=\"@{/user/cart/{id}(id=${user.getId()})}\">\r\n                    <i class=\"bi-cart-fill me-1\"></i>\r\n                    Cart\r\n                    <span class=\"badge bg-dark text-white ms-1 rounded-pill\" th:text=\"${cartCount}\">0</span>\r\n                </a>\r\n                <a class=\"btn btn-outline-dark\" th:href=\"@{/user/{id}(id=${user.getId()})}\" th:text=\"|${user.getName()}님 환영합니다.|\">\r\n                    마이페이지\r\n                </a>\r\n                <a class=\"btn btn-outline-dark\" th:href=\"@{/logout}\">\r\n                    로그아웃\r\n                </a>\r\n            </form>\r\n\r\n            <form class=\"d-flex\" sec:authorize=\"hasRole('ROLE_SELLER')\">\r\n<!--                <a class=\"btn btn-outline-dark\" href=\"#\" th:text=\"|현재수익 : ${user.getCoin()} ₩|\">-->\r\n<!--                    현재잔액 : 10000 ₩-->\r\n<!--                </a>-->\r\n                <a class=\"btn btn-outline-dark\" th:href=\"@{/seller/{id}(id=${user.getId()})}\" th:text=\"|${user.getName()}님 환영합니다.|\">\r\n                    관리자 페이지\r\n                </a>\r\n                <a class=\"btn btn-outline-dark\" th:href=\"@{/logout}\">\r\n                    로그아웃\r\n                </a>\r\n            </form>\r\n\r\n        </div>\r\n    </div>\r\n</nav>\r\n<!-- Product section-->\r\n<section class=\"py-5\">\r\n    <div class=\"container px-4 px-lg-5 my-5\">\r\n        <div class=\"row gx-4 gx-lg-5 align-items-center\">\r\n            <div class=\"col-md-6\"><img class=\"card-img-top mb-5 mb-md-0\" th:src=\"@{${item.getImgPath()}}\" alt=\"...\" /></div>\r\n            <div class=\"col-md-6\">\r\n                <div class=\"small mb-1\" th:text=\"|담당자 : ${item.getSeller().getUsername()}|\">담당자 이름</div>\r\n<!--                <div class=\"small mb-1\" th:if=\"${item.getIsSoldout()} == 0\" th:text=\"|재고 : ${item.getStock()}개|\">재고</div>-->\r\n<!--                <div class=\"small mb-1\" th:unless=\"${item.getIsSoldout()} == 0\" th:text=\"|품절|\">재고</div>-->\r\n                <h1 class=\"display-5 fw-bolder\" th:text=\"${item.getName()}\">상품 이름</h1>\r\n                <div class=\"fs-5 mb-5\">\r\n<!--                    <span th:text=\"|${item.getPrice()} 원|\">상품 가격</span>-->\r\n<!--                    <p class=\"lead\" th:text=\"${item.getEditor()}\">상품 설명</p>-->\r\n\r\n                </div>\r\n                <p class=\"lead\" th:text=\"${item.getEditor()}\">상품 설명</p>\r\n<!--                <p class=\"lead\">상품 설명입니다.</p>-->\r\n\r\n\r\n                <form class=\"d-flex\" sec:authorize=\"hasRole('ROLE_SELLER')\" th:if=\"${item.getSeller().getId()} == ${user.getId()}\">\r\n                    <div class=\"d-flex\">\r\n                        <a th:href=\"@{/item/modify/{id} (id=${item.getId()})}\">\r\n                            <button class=\"btn btn-outline-dark flex-shrink-0\" type=\"button\">\r\n                                상품 수정\r\n                            </button>\r\n                        </a>\r\n                        <a th:href=\"@{/item/delete/{id} (id=${item.getId()})}\">\r\n                            <button class=\"btn btn-outline-dark flex-shrink-0\" type=\"button\">\r\n                                상품 삭제\r\n                            </button>\r\n                        </a>\r\n                    </div>\r\n                </form>\r\n\r\n                <form class=\"d-flex\" sec:authorize=\"hasRole('ROLE_USER')\" onsubmit=\"return orderitem();\" th:action=\"@{/user/{id}/checkout/{itemId}(id=${user.id}, itemId=${item.id})}\" method=\"post\">\r\n                    <div class=\"d-flex\">\r\n<!--                        <input class=\"form-control text-center me-3\" id=\"count\" name=\"count\" type=\"num\" value=\"1\"-->\r\n<!--                               style=\"max-width: 3rem\"/>-->\r\n<!--                        <button class=\"btn btn-outline-dark flex-shrink-0\" id=\"basket\" type=\"submit\">-->\r\n<!--                            구매하기-->\r\n<!--                        </button>-->\r\n                    </div>\r\n                </form>\r\n                <!--<script th:inline=\"javascript\">\r\n                    /* <![CDATA[ */\r\n                    var itemstock = [[${item.Stock}]];\r\n                    const button = document.getElementById(\"basket\")\r\n                    function orderitem() {\r\n                        var count = document.getElementById(\"count\").value\r\n                        if (isNaN(count)) {\r\n                            alert(\"숫자를 입력해주세요\")\r\n                            return false\r\n                        } else if (count > itemstock) {\r\n                            alert(\"재고가 부족합니다\")\r\n                            return false\r\n                        } else {\r\n                            return true\r\n                        }\r\n                    }\r\n                    /* ]]> */\r\n                </script>-->\r\n\r\n\r\n                <form class=\"d-flex\" sec:authorize=\"hasRole('ROLE_USER')\" onsubmit=\"return additem();\" th:action=\"@{/user/cart/{id}/{itemId}(id=${user.id}, itemId=${item.id})}\" method=\"post\">\r\n                    <input class=\"form-control text-center me-3\" id=\"amount\" name=\"amount\" type=\"num\" value=\"1\" style=\"max-width: 3rem\"/>\r\n                    <button class=\"btn btn-outline-dark flex-shrink-0\" id=\"basket\" type=\"submit\"><i class=\"bi-cart-fill me-1\"></i>관심상품</button>\r\n                </form>\r\n                <script th:inline=\"javascript\">\r\n                    /* <![CDATA[ */\r\n\r\n\r\n\r\n\r\n                    <!--button.addEventListener(\"click\",additem)-->\r\n                    /* ]]> */\r\n                </script>\r\n\r\n\r\n                <!--<form class=\"d-flex\" sec:authorize=\"hasRole('ROLE_USER')\" th:action=\"@{/user/cart/{id}/{itemId}(id=${user.id}, itemId=${item.id})}\" method=\"post\">\r\n                    <div class=\"d-flex\">\r\n                    <input class=\"form-control text-center me-3\" id=\"amount\" name=\"amount\" type=\"num\" value=\"1\"\r\n                               style=\"max-width: 3rem\"/>\r\n                        <button class=\"btn btn-outline-dark flex-shrink-0\" type=\"submit\">\r\n                            <i class=\"bi-cart-fill me-1\"></i>\r\n                            관심상품\r\n                        </button>\r\n                    </div>\r\n                </form>-->\r\n\r\n                <form class=\"d-flex\" sec:authorize=\"!isAuthenticated()\">\r\n                    <div class=\"d-flex\">\r\n<!--                        <a th:href=\"@{/signin}\">-->\r\n<!--                            <button class=\"btn btn-outline-dark flex-shrink-0\" type=\"button\">-->\r\n<!--                                구매하기-->\r\n<!--                            </button>-->\r\n<!--                        </a>-->\r\n                        <a class=\"btn btn-outline-dark\" th:href=\"@{/signin}\">\r\n                            <i class=\"bi-cart-fill me-1\"></i>\r\n                            관심상품\r\n                        </a>\r\n                    </div>\r\n                </form>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</section>\r\n<!-- Footer-->\r\n<footer class=\"my-5 pt-5 text-muted text-center text-small\">\r\n    <p class=\"mb-1\">&copy; 캎라</p>\r\n</footer>\r\n<!-- Bootstrap core JS-->\r\n<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js\"></script>\r\n<!-- Core theme JS-->\r\n<script src=\"/js/scripts.js\"></script>\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/itemView.html b/src/main/resources/templates/itemView.html
+--- a/src/main/resources/templates/itemView.html	(revision 368b25a9d24038b32433b6196e144806b3126024)
++++ b/src/main/resources/templates/itemView.html	(date 1687832288230)
+@@ -21,7 +21,7 @@
+ <nav class="navbar navbar-expand-lg navbar-light bg-light">
+     <div class="container px-4 px-lg-5">
+         <a class="navbar-brand" th:href="@{/main}" sec:authorize="isAuthenticated()">회사이름</a>
+-        <a class="navbar-brand" th:href="@{/}" sec:authorize="!isAuthenticated()">회사이름</a>
++<!--        <a class="navbar-brand" th:href="@{/}" sec:authorize="!isAuthenticated()">회사이름</a>-->
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+@@ -33,31 +33,31 @@
+             </ul>
+             <form th:action="@{/signin}" sec:authorize="!isAuthenticated()">
+                 <button class="btn btn-outline-dark" type="submit">
+-                    로그인
+-                </button>
+-            </form>
+-            <form th:action="@{/signup}" sec:authorize="!isAuthenticated()">
+-                <button class="btn btn-outline-dark" type="submit">
+-                    회원가입
++                    관리자 로그인
+                 </button>
+             </form>
++<!--            <form th:action="@{/signup}" sec:authorize="!isAuthenticated()">-->
++<!--                <button class="btn btn-outline-dark" type="submit">-->
++<!--                    회원가입-->
++<!--                </button>-->
++<!--            </form>-->
+ 
+-            <form class="d-flex" sec:authorize="hasRole('ROLE_USER')">
+-<!--                <a class="btn btn-outline-dark" href="#" th:text="|현재잔액 : ${user.getCoin()} ₩|">-->
+-<!--                    현재잔액 : 10000 ₩-->
++<!--            <form class="d-flex" sec:authorize="hasRole('ROLE_USER')">-->
++<!--&lt;!&ndash;                <a class="btn btn-outline-dark" href="#" th:text="|현재잔액 : ${user.getCoin()} ₩|">&ndash;&gt;-->
++<!--&lt;!&ndash;                    현재잔액 : 10000 ₩&ndash;&gt;-->
++<!--&lt;!&ndash;                </a>&ndash;&gt;-->
++<!--&lt;!&ndash;                <a class="btn btn-outline-dark" th:href="@{/user/cart/{id}(id=${user.getId()})}">&ndash;&gt;-->
++<!--&lt;!&ndash;                    <i class="bi-cart-fill me-1"></i>&ndash;&gt;-->
++<!--&lt;!&ndash;                    Cart&ndash;&gt;-->
++<!--&lt;!&ndash;                    <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${cartCount}">0</span>&ndash;&gt;-->
++<!--&lt;!&ndash;                </a>&ndash;&gt;-->
++<!--                <a class="btn btn-outline-dark" th:href="@{/user/{id}(id=${user.getId()})}" th:text="|${user.getName()}님 환영합니다.|">-->
++<!--                    마이페이지-->
+ <!--                </a>-->
+-                <a class="btn btn-outline-dark" th:href="@{/user/cart/{id}(id=${user.getId()})}">
+-                    <i class="bi-cart-fill me-1"></i>
+-                    Cart
+-                    <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${cartCount}">0</span>
+-                </a>
+-                <a class="btn btn-outline-dark" th:href="@{/user/{id}(id=${user.getId()})}" th:text="|${user.getName()}님 환영합니다.|">
+-                    마이페이지
+-                </a>
+-                <a class="btn btn-outline-dark" th:href="@{/logout}">
+-                    로그아웃
+-                </a>
+-            </form>
++<!--                <a class="btn btn-outline-dark" th:href="@{/logout}">-->
++<!--                    로그아웃-->
++<!--                </a>-->
++<!--            </form>-->
+ 
+             <form class="d-flex" sec:authorize="hasRole('ROLE_SELLER')">
+ <!--                <a class="btn btn-outline-dark" href="#" th:text="|현재수익 : ${user.getCoin()} ₩|">-->
+@@ -78,18 +78,20 @@
+ <section class="py-5">
+     <div class="container px-4 px-lg-5 my-5">
+         <div class="row gx-4 gx-lg-5 align-items-center">
++            <h1 class="display-5 fw-bolder" th:text="${item.getName()}">상품 이름</h1>
+             <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" th:src="@{${item.getImgPath()}}" alt="..." /></div>
++            <p class="lead" th:utext="${item.getEditor()}">상품 설명</p>
+             <div class="col-md-6">
+                 <div class="small mb-1" th:text="|담당자 : ${item.getSeller().getUsername()}|">담당자 이름</div>
+ <!--                <div class="small mb-1" th:if="${item.getIsSoldout()} == 0" th:text="|재고 : ${item.getStock()}개|">재고</div>-->
+ <!--                <div class="small mb-1" th:unless="${item.getIsSoldout()} == 0" th:text="|품절|">재고</div>-->
+-                <h1 class="display-5 fw-bolder" th:text="${item.getName()}">상품 이름</h1>
++
+                 <div class="fs-5 mb-5">
+ <!--                    <span th:text="|${item.getPrice()} 원|">상품 가격</span>-->
+ <!--                    <p class="lead" th:text="${item.getEditor()}">상품 설명</p>-->
+ 
+                 </div>
+-                <p class="lead" th:text="${item.getEditor()}">상품 설명</p>
++
+ <!--                <p class="lead">상품 설명입니다.</p>-->
+ 
+ 
+@@ -137,10 +139,10 @@
+                 </script>-->
+ 
+ 
+-                <form class="d-flex" sec:authorize="hasRole('ROLE_USER')" onsubmit="return additem();" th:action="@{/user/cart/{id}/{itemId}(id=${user.id}, itemId=${item.id})}" method="post">
+-                    <input class="form-control text-center me-3" id="amount" name="amount" type="num" value="1" style="max-width: 3rem"/>
+-                    <button class="btn btn-outline-dark flex-shrink-0" id="basket" type="submit"><i class="bi-cart-fill me-1"></i>관심상품</button>
+-                </form>
++<!--                <form class="d-flex" sec:authorize="hasRole('ROLE_USER')" onsubmit="return additem();" th:action="@{/user/cart/{id}/{itemId}(id=${user.id}, itemId=${item.id})}" method="post">-->
++<!--                    <input class="form-control text-center me-3" id="amount" name="amount" type="num" value="1" style="max-width: 3rem"/>-->
++<!--                    <button class="btn btn-outline-dark flex-shrink-0" id="basket" type="submit"><i class="bi-cart-fill me-1"></i>관심상품</button>-->
++<!--                </form>-->
+                 <script th:inline="javascript">
+                     /* <![CDATA[ */
+ 
+@@ -163,19 +165,19 @@
+                     </div>
+                 </form>-->
+ 
+-                <form class="d-flex" sec:authorize="!isAuthenticated()">
+-                    <div class="d-flex">
+-<!--                        <a th:href="@{/signin}">-->
+-<!--                            <button class="btn btn-outline-dark flex-shrink-0" type="button">-->
+-<!--                                구매하기-->
+-<!--                            </button>-->
++<!--                <form class="d-flex" sec:authorize="!isAuthenticated()">-->
++<!--                    <div class="d-flex">-->
++<!--&lt;!&ndash;                        <a th:href="@{/signin}">&ndash;&gt;-->
++<!--&lt;!&ndash;                            <button class="btn btn-outline-dark flex-shrink-0" type="button">&ndash;&gt;-->
++<!--&lt;!&ndash;                                구매하기&ndash;&gt;-->
++<!--&lt;!&ndash;                            </button>&ndash;&gt;-->
++<!--&lt;!&ndash;                        </a>&ndash;&gt;-->
++<!--                        <a class="btn btn-outline-dark" th:href="@{/signin}">-->
++<!--                            <i class="bi-cart-fill me-1"></i>-->
++<!--                            관심상품-->
+ <!--                        </a>-->
+-                        <a class="btn btn-outline-dark" th:href="@{/signin}">
+-                            <i class="bi-cart-fill me-1"></i>
+-                            관심상품
+-                        </a>
+-                    </div>
+-                </form>
++<!--                    </div>-->
++<!--                </form>-->
+             </div>
+         </div>
+     </div>
+Index: .idea/modules/samjungTech.iml
+===================================================================
+diff --git a/.idea/modules/samjungTech.iml b/.idea/modules/samjungTech.iml
+deleted file mode 100644
+--- a/.idea/modules/samjungTech.iml	(revision 368b25a9d24038b32433b6196e144806b3126024)
++++ /dev/null	(revision 368b25a9d24038b32433b6196e144806b3126024)
+@@ -1,10 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module version="4">
+-  <component name="NewModuleRootManager">
+-    <content url="file://$MODULE_DIR$/../..">
+-      <sourceFolder url="file://$MODULE_DIR$/../../src/main/java" isTestSource="false" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../src/main/resources" type="java-resource" />
+-      <sourceFolder url="file://$MODULE_DIR$/../../src/test" isTestSource="true" />
+-    </content>
+-  </component>
+-</module>
+\ No newline at end of file
+Index: src/main/resources/templates/fragments/footer.html
+===================================================================
+diff --git a/src/main/resources/templates/fragments/footer.html b/src/main/resources/templates/fragments/footer.html
+deleted file mode 100644
+--- a/src/main/resources/templates/fragments/footer.html	(revision 368b25a9d24038b32433b6196e144806b3126024)
++++ /dev/null	(revision 368b25a9d24038b32433b6196e144806b3126024)
+@@ -1,29 +0,0 @@
+-<!DOCTYPE html>
+-<html lang="ko">
+-<head>
+-  <meta charset="UTF-8">
+-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+-  <title>Document</title>
+-  <!-- Favicon-->
+-  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+-  <!-- Bootstrap Icons-->
+-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+-  <!-- Google fonts-->
+-  <!-- <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+-  <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" /> -->
+-  <!-- SimpleLightbox plugin CSS-->
+-  <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
+-  <!-- Core theme CSS (includes Bootstrap)-->
+-  <link href="css/styles.css" rel="stylesheet" />
+-</head>
+-<body>
+-<footer class="bg-light py-5">
+-  <div class="container px-4 px-lg-5">
+-    <!-- <div class="small text-center text-muted">Copyright &copy; 2023 - Company Name</div> -->
+-    <!-- <div class="small text-center text-muted"><a href="adminLogin.html">ADMIN</a>&nbsp;&nbsp;&nbsp;&nbsp;대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div> -->
+-    <div class="small text-center text-muted">대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div>
+-  </div>
+-</footer>
+-</body>
+-</html>
+\ No newline at end of file
+Index: src/main/resources/templates/layout/default.html
+===================================================================
+diff --git a/src/main/resources/templates/layout/default.html b/src/main/resources/templates/layout/default.html
+deleted file mode 100644
+--- a/src/main/resources/templates/layout/default.html	(revision 368b25a9d24038b32433b6196e144806b3126024)
++++ /dev/null	(revision 368b25a9d24038b32433b6196e144806b3126024)
+@@ -1,11 +0,0 @@
+-<!DOCTYPE html>
+-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+-<th:block th:replace="fragments/head :: headFragment"></th:block>
+-<body>
+-<div>
+-  <th:block th:replace="fragments/header :: headerFragment('Header')"></th:block>
+-  <th:block layout:fragment="content"></th:block>
+-  <th:block th:replace="fragments/footer :: footerFragment"></th:block>
+-</div>
+-</body>
+-</html>
+\ No newline at end of file
+Index: build/resources/main/templates/main.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"ko\" xmlns:th=\"http://www.thymeleaf.org\" xmlns=\"http://www.w3.org/1999/html\" xmlns:sec=\"http://www.thymeleaf.org/extras/spring-security\">\r\n<head>\r\n    <meta charset=\"utf-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />\r\n    <meta name=\"description\" content=\"\" />\r\n    <meta name=\"author\" content=\"\" />\r\n    <title>삼정테크</title>\r\n    <!-- Favicon-->\r\n    <link rel=\"icon\" type=\"image/x-icon\" href=\"assets/favicon.ico\" />\r\n    <!-- Bootstrap Icons-->\r\n    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css\" rel=\"stylesheet\" />\r\n\r\n    <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css\" integrity=\"sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS\" crossorigin=\"anonymous\">\r\n    <script src=\"https://code.jquery.com/jquery-3.3.1.slim.min.js\" integrity=\"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo\" crossorigin=\"anonymous\"></script>\r\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js\" integrity=\"sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut\" crossorigin=\"anonymous\"></script>\r\n    <script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js\" integrity=\"sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k\" crossorigin=\"anonymous\"></script>\r\n\r\n    <!-- Google fonts-->\r\n    <!-- <link href=\"https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700\" rel=\"stylesheet\" />\r\n    <link href=\"https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic\" rel=\"stylesheet\" type=\"text/css\" /> -->\r\n    <!-- SimpleLightbox plugin CSS-->\r\n    <link href=\"https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css\" rel=\"stylesheet\" />\r\n    <!-- Core theme CSS (includes Bootstrap)-->\r\n    <link href=\"css/styles.css\" rel=\"stylesheet\" />\r\n</head>\r\n<body id=\"page-top\">\r\n<!-- Navigation-->\r\n<nav class=\"navbar navbar-expand-lg navbar-light fixed-top py-3\" id=\"mainNav\">\r\n    <div class=\"container px-4 px-lg-5\">\r\n        <a class=\"navbar-brand\" th:href=\"@{/}\"><img src=\"https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true\"></a>\r\n        <button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarResponsive\" aria-controls=\"navbarResponsive\" aria-expanded=\"false\" aria-label=\"Toggle navigation\"><span class=\"navbar-toggler-icon\"></span></button>\r\n        <div class=\"collapse navbar-collapse\" id=\"navbarResponsive\">\r\n            <ul class=\"navbar-nav ms-auto my-2 my-lg-0\">\r\n\r\n<!--            <a class=\"navbar-brand\" th:href=\"@{/main}\" sec:authorize=\"isAuthenticated()\">대충 이름</a>&ndash;&gt;-->\r\n<!--            <a class=\"navbar-brand\" th:href=\"@{/}\" sec:authorize=\"!isAuthenticated()\">대충 이름2</a>-->\r\n                <li class=\"nav-item\"><a class=\"nav-link\" th:href=\"@{/item/new}\">item</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" th:href=\"@{/signin}\">관리자 로그인</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" th:href=\"@{/signup}\">관리자 회원가입</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"#about\">회사소개</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"#product_intro\">제품소개</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"#support\">고객지원</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"#contact\">견적문의</a></li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</nav>\r\n\r\n<!-- Masthead-->\r\n<header class=\"masthead\">\r\n    <div class=\"container px-4 px-lg-5 h-100\">\r\n        <div class=\"row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center\">\r\n            <div class=\"col-lg-8 align-self-end\">\r\n                <h1 class=\"text-white font-weight-bold\">삼정테크</h1>\r\n                <hr class=\"divider\" />\r\n            </div>\r\n            <div class=\"col-lg-8 align-self-baseline\">\r\n                <p class=\"text-white-75 mb-5\">모든 전자장비의 시스템 운영에 일치하는 최고급 수준의 양질의 전력을 공급할 수 있도록 설계, 제작, 설치 및 운영하는 일을 주 사업으로 하고 있습니다.</p>\r\n                <a class=\"btn btn-primary btn-xl\" href=\"#about\">회사소개</a>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</header>\r\n\r\n<!-- About-->\r\n<section class=\"page-section bg-primary\" id=\"about\">\r\n    <div class=\"container px-4 px-lg-5\">\r\n        <div class=\"row gx-4 gx-lg-5 justify-content-center\">\r\n            <div class=\"col-lg-8 text-center\">\r\n                <h2 class=\"text-white mt-0\">삼정테크</h2>\r\n                <hr class=\"divider divider-light\" />\r\n                <p class=\"text-white-75 mb-4\">모든 전자장비는 매우 예민하고 정교한 시스템으로 구성되어 있기 때문에 전자장비에 공급되는 전원의 질은 자연고급화, 안정화가 절대 필요요건으로 되었으며, 전원 불안정(정전압 및 주파수변동, 순시, 전압강하, 순간정전 등)으로 인한 전자장비의 동작불안, 오동작, 데이터 손상 및 정보전달의 중단 등이 발생되는 경우 이로인해 막대한 시간과 경제적 손실을 초래하게됩니다.</p>\r\n                <p class=\"text-white-75 mb-4\">당사는 이러한 고객의 요구를 충족시키기 위해 무결점 선언 및 지속적인 연구개발로 고품질의 제품을 공급하고자 최선의 노력을 하고 있으며, 여러 기술력으로 무정전 전원장치를 제작하고 있습니다.</p>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</section>\r\n\r\n<!-- Services-->\r\n<!--<section class=\"page-section\" id=\"product_intro\">-->\r\n<!--    <div class=\"container px-4 px-lg-5\">-->\r\n<!--        <h2 class=\"text-center mt-0\">제품소개</h2>-->\r\n<!--        <hr class=\"divider\" />-->\r\n<!--        <div class=\"row gx-4 gx-lg-5\">-->\r\n<!--            <div class=\"col-lg-3 col-md-6 text-center\">-->\r\n<!--                <a href=\"d-ups.html\">-->\r\n<!--                    <div class=\"mt-5\">-->\r\n<!--                        <div class=\"mb-2\"><img src=\"/assets/img/d-ups.png\"></div>-->\r\n<!--                        <h3 class=\"h4 mb-2\">디지털 UPS</h3>-->\r\n<!--                    </div>-->\r\n<!--                </a>-->\r\n<!--            </div>-->\r\n<!--            <div class=\"col-lg-3 col-md-6 text-center\">-->\r\n<!--                <a href=\"r-ups.html\">-->\r\n<!--                    <div class=\"mt-5\">-->\r\n<!--                        <div class=\"mb-2\"><img src=\"/assets/img/r-ups.png\"></div>-->\r\n<!--                        <h3 class=\"h4 mb-2\">렉장비용 UPS</h3>-->\r\n<!--                    </div>-->\r\n<!--                </a>-->\r\n<!--            </div>-->\r\n<!--            <div class=\"col-lg-3 col-md-6 text-center\">-->\r\n<!--                <a href=\"hfu.html\">-->\r\n<!--                    <div class=\"mt-5\">-->\r\n<!--                        <div class=\"mb-2\"><img src=\"/assets/img/HFU.PNG\"></div>-->\r\n<!--                        <h3 class=\"h4 mb-2\">HFU</h3>-->\r\n<!--                    </div>-->\r\n<!--                </a>-->\r\n<!--            </div>-->\r\n<!--            <div class=\"col-lg-3 col-md-6 text-center\">-->\r\n<!--                <a href=\"aiu-n.html\">-->\r\n<!--                    <div class=\"mt-5\">-->\r\n<!--                        <div class=\"mb-2\"><img src=\"/assets/img/AIU-N.PNG\"></div>-->\r\n<!--                        <h3 class=\"h4 mb-2\">AIU-N</h3>-->\r\n<!--                    </div>-->\r\n<!--                </a>-->\r\n<!--            </div>-->\r\n<!--            <div class=\"col-lg-3 col-md-6 text-center\">-->\r\n<!--                <a href=\"aiu.html\">-->\r\n<!--                    <div class=\"mt-5\">-->\r\n<!--                        <div class=\"mb-2\"><img src=\"/assets/img/AIU.PNG\"></div>-->\r\n<!--                        <h3 class=\"h4 mb-2\">AIU</h3>-->\r\n<!--                    </div>-->\r\n<!--                </a>-->\r\n<!--            </div>-->\r\n<!--        </div>-->\r\n<!--    </div>-->\r\n<!--</section>-->\r\n<section class=\"py-5\" id=\"product_intro\">\r\n    <div class=\"container px-4 px-lg-5 mt-5\">\r\n        <div class=\"row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center\">\r\n\r\n\r\n            <div class=\"col mb-5\" th:each=\"item : ${items}\">\r\n                <div class=\"card h-100\">\r\n                    <!-- Product image-->\r\n                    <img class=\"card-img-top\" th:src=\"@{${item.getImgPath()}}\" alt=\"...\" />\r\n                    <!-- Product details-->\r\n                    <div class=\"card-body p-4\">\r\n                        <div class=\"text-center\">\r\n                            <!-- Product name\\-->\r\n                            <h5 class=\"fw-bolder\" th:text=\"${item.getName()}\">상품이름</h5>\r\n                            <!-- Product price-->\r\n                            <p th:text=\"|${item.getPrice()} 원|\">상품 가격</p>\r\n                        </div>\r\n                    </div>\r\n                    <!-- Product actions-->\r\n                    <div class=\"card-footer p-4 pt-0 border-top-0 bg-transparent\">\r\n                        <div class=\"text-center\"><a class=\"btn btn-outline-dark mt-auto\" th:href=\"@{/item/view/nonlogin/{id}(id=${item.getId()})}\">상세보기</a></div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n\r\n\r\n        </div>\r\n    </div>\r\n\r\n        <a href=\"/nonlogin/item/list\">더보기</a>\r\n</section>\r\n\r\n<!-- support -->\r\n<div id=\"support\">\r\n    <div class=\"container px-4 px-lg-5\">\r\n\r\n        <h2 class=\"text-center mt-0\">고객지원</h2>\r\n        <hr class=\"divider\" />\r\n        <div class=\"row gx-4 gx-lg-5\">\r\n            <div style=\"height: 30px;\"></div>\r\n\r\n                <a th:href=\"@{/admin/qna/post}\">글쓰기</a>\r\n\r\n            <div class=\"table-responsive\" style=\"text-align: center;\">\r\n                <h4>공지사항</h4>\r\n                <div style=\"height: 20px;\"></div>\r\n\r\n            </div>\r\n\r\n\r\n\r\n    <table>\r\n        <thead>\r\n        <tr>\r\n            <th class=\"one wide\">번호</th>\r\n            <th class=\"ten wide\">글제목</th>\r\n            <th class=\"two wide\">작성자</th>\r\n            <th class=\"three wide\">작성일</th>\r\n\r\n        </tr>\r\n        </thead>\r\n\r\n        <tbody>\r\n        <!-- CONTENTS !-->\r\n        <tr th:each=\"board : ${boardList}\">\r\n            <td>\r\n                <span th:text=\"${board.id}\"></span>\r\n            </td>\r\n            <td>\r\n                <a th:href=\"@{'/qna/post/' + ${board.id}}\">\r\n                    <span th:text=\"${board.title}\"></span>\r\n                </a>\r\n            </td>\r\n            <td>\r\n                <span th:text=\"${board.writer}\"></span>\r\n            </td>\r\n            <td>\r\n                <span th:text=\"${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}\"></span>\r\n\r\n            </td>\r\n        </tr>\r\n        </tbody>\r\n    </table>\r\n\r\n    <div class=\"container\">\r\n        <span th:each=\"pageNum : ${pageList}\" th:inline=\"text\">\r\n            <a th:href=\"@{'/qna/?page=' + ${pageNum}}\">[[${pageNum}]]</a>\r\n        </span>\r\n    </div>\r\n\r\n    <hr>\r\n\r\n    <!-- 검색 form -->\r\n<!--    <form action=\"/qna/board/search\" method=\"GET\">-->\r\n<!--        <div>-->\r\n<!--            <input name=\"keyword\" type=\"text\" placeholder=\"검색어를 입력해주세요\">-->\r\n<!--        </div>-->\r\n\r\n<!--        <button>검색하기</button>-->\r\n<!--    </form>-->\r\n\r\n\r\n            <div style=\"height: 100px;\"></div>\r\n\r\n            <div class=\"table-responsive\">\r\n                <h4 style=\"text-align: center;\">FAQ</h4>\r\n                <div style=\"height: 20px;\"></div>\r\n                <section class=\"section section-faq\">\r\n                    <div class=\"container mx-auto\">\r\n                        <div class=\"faq-box\">\r\n                            <ul>\r\n                                <li>\r\n                                    <div class=\"faq-box__question\">\r\n                                        <span>질문 1</span>\r\n                                    </div>\r\n                                    <div class=\"faq-box__answer\">\r\n                                        답변 1\r\n                                    </div>\r\n                                </li>\r\n\r\n                                <li>\r\n                                    <div class=\"faq-box__question\">\r\n                                        <span>질문 2</span>\r\n                                    </div>\r\n                                    <div class=\"faq-box__answer\">\r\n                                        답변 2\r\n                                    </div>\r\n                                </li>\r\n\r\n                                <li>\r\n                                    <div class=\"faq-box__question\">\r\n                                        <span>질문 3</span>\r\n                                    </div>\r\n                                    <div class=\"faq-box__answer\">\r\n                                        답변 3\r\n                                    </div>\r\n                                </li>\r\n\r\n                                <li>\r\n                                    <div class=\"faq-box__question\">\r\n                                        <span>질문 4</span>\r\n                                    </div>\r\n                                    <div class=\"faq-box__answer\">\r\n                                        답변 4\r\n                                    </div>\r\n                                </li>\r\n\r\n                                <li>\r\n                                    <div class=\"faq-box__question\">\r\n                                        <span>질문 5</span>\r\n                                    </div>\r\n                                    <div class=\"faq-box__answer\">\r\n                                        답변 5\r\n                                    </div>\r\n                                </li>\r\n                            </ul>\r\n                        </div>\r\n                    </div>\r\n                </section>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<!-- Contact-->\r\n<section class=\"page-section\" id=\"contact\">\r\n    <div class=\"container px-4 px-lg-5\">\r\n        <div class=\"row gx-4 gx-lg-5 justify-content-center\">\r\n            <div class=\"col-lg-8 col-xl-6 text-center\">\r\n                <h2 class=\"mt-0\">견적문의</h2>\r\n                <hr class=\"divider\" />\r\n            </div>\r\n        </div>\r\n        <div class=\"row gx-4 gx-lg-5 justify-content-center mb-5\">\r\n            <div class=\"col-lg-6\">\r\n                <form method=\"post\" action=\"/\" name=\"contactForm\">\r\n                    <table>\r\n                        <div class=\"form-floating mb-3\">\r\n                            <input class=\"form-control\" id=\"name\" type=\"text\" placeholder=\"Enter your name\" data-sb-validations=\"required\" />\r\n                            <label for=\"name\">성명</label>\r\n                            <div class=\"invalid-feedback\" data-sb-feedback=\"name:required\">A name is required.</div>\r\n                        </div>\r\n\r\n                        <div class=\"form-floating mb-3\">\r\n                            <input class=\"form-control\" id=\"email\" type=\"email\" placeholder=\"name@example.com\" data-sb-validations=\"required,email\" />\r\n                            <label for=\"email\">이메일</label>\r\n                            <div class=\"invalid-feedback\" data-sb-feedback=\"email:required\">An email is required.</div>\r\n                            <div class=\"invalid-feedback\" data-sb-feedback=\"email:email\">Email is not valid.</div>\r\n                        </div>\r\n\r\n                        <div class=\"form-floating mb-3\">\r\n                            <input class=\"form-control\" id=\"phone\" type=\"tel\" placeholder=\"(123) 456-7890\" data-sb-validations=\"required\" />\r\n                            <label for=\"phone\">연락처</label>\r\n                            <div class=\"invalid-feedback\" data-sb-feedback=\"phone:required\">A phone number is required.</div>\r\n                        </div>\r\n\r\n                        <div class=\"form-floating mb-3\">\r\n                            <textarea class=\"form-control\" id=\"message\" type=\"text\" placeholder=\"Enter your message here\" style=\"height: 10rem\" data-sb-validations=\"required\"></textarea>\r\n                            <label for=\"message\">기초사양</label>\r\n                            <div class=\"invalid-feedback\" data-sb-feedback=\"message:required\">A message is required.</div>\r\n                        </div>\r\n\r\n                        <div class=\"d-grid\">\r\n                            <input class=\"btn btn-primary btn-xl\" type=\"button\" onclick=\"check()\" value=\"제출\">\r\n                        </div>\r\n                    </table>\r\n                </form>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</section>\r\n\r\n<!-- Footer-->\r\n\r\n<!-- Bootstrap core JS-->\r\n<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js\"></script>\r\n<!-- SimpleLightbox plugin JS-->\r\n<script src=\"https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js\"></script>\r\n<!-- Core theme JS-->\r\n<script src=\"js/scripts.js\"></script>\r\n<!-- 제이쿼리 -->\r\n<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js\"></script>\r\n\r\n<script>\r\n            const footer = document.querySelector('footer');\r\n\r\n            fetch('./footer.html')\r\n            .then(res => res.text())\r\n            .then(data => footer.innerHTML = data);\r\n        </script>\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/build/resources/main/templates/main.html b/build/resources/main/templates/main.html
+--- a/build/resources/main/templates/main.html	(revision 368b25a9d24038b32433b6196e144806b3126024)
++++ b/build/resources/main/templates/main.html	(date 1687849312921)
+@@ -22,7 +22,7 @@
+     <!-- SimpleLightbox plugin CSS-->
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
+     <!-- Core theme CSS (includes Bootstrap)-->
+-    <link href="css/styles.css" rel="stylesheet" />
++    <link type="text/css" href="css/styles.css" rel="stylesheet" />
+ </head>
+ <body id="page-top">
+ <!-- Navigation-->
+@@ -42,6 +42,7 @@
+                 <li class="nav-item"><a class="nav-link" href="#product_intro">제품소개</a></li>
+                 <li class="nav-item"><a class="nav-link" href="#support">고객지원</a></li>
+                 <li class="nav-item"><a class="nav-link" href="#contact">견적문의</a></li>
++
+             </ul>
+         </div>
+     </div>
+@@ -146,7 +147,7 @@
+                     </div>
+                     <!-- Product actions-->
+                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/item/view/nonlogin/{id}(id=${item.getId()})}">상세보기</a></div>
++                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/item/view/{id}(id=${item.getId()})}">상세보기</a></div>
+                     </div>
+                 </div>
+             </div>
+@@ -345,7 +346,7 @@
+ <!-- SimpleLightbox plugin JS-->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
+ <!-- Core theme JS-->
+-<script src="js/scripts.js"></script>
++<script type="text/javascript" src="js/scripts.js"></script>
+ <!-- 제이쿼리 -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+ 
+Index: build/resources/main/templates/itemView.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"en\" xmlns:th=\"http://www.thymeleaf.org\" xmlns=\"http://www.w3.org/1999/html\" xmlns:sec=\"http://www.thymeleaf.org/extras/spring-security\">\r\n<head>\r\n    <meta charset=\"utf-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />\r\n    <meta name=\"description\" content=\"\" />\r\n    <meta name=\"author\" content=\"\" />\r\n    <title th:text=\"${item.getName()}\">타이틀 - 상품 이름</title>\r\n    <!-- Favicon-->\r\n    <link rel=\"icon\" type=\"image/x-icon\" href=\"../../../../../../../Downloads/startbootstrap-shop-item-gh-pages/assets/favicon.ico\" />\r\n    <!-- Bootstrap icons-->\r\n    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css\" rel=\"stylesheet\" />\r\n    <!-- Core theme CSS (includes Bootstrap)-->\r\n    <link href=\"/css/styles.css\" rel=\"stylesheet\" />\r\n\r\n\r\n\r\n</head>\r\n<body>\r\n<!-- Navigation-->\r\n<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\r\n    <div class=\"container px-4 px-lg-5\">\r\n        <a class=\"navbar-brand\" th:href=\"@{/main}\" sec:authorize=\"isAuthenticated()\">회사이름</a>\r\n        <a class=\"navbar-brand\" th:href=\"@{/}\" sec:authorize=\"!isAuthenticated()\">회사이름</a>\r\n        <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\"><span class=\"navbar-toggler-icon\"></span></button>\r\n        <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\r\n            <ul class=\"navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4\">\r\n                <li class=\"nav-item\"><a class=\"nav-link active\" aria-current=\"page\" th:href=\"@{/main}\" sec:authorize=\"isAuthenticated()\">Home</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link active\" aria-current=\"page\" th:href=\"@{/}\" sec:authorize=\"!isAuthenticated()\">Home</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"#\" th:href=\"@{/item/new}\" sec:authorize=\"hasRole('ROLE_SELLER')\">Upload</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"#\" th:href=\"@{/seller/manage/{id}(id=${user.getId()})}\" sec:authorize=\"hasRole('ROLE_SELLER')\">Manage</a></li>\r\n\r\n            </ul>\r\n            <form th:action=\"@{/signin}\" sec:authorize=\"!isAuthenticated()\">\r\n                <button class=\"btn btn-outline-dark\" type=\"submit\">\r\n                    로그인\r\n                </button>\r\n            </form>\r\n            <form th:action=\"@{/signup}\" sec:authorize=\"!isAuthenticated()\">\r\n                <button class=\"btn btn-outline-dark\" type=\"submit\">\r\n                    회원가입\r\n                </button>\r\n            </form>\r\n\r\n            <form class=\"d-flex\" sec:authorize=\"hasRole('ROLE_USER')\">\r\n<!--                <a class=\"btn btn-outline-dark\" href=\"#\" th:text=\"|현재잔액 : ${user.getCoin()} ₩|\">-->\r\n<!--                    현재잔액 : 10000 ₩-->\r\n<!--                </a>-->\r\n                <a class=\"btn btn-outline-dark\" th:href=\"@{/user/cart/{id}(id=${user.getId()})}\">\r\n                    <i class=\"bi-cart-fill me-1\"></i>\r\n                    Cart\r\n                    <span class=\"badge bg-dark text-white ms-1 rounded-pill\" th:text=\"${cartCount}\">0</span>\r\n                </a>\r\n                <a class=\"btn btn-outline-dark\" th:href=\"@{/user/{id}(id=${user.getId()})}\" th:text=\"|${user.getName()}님 환영합니다.|\">\r\n                    마이페이지\r\n                </a>\r\n                <a class=\"btn btn-outline-dark\" th:href=\"@{/logout}\">\r\n                    로그아웃\r\n                </a>\r\n            </form>\r\n\r\n            <form class=\"d-flex\" sec:authorize=\"hasRole('ROLE_SELLER')\">\r\n<!--                <a class=\"btn btn-outline-dark\" href=\"#\" th:text=\"|현재수익 : ${user.getCoin()} ₩|\">-->\r\n<!--                    현재잔액 : 10000 ₩-->\r\n<!--                </a>-->\r\n                <a class=\"btn btn-outline-dark\" th:href=\"@{/seller/{id}(id=${user.getId()})}\" th:text=\"|${user.getName()}님 환영합니다.|\">\r\n                    관리자 페이지\r\n                </a>\r\n                <a class=\"btn btn-outline-dark\" th:href=\"@{/logout}\">\r\n                    로그아웃\r\n                </a>\r\n            </form>\r\n\r\n        </div>\r\n    </div>\r\n</nav>\r\n<!-- Product section-->\r\n<section class=\"py-5\">\r\n    <div class=\"container px-4 px-lg-5 my-5\">\r\n        <div class=\"row gx-4 gx-lg-5 align-items-center\">\r\n            <div class=\"col-md-6\"><img class=\"card-img-top mb-5 mb-md-0\" th:src=\"@{${item.getImgPath()}}\" alt=\"...\" /></div>\r\n            <div class=\"col-md-6\">\r\n                <div class=\"small mb-1\" th:text=\"|담당자 : ${item.getSeller().getUsername()}|\">담당자 이름</div>\r\n<!--                <div class=\"small mb-1\" th:if=\"${item.getIsSoldout()} == 0\" th:text=\"|재고 : ${item.getStock()}개|\">재고</div>-->\r\n<!--                <div class=\"small mb-1\" th:unless=\"${item.getIsSoldout()} == 0\" th:text=\"|품절|\">재고</div>-->\r\n                <h1 class=\"display-5 fw-bolder\" th:text=\"${item.getName()}\">상품 이름</h1>\r\n                <div class=\"fs-5 mb-5\">\r\n<!--                    <span th:text=\"|${item.getPrice()} 원|\">상품 가격</span>-->\r\n<!--                    <p class=\"lead\" th:text=\"${item.getEditor()}\">상품 설명</p>-->\r\n\r\n                </div>\r\n                <p class=\"lead\" th:text=\"${item.getEditor()}\">상품 설명</p>\r\n<!--                <p class=\"lead\">상품 설명입니다.</p>-->\r\n\r\n\r\n                <form class=\"d-flex\" sec:authorize=\"hasRole('ROLE_SELLER')\" th:if=\"${item.getSeller().getId()} == ${user.getId()}\">\r\n                    <div class=\"d-flex\">\r\n                        <a th:href=\"@{/item/modify/{id} (id=${item.getId()})}\">\r\n                            <button class=\"btn btn-outline-dark flex-shrink-0\" type=\"button\">\r\n                                상품 수정\r\n                            </button>\r\n                        </a>\r\n                        <a th:href=\"@{/item/delete/{id} (id=${item.getId()})}\">\r\n                            <button class=\"btn btn-outline-dark flex-shrink-0\" type=\"button\">\r\n                                상품 삭제\r\n                            </button>\r\n                        </a>\r\n                    </div>\r\n                </form>\r\n\r\n                <form class=\"d-flex\" sec:authorize=\"hasRole('ROLE_USER')\" onsubmit=\"return orderitem();\" th:action=\"@{/user/{id}/checkout/{itemId}(id=${user.id}, itemId=${item.id})}\" method=\"post\">\r\n                    <div class=\"d-flex\">\r\n<!--                        <input class=\"form-control text-center me-3\" id=\"count\" name=\"count\" type=\"num\" value=\"1\"-->\r\n<!--                               style=\"max-width: 3rem\"/>-->\r\n<!--                        <button class=\"btn btn-outline-dark flex-shrink-0\" id=\"basket\" type=\"submit\">-->\r\n<!--                            구매하기-->\r\n<!--                        </button>-->\r\n                    </div>\r\n                </form>\r\n                <!--<script th:inline=\"javascript\">\r\n                    /* <![CDATA[ */\r\n                    var itemstock = [[${item.Stock}]];\r\n                    const button = document.getElementById(\"basket\")\r\n                    function orderitem() {\r\n                        var count = document.getElementById(\"count\").value\r\n                        if (isNaN(count)) {\r\n                            alert(\"숫자를 입력해주세요\")\r\n                            return false\r\n                        } else if (count > itemstock) {\r\n                            alert(\"재고가 부족합니다\")\r\n                            return false\r\n                        } else {\r\n                            return true\r\n                        }\r\n                    }\r\n                    /* ]]> */\r\n                </script>-->\r\n\r\n\r\n                <form class=\"d-flex\" sec:authorize=\"hasRole('ROLE_USER')\" onsubmit=\"return additem();\" th:action=\"@{/user/cart/{id}/{itemId}(id=${user.id}, itemId=${item.id})}\" method=\"post\">\r\n                    <input class=\"form-control text-center me-3\" id=\"amount\" name=\"amount\" type=\"num\" value=\"1\" style=\"max-width: 3rem\"/>\r\n                    <button class=\"btn btn-outline-dark flex-shrink-0\" id=\"basket\" type=\"submit\"><i class=\"bi-cart-fill me-1\"></i>관심상품</button>\r\n                </form>\r\n                <script th:inline=\"javascript\">\r\n                    /* <![CDATA[ */\r\n\r\n\r\n\r\n\r\n                    <!--button.addEventListener(\"click\",additem)-->\r\n                    /* ]]> */\r\n                </script>\r\n\r\n\r\n                <!--<form class=\"d-flex\" sec:authorize=\"hasRole('ROLE_USER')\" th:action=\"@{/user/cart/{id}/{itemId}(id=${user.id}, itemId=${item.id})}\" method=\"post\">\r\n                    <div class=\"d-flex\">\r\n                    <input class=\"form-control text-center me-3\" id=\"amount\" name=\"amount\" type=\"num\" value=\"1\"\r\n                               style=\"max-width: 3rem\"/>\r\n                        <button class=\"btn btn-outline-dark flex-shrink-0\" type=\"submit\">\r\n                            <i class=\"bi-cart-fill me-1\"></i>\r\n                            관심상품\r\n                        </button>\r\n                    </div>\r\n                </form>-->\r\n\r\n                <form class=\"d-flex\" sec:authorize=\"!isAuthenticated()\">\r\n                    <div class=\"d-flex\">\r\n<!--                        <a th:href=\"@{/signin}\">-->\r\n<!--                            <button class=\"btn btn-outline-dark flex-shrink-0\" type=\"button\">-->\r\n<!--                                구매하기-->\r\n<!--                            </button>-->\r\n<!--                        </a>-->\r\n                        <a class=\"btn btn-outline-dark\" th:href=\"@{/signin}\">\r\n                            <i class=\"bi-cart-fill me-1\"></i>\r\n                            관심상품\r\n                        </a>\r\n                    </div>\r\n                </form>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</section>\r\n<!-- Footer-->\r\n<footer class=\"my-5 pt-5 text-muted text-center text-small\">\r\n    <p class=\"mb-1\">&copy; 캎라</p>\r\n</footer>\r\n<!-- Bootstrap core JS-->\r\n<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js\"></script>\r\n<!-- Core theme JS-->\r\n<script src=\"/js/scripts.js\"></script>\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/build/resources/main/templates/itemView.html b/build/resources/main/templates/itemView.html
+--- a/build/resources/main/templates/itemView.html	(revision 368b25a9d24038b32433b6196e144806b3126024)
++++ b/build/resources/main/templates/itemView.html	(date 1687849312920)
+@@ -21,7 +21,7 @@
+ <nav class="navbar navbar-expand-lg navbar-light bg-light">
+     <div class="container px-4 px-lg-5">
+         <a class="navbar-brand" th:href="@{/main}" sec:authorize="isAuthenticated()">회사이름</a>
+-        <a class="navbar-brand" th:href="@{/}" sec:authorize="!isAuthenticated()">회사이름</a>
++<!--        <a class="navbar-brand" th:href="@{/}" sec:authorize="!isAuthenticated()">회사이름</a>-->
+         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+@@ -33,31 +33,31 @@
+             </ul>
+             <form th:action="@{/signin}" sec:authorize="!isAuthenticated()">
+                 <button class="btn btn-outline-dark" type="submit">
+-                    로그인
+-                </button>
+-            </form>
+-            <form th:action="@{/signup}" sec:authorize="!isAuthenticated()">
+-                <button class="btn btn-outline-dark" type="submit">
+-                    회원가입
++                    관리자 로그인
+                 </button>
+             </form>
++<!--            <form th:action="@{/signup}" sec:authorize="!isAuthenticated()">-->
++<!--                <button class="btn btn-outline-dark" type="submit">-->
++<!--                    회원가입-->
++<!--                </button>-->
++<!--            </form>-->
+ 
+-            <form class="d-flex" sec:authorize="hasRole('ROLE_USER')">
+-<!--                <a class="btn btn-outline-dark" href="#" th:text="|현재잔액 : ${user.getCoin()} ₩|">-->
+-<!--                    현재잔액 : 10000 ₩-->
++<!--            <form class="d-flex" sec:authorize="hasRole('ROLE_USER')">-->
++<!--&lt;!&ndash;                <a class="btn btn-outline-dark" href="#" th:text="|현재잔액 : ${user.getCoin()} ₩|">&ndash;&gt;-->
++<!--&lt;!&ndash;                    현재잔액 : 10000 ₩&ndash;&gt;-->
++<!--&lt;!&ndash;                </a>&ndash;&gt;-->
++<!--&lt;!&ndash;                <a class="btn btn-outline-dark" th:href="@{/user/cart/{id}(id=${user.getId()})}">&ndash;&gt;-->
++<!--&lt;!&ndash;                    <i class="bi-cart-fill me-1"></i>&ndash;&gt;-->
++<!--&lt;!&ndash;                    Cart&ndash;&gt;-->
++<!--&lt;!&ndash;                    <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${cartCount}">0</span>&ndash;&gt;-->
++<!--&lt;!&ndash;                </a>&ndash;&gt;-->
++<!--                <a class="btn btn-outline-dark" th:href="@{/user/{id}(id=${user.getId()})}" th:text="|${user.getName()}님 환영합니다.|">-->
++<!--                    마이페이지-->
+ <!--                </a>-->
+-                <a class="btn btn-outline-dark" th:href="@{/user/cart/{id}(id=${user.getId()})}">
+-                    <i class="bi-cart-fill me-1"></i>
+-                    Cart
+-                    <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${cartCount}">0</span>
+-                </a>
+-                <a class="btn btn-outline-dark" th:href="@{/user/{id}(id=${user.getId()})}" th:text="|${user.getName()}님 환영합니다.|">
+-                    마이페이지
+-                </a>
+-                <a class="btn btn-outline-dark" th:href="@{/logout}">
+-                    로그아웃
+-                </a>
+-            </form>
++<!--                <a class="btn btn-outline-dark" th:href="@{/logout}">-->
++<!--                    로그아웃-->
++<!--                </a>-->
++<!--            </form>-->
+ 
+             <form class="d-flex" sec:authorize="hasRole('ROLE_SELLER')">
+ <!--                <a class="btn btn-outline-dark" href="#" th:text="|현재수익 : ${user.getCoin()} ₩|">-->
+@@ -78,18 +78,20 @@
+ <section class="py-5">
+     <div class="container px-4 px-lg-5 my-5">
+         <div class="row gx-4 gx-lg-5 align-items-center">
++            <h1 class="display-5 fw-bolder" th:text="${item.getName()}">상품 이름</h1>
+             <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" th:src="@{${item.getImgPath()}}" alt="..." /></div>
++            <p class="lead" th:utext="${item.getEditor()}">상품 설명</p>
+             <div class="col-md-6">
+                 <div class="small mb-1" th:text="|담당자 : ${item.getSeller().getUsername()}|">담당자 이름</div>
+ <!--                <div class="small mb-1" th:if="${item.getIsSoldout()} == 0" th:text="|재고 : ${item.getStock()}개|">재고</div>-->
+ <!--                <div class="small mb-1" th:unless="${item.getIsSoldout()} == 0" th:text="|품절|">재고</div>-->
+-                <h1 class="display-5 fw-bolder" th:text="${item.getName()}">상품 이름</h1>
++
+                 <div class="fs-5 mb-5">
+ <!--                    <span th:text="|${item.getPrice()} 원|">상품 가격</span>-->
+ <!--                    <p class="lead" th:text="${item.getEditor()}">상품 설명</p>-->
+ 
+                 </div>
+-                <p class="lead" th:text="${item.getEditor()}">상품 설명</p>
++
+ <!--                <p class="lead">상품 설명입니다.</p>-->
+ 
+ 
+@@ -137,10 +139,10 @@
+                 </script>-->
+ 
+ 
+-                <form class="d-flex" sec:authorize="hasRole('ROLE_USER')" onsubmit="return additem();" th:action="@{/user/cart/{id}/{itemId}(id=${user.id}, itemId=${item.id})}" method="post">
+-                    <input class="form-control text-center me-3" id="amount" name="amount" type="num" value="1" style="max-width: 3rem"/>
+-                    <button class="btn btn-outline-dark flex-shrink-0" id="basket" type="submit"><i class="bi-cart-fill me-1"></i>관심상품</button>
+-                </form>
++<!--                <form class="d-flex" sec:authorize="hasRole('ROLE_USER')" onsubmit="return additem();" th:action="@{/user/cart/{id}/{itemId}(id=${user.id}, itemId=${item.id})}" method="post">-->
++<!--                    <input class="form-control text-center me-3" id="amount" name="amount" type="num" value="1" style="max-width: 3rem"/>-->
++<!--                    <button class="btn btn-outline-dark flex-shrink-0" id="basket" type="submit"><i class="bi-cart-fill me-1"></i>관심상품</button>-->
++<!--                </form>-->
+                 <script th:inline="javascript">
+                     /* <![CDATA[ */
+ 
+@@ -163,19 +165,19 @@
+                     </div>
+                 </form>-->
+ 
+-                <form class="d-flex" sec:authorize="!isAuthenticated()">
+-                    <div class="d-flex">
+-<!--                        <a th:href="@{/signin}">-->
+-<!--                            <button class="btn btn-outline-dark flex-shrink-0" type="button">-->
+-<!--                                구매하기-->
+-<!--                            </button>-->
++<!--                <form class="d-flex" sec:authorize="!isAuthenticated()">-->
++<!--                    <div class="d-flex">-->
++<!--&lt;!&ndash;                        <a th:href="@{/signin}">&ndash;&gt;-->
++<!--&lt;!&ndash;                            <button class="btn btn-outline-dark flex-shrink-0" type="button">&ndash;&gt;-->
++<!--&lt;!&ndash;                                구매하기&ndash;&gt;-->
++<!--&lt;!&ndash;                            </button>&ndash;&gt;-->
++<!--&lt;!&ndash;                        </a>&ndash;&gt;-->
++<!--                        <a class="btn btn-outline-dark" th:href="@{/signin}">-->
++<!--                            <i class="bi-cart-fill me-1"></i>-->
++<!--                            관심상품-->
+ <!--                        </a>-->
+-                        <a class="btn btn-outline-dark" th:href="@{/signin}">
+-                            <i class="bi-cart-fill me-1"></i>
+-                            관심상품
+-                        </a>
+-                    </div>
+-                </form>
++<!--                    </div>-->
++<!--                </form>-->
+             </div>
+         </div>
+     </div>
+Index: build/resources/main/templates/header.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"ko\">\r\n<head>\r\n    <meta charset=\"utf-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />\r\n    <meta name=\"description\" content=\"\" />\r\n    <meta name=\"author\" content=\"\" />\r\n    <title>삼정테크</title>\r\n    <!-- Favicon-->\r\n    <link rel=\"icon\" type=\"image/x-icon\" href=\"assets/favicon.ico\" />\r\n    <!-- Bootstrap Icons-->\r\n    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css\" rel=\"stylesheet\" />\r\n    <!-- Google fonts-->\r\n    <!-- <link href=\"https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700\" rel=\"stylesheet\" />\r\n        <link href=\"https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic\" rel=\"stylesheet\" type=\"text/css\" /> -->\r\n    <!-- SimpleLightbox plugin CSS-->\r\n    <link href=\"https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css\" rel=\"stylesheet\" />\r\n    <!-- Core theme CSS (includes Bootstrap)-->\r\n    <link href=\"css/styles.css\" rel=\"stylesheet\" />\r\n</head>\r\n<body>\r\n<nav class=\"navbar navbar-expand-lg navbar-light fixed-top py-3\" id=\"mainNav\">\r\n    <div class=\"container px-4 px-lg-5\">\r\n        <a class=\"navbar-brand\" href=\"/\"><img src=\"/img/logo.PNG\"></a>\r\n        <button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarResponsive\" aria-controls=\"navbarResponsive\" aria-expanded=\"false\" aria-label=\"Toggle navigation\"><span class=\"navbar-toggler-icon\"></span></button>\r\n        <div class=\"collapse navbar-collapse\" id=\"navbarResponsive\">\r\n            <ul class=\"navbar-nav ms-auto my-2 my-lg-0\">\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"/#about\">회사소개</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"/#product_intro\">제품소개</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"/#support\">고객지원</a></li>\r\n                <li class=\"nav-item\"><a class=\"nav-link\" href=\"/#contact\">견적문의</a></li>\r\n            </ul>\r\n        </div>\r\n    </div>\r\n</nav>\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/build/resources/main/templates/header.html b/build/resources/main/templates/header.html
+--- a/build/resources/main/templates/header.html	(revision 368b25a9d24038b32433b6196e144806b3126024)
++++ b/build/resources/main/templates/header.html	(date 1687849312891)
+@@ -1,5 +1,43 @@
++<!--<!DOCTYPE html>-->
++<!--<html lang="ko">-->
++<!--<head>-->
++<!--    <meta charset="utf-8" />-->
++<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />-->
++<!--    <meta name="description" content="" />-->
++<!--    <meta name="author" content="" />-->
++<!--    <title>삼정테크</title>-->
++<!--    &lt;!&ndash; Favicon&ndash;&gt;-->
++<!--    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />-->
++<!--    &lt;!&ndash; Bootstrap Icons&ndash;&gt;-->
++<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />-->
++<!--    &lt;!&ndash; Google fonts&ndash;&gt;-->
++<!--    &lt;!&ndash; <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />-->
++<!--        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" /> &ndash;&gt;-->
++<!--    &lt;!&ndash; SimpleLightbox plugin CSS&ndash;&gt;-->
++<!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />-->
++<!--    &lt;!&ndash; Core theme CSS (includes Bootstrap)&ndash;&gt;-->
++<!--    <link href="css/styles.css" rel="stylesheet" />-->
++<!--</head>-->
++<!--<body>-->
++<!--<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">-->
++<!--    <div class="container px-4 px-lg-5">-->
++<!--        <a class="navbar-brand" href="/"><img src="/img/logo.PNG"></a>-->
++<!--        <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>-->
++<!--        <div class="collapse navbar-collapse" id="navbarResponsive">-->
++<!--            <ul class="navbar-nav ms-auto my-2 my-lg-0">-->
++<!--                <li class="nav-item"><a class="nav-link" href="/#about">회사소개</a></li>-->
++<!--                <li class="nav-item"><a class="nav-link" href="/#product_intro">제품소개</a></li>-->
++<!--                <li class="nav-item"><a class="nav-link" href="/#support">고객지원</a></li>-->
++<!--                <li class="nav-item"><a class="nav-link" href="/#contact">견적문의</a></li>-->
++<!--            </ul>-->
++<!--        </div>-->
++<!--    </div>-->
++<!--</nav>-->
++<!--</body>-->
++<!--</html>-->
++
+ <!DOCTYPE html>
+-<html lang="ko">
++<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+ <head>
+     <meta charset="utf-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+@@ -10,28 +48,39 @@
+     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+     <!-- Bootstrap Icons-->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
++
++    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
++    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
++    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
++    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
++
+     <!-- Google fonts-->
+     <!-- <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+-        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" /> -->
++    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" /> -->
+     <!-- SimpleLightbox plugin CSS-->
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
+     <!-- Core theme CSS (includes Bootstrap)-->
+     <link href="css/styles.css" rel="stylesheet" />
+ </head>
+-<body>
++<body id="page-top">
++<!-- Navigation-->
+ <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+     <div class="container px-4 px-lg-5">
+-        <a class="navbar-brand" href="/"><img src="/img/logo.PNG"></a>
++        <a class="navbar-brand" th:href="@{/}"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>
+         <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+         <div class="collapse navbar-collapse" id="navbarResponsive">
+             <ul class="navbar-nav ms-auto my-2 my-lg-0">
+-                <li class="nav-item"><a class="nav-link" href="/#about">회사소개</a></li>
+-                <li class="nav-item"><a class="nav-link" href="/#product_intro">제품소개</a></li>
+-                <li class="nav-item"><a class="nav-link" href="/#support">고객지원</a></li>
+-                <li class="nav-item"><a class="nav-link" href="/#contact">견적문의</a></li>
++
++                <!--            <a class="navbar-brand" th:href="@{/main}" sec:authorize="isAuthenticated()">대충 이름</a>&ndash;&gt;-->
++                <!--            <a class="navbar-brand" th:href="@{/}" sec:authorize="!isAuthenticated()">대충 이름2</a>-->
++                <li class="nav-item"><a class="nav-link" th:href="@{/item/new}">item</a></li>
++                <li class="nav-item"><a class="nav-link" th:href="@{/signin}">관리자 로그인</a></li>
++                <li class="nav-item"><a class="nav-link" th:href="@{/signup}">관리자 회원가입</a></li>
++                <li class="nav-item"><a class="nav-link" href="#about">회사소개</a></li>
++                <li class="nav-item"><a class="nav-link" href="#product_intro">제품소개</a></li>
++                <li class="nav-item"><a class="nav-link" href="#support">고객지원</a></li>
++                <li class="nav-item"><a class="nav-link" href="#contact">견적문의</a></li>
+             </ul>
+         </div>
+     </div>
+-</nav>
+-</body>
+-</html>
+\ No newline at end of file
++</nav>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"41206d8d-082f-4436-99fc-9abd45071831\" name=\"Changes\" comment=\"save\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/resources/templates/fragments/header.html\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/resources/templates/layout/default.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.6.2/fileContent/fileContent.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.6.2/fileContent/fileContent.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.6.2/javaCompile/classAnalysis.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.6.2/javaCompile/classAnalysis.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build.gradle\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/build.gradle\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/static/files/5fc647bc-1783-498d-b31c-4dccdc7b07c4_KakaoTalk_20230322_114955053.jpg\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/static/files/781ad0d3-2f09-4877-a188-599f13ea8f49_삭제금지.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/static/files/7985f8ad-ebfb-4879-9716-4643f4da7199_삭제금지.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/static/files/ac663c6a-b1a7-42f2-ab15-02b8122d3bd4_삭제금지.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/static/files/d945baaa-15b1-4114-9b40-3a97c5be3784_화면 캡처 2023-05-09 191656.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/static/img/aiu-n.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/static/img/aiu.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/static/img/d-ups.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/static/img/hfu.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/static/img/logo.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/static/img/logotext.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/static/img/r-ups.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/templates/aiu-n.html\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/templates/aiu.html\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/templates/d-ups.html\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/templates/hfu.html\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/templates/itemView.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/build/resources/main/templates/itemView.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/templates/main.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/build/resources/main/templates/main.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/resources/main/templates/r-ups.html\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/MainController.java\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/static/files/5fc647bc-1783-498d-b31c-4dccdc7b07c4_KakaoTalk_20230322_114955053.jpg\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/static/files/781ad0d3-2f09-4877-a188-599f13ea8f49_삭제금지.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/static/files/7985f8ad-ebfb-4879-9716-4643f4da7199_삭제금지.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/static/files/ac663c6a-b1a7-42f2-ab15-02b8122d3bd4_삭제금지.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/static/files/d945baaa-15b1-4114-9b40-3a97c5be3784_화면 캡처 2023-05-09 191656.png\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/static/img/aiu-n.png\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/static/files/aiu-n.png\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/static/img/aiu.png\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/static/files/aiu.png\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/static/img/d-ups.png\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/static/files/d-ups.png\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/static/img/hfu.png\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/static/files/hfu.png\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/static/img/logo.png\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/static/files/logo.png\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/static/img/logotext.png\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/static/files/logotext.png\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/static/img/r-ups.png\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/static/files/r-ups.png\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/templates/footer.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/templates/fragments/footer.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/templates/header.html\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/templates/itemView.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/templates/itemView.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/templates/main.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/templates/main.html\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ExternalProjectsData\">\r\n    <projectState path=\"$PROJECT_DIR$\">\r\n      <ProjectState />\r\n    </projectState>\r\n  </component>\r\n  <component name=\"ExternalProjectsManager\">\r\n    <system id=\"GRADLE\">\r\n      <state>\r\n        <task path=\"$PROJECT_DIR$\">\r\n          <activation />\r\n        </task>\r\n        <projects_view>\r\n          <tree_state>\r\n            <expand>\r\n              <path>\r\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\r\n                <item name=\"mamuriYearBook\" type=\"f1a62948:ProjectNode\" />\r\n              </path>\r\n              <path>\r\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\r\n                <item name=\"mamuriYearBook\" type=\"f1a62948:ProjectNode\" />\r\n                <item name=\"Tasks\" type=\"e4a08cd1:TasksNode\" />\r\n              </path>\r\n              <path>\r\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\r\n                <item name=\"mamuriYearBook\" type=\"f1a62948:ProjectNode\" />\r\n                <item name=\"Run Configurations\" type=\"7b0102dc:RunConfigurationsNode\" />\r\n              </path>\r\n            </expand>\r\n            <select />\r\n          </tree_state>\r\n        </projects_view>\r\n      </state>\r\n    </system>\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"HTML File\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n    <option name=\"RESET_MODE\" value=\"HARD\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2QAbBs49QyhzEkmLUzNGoFQWJvg\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"ASKED_SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"DefaultHtmlFileTemplate\": \"HTML File\",\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"last_opened_file_path\": \"C:/Users/hoooo/github_workspace/samjungTech\",\r\n    \"project.structure.last.edited\": \"Project\",\r\n    \"project.structure.proportion\": \"0.15\",\r\n    \"project.structure.side.proportion\": \"0.2\",\r\n    \"settings.editor.selected.configurable\": \"preferences.lookFeel\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\hoooo\\github_workspace\\samjungTech\\src\\main\\resources\\static\\asset\" />\r\n      <recent name=\"C:\\Users\\hoooo\\github_workspace\\samjungTech\\src\\main\\resources\\templates\\board\" />\r\n      <recent name=\"C:\\Users\\hoooo\\github_workspace\\samjungTech\\src\\main\\resources\\static\\files\" />\r\n      <recent name=\"C:\\Users\\hoooo\\github_workspace\\samjungTech\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\hoooo\\github_workspace\\samjungTech\\src\\main\\resources\\templates\\fragments\" />\r\n      <recent name=\"C:\\Users\\hoooo\\github_workspace\\samjungTech\\src\\main\\resources\\static\\files\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Application.samjungTechApplication\">\r\n    <configuration name=\"samjungTechApplication\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"com.chieyoun.board.samjungTechApplication\" />\r\n      <module name=\"mamuriYearBook.main\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"com.chieyoun.board.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"samjungTech [bootJar]\" type=\"GradleRunConfiguration\" factoryName=\"Gradle\" temporary=\"true\">\r\n      <ExternalSystemSettings>\r\n        <option name=\"executionName\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"externalSystemIdString\" value=\"GRADLE\" />\r\n        <option name=\"scriptParameters\" />\r\n        <option name=\"taskDescriptions\">\r\n          <list />\r\n        </option>\r\n        <option name=\"taskNames\">\r\n          <list>\r\n            <option value=\"bootJar\" />\r\n          </list>\r\n        </option>\r\n        <option name=\"vmOptions\" />\r\n      </ExternalSystemSettings>\r\n      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>\r\n      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>\r\n      <DebugAllEnabled>false</DebugAllEnabled>\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"samjungTech [build]\" type=\"GradleRunConfiguration\" factoryName=\"Gradle\" temporary=\"true\">\r\n      <ExternalSystemSettings>\r\n        <option name=\"executionName\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"externalSystemIdString\" value=\"GRADLE\" />\r\n        <option name=\"scriptParameters\" />\r\n        <option name=\"taskDescriptions\">\r\n          <list />\r\n        </option>\r\n        <option name=\"taskNames\">\r\n          <list>\r\n            <option value=\"build\" />\r\n          </list>\r\n        </option>\r\n        <option name=\"vmOptions\" />\r\n      </ExternalSystemSettings>\r\n      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>\r\n      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>\r\n      <DebugAllEnabled>false</DebugAllEnabled>\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"samjungTech [clean]\" type=\"GradleRunConfiguration\" factoryName=\"Gradle\" temporary=\"true\">\r\n      <ExternalSystemSettings>\r\n        <option name=\"executionName\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"externalSystemIdString\" value=\"GRADLE\" />\r\n        <option name=\"scriptParameters\" />\r\n        <option name=\"taskDescriptions\">\r\n          <list />\r\n        </option>\r\n        <option name=\"taskNames\">\r\n          <list>\r\n            <option value=\"clean\" />\r\n          </list>\r\n        </option>\r\n        <option name=\"vmOptions\" />\r\n      </ExternalSystemSettings>\r\n      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>\r\n      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>\r\n      <DebugAllEnabled>false</DebugAllEnabled>\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"samjungTech [jar]\" type=\"GradleRunConfiguration\" factoryName=\"Gradle\" temporary=\"true\">\r\n      <ExternalSystemSettings>\r\n        <option name=\"executionName\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"externalSystemIdString\" value=\"GRADLE\" />\r\n        <option name=\"scriptParameters\" />\r\n        <option name=\"taskDescriptions\">\r\n          <list />\r\n        </option>\r\n        <option name=\"taskNames\">\r\n          <list>\r\n            <option value=\"jar\" />\r\n          </list>\r\n        </option>\r\n        <option name=\"vmOptions\" />\r\n      </ExternalSystemSettings>\r\n      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>\r\n      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>\r\n      <DebugAllEnabled>false</DebugAllEnabled>\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.samjungTechApplication\" />\r\n        <item itemvalue=\"Gradle.samjungTech [clean]\" />\r\n        <item itemvalue=\"Gradle.samjungTech [build]\" />\r\n        <item itemvalue=\"Gradle.samjungTech [bootJar]\" />\r\n        <item itemvalue=\"Gradle.samjungTech [jar]\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"41206d8d-082f-4436-99fc-9abd45071831\" name=\"Changes\" comment=\"\" />\r\n      <created>1684799200580</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1684799200580</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"ss\">\r\n      <created>1684799741232</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684799741232</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"read me update\">\r\n      <created>1684799814198</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684799814198</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"rename\">\r\n      <created>1684801013012</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684801013013</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"rename\">\r\n      <created>1684801027990</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684801027990</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"zzzzzzzzzzzzzzd\">\r\n      <created>1684804079638</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1684804079638</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"logo img\">\r\n      <created>1685600179343</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685600179343</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"save\">\r\n      <created>1687411475869</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1687411475869</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"save\">\r\n      <created>1687481580706</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1687481580706</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"save\">\r\n      <created>1687483925792</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1687483925792</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"save\">\r\n      <created>1687483933655</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1687483933655</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"11\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"ss\" />\r\n    <MESSAGE value=\"read me update\" />\r\n    <MESSAGE value=\"rename\" />\r\n    <MESSAGE value=\"zzzzzzzzzzzzzz\" />\r\n    <MESSAGE value=\"zzzzzzzzzzzzzzd\" />\r\n    <MESSAGE value=\"add prod\" />\r\n    <MESSAGE value=\"pd update\" />\r\n    <MESSAGE value=\"logo img\" />\r\n    <MESSAGE value=\"save\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"save\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 368b25a9d24038b32433b6196e144806b3126024)
++++ b/.idea/workspace.xml	(date 1687834147025)
+@@ -5,8 +5,6 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="41206d8d-082f-4436-99fc-9abd45071831" name="Changes" comment="save">
+-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/header.html" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/layout/default.html" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileContent/fileContent.lock" afterDir="false" />
+@@ -14,45 +12,35 @@
+       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/classAnalysis.bin" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/taskHistory.bin" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/modules/samjungTech.iml" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/files/5fc647bc-1783-498d-b31c-4dccdc7b07c4_KakaoTalk_20230322_114955053.jpg" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/files/781ad0d3-2f09-4877-a188-599f13ea8f49_삭제금지.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/files/7985f8ad-ebfb-4879-9716-4643f4da7199_삭제금지.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/files/ac663c6a-b1a7-42f2-ab15-02b8122d3bd4_삭제금지.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/files/d945baaa-15b1-4114-9b40-3a97c5be3784_화면 캡처 2023-05-09 191656.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/aiu-n.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/aiu.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/d-ups.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/hfu.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/logo.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/logotext.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/r-ups.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/aiu-n.html" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/aiu.html" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/d-ups.html" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/hfu.html" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/aiu-n.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/aiu-n.png" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/aiu.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/aiu.png" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/d-ups.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/d-ups.png" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/hfu.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/hfu.png" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/logo.png" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/logotext.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/logotext.png" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/r-ups.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/r-ups.png" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/header.html" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/build/resources/main/templates/itemView.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/itemView.html" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/build/resources/main/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/main.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/r-ups.html" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/MainController.java" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/5fc647bc-1783-498d-b31c-4dccdc7b07c4_KakaoTalk_20230322_114955053.jpg" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/781ad0d3-2f09-4877-a188-599f13ea8f49_삭제금지.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/7985f8ad-ebfb-4879-9716-4643f4da7199_삭제금지.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/ac663c6a-b1a7-42f2-ab15-02b8122d3bd4_삭제금지.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/d945baaa-15b1-4114-9b40-3a97c5be3784_화면 캡처 2023-05-09 191656.png" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/aiu-n.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/aiu-n.png" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/aiu.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/aiu.png" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/d-ups.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/d-ups.png" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/hfu.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/hfu.png" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/logo.png" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/logotext.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/logotext.png" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/r-ups.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/r-ups.png" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/footer.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/footer.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/header.html" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/ItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/ItemController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/service/ItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/service/ItemService.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/aiu-n.png" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/aiu.png" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/d-ups.png" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/hfu.png" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/logo.png" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/logotext.png" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/r-ups.png" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/footer.html" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/header.html" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/itemView.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/itemView.html" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/layout/default.html" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/main.html" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/itemForm.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/seller/itemForm.html" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -81,6 +69,12 @@
+                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                 <item name="mamuriYearBook" type="f1a62948:ProjectNode" />
+                 <item name="Tasks" type="e4a08cd1:TasksNode" />
++              </path>
++              <path>
++                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
++                <item name="mamuriYearBook" type="f1a62948:ProjectNode" />
++                <item name="Tasks" type="e4a08cd1:TasksNode" />
++                <item name="build" type="c8890929:TasksNode$1" />
+               </path>
+               <path>
+                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+@@ -113,19 +107,19 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+-    "DefaultHtmlFileTemplate": "HTML File",
+-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "last_opened_file_path": "C:/Users/hoooo/github_workspace/samjungTech",
+-    "project.structure.last.edited": "Project",
+-    "project.structure.proportion": "0.15",
+-    "project.structure.side.proportion": "0.2",
+-    "settings.editor.selected.configurable": "preferences.lookFeel"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;last_opened_file_path&quot;: &quot;C:/Users/hoooo/workspace/Springboot-boardCRUD-master&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="RecentsManager">
+     <key name="CopyFile.RECENT_KEYS">
+       <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\static\asset" />
+@@ -134,11 +128,12 @@
+       <recent name="C:\Users\hoooo\github_workspace\samjungTech" />
+     </key>
+     <key name="MoveFile.RECENT_KEYS">
++      <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\static\files" />
++      <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\templates" />
+       <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\templates\fragments" />
+-      <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\static\files" />
+     </key>
+   </component>
+-  <component name="RunManager" selected="Application.samjungTechApplication">
++  <component name="RunManager" selected="Gradle.samjungTech [bootJar]">
+     <configuration name="samjungTechApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+       <option name="MAIN_CLASS_NAME" value="com.chieyoun.board.samjungTechApplication" />
+       <module name="mamuriYearBook.main" />
+@@ -238,10 +233,10 @@
+     </configuration>
+     <recent_temporary>
+       <list>
++        <item itemvalue="Gradle.samjungTech [bootJar]" />
+         <item itemvalue="Application.samjungTechApplication" />
+         <item itemvalue="Gradle.samjungTech [clean]" />
+         <item itemvalue="Gradle.samjungTech [build]" />
+-        <item itemvalue="Gradle.samjungTech [bootJar]" />
+         <item itemvalue="Gradle.samjungTech [jar]" />
+       </list>
+     </recent_temporary>
+@@ -325,7 +320,14 @@
+       <option name="project" value="LOCAL" />
+       <updated>1687483933655</updated>
+     </task>
+-    <option name="localTasksCounter" value="11" />
++    <task id="LOCAL-00011" summary="save">
++      <created>1687486820364</created>
++      <option name="number" value="00011" />
++      <option name="presentableId" value="LOCAL-00011" />
++      <option name="project" value="LOCAL" />
++      <updated>1687486820364</updated>
++    </task>
++    <option name="localTasksCounter" value="12" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+diff --git a/src/main/resources/templates/fragments/header.html b/src/main/resources/templates/header.html
+rename from src/main/resources/templates/fragments/header.html
+rename to src/main/resources/templates/header.html
