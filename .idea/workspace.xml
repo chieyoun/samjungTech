@@ -4,8 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="41206d8d-082f-4436-99fc-9abd45071831" name="Changes" comment="230626 - 메인 배경 이미지 추가">
+    <list default="true" id="41206d8d-082f-4436-99fc-9abd45071831" name="Changes" comment="230627 - 수정">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/grass-3743023_1920.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileContent/fileContent.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/static/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/main.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/main.html" afterDir="false" />
     </list>
@@ -74,7 +83,7 @@
     &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/hcy/202301/spring/sec/sec&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/hcy/202301/samjungTech&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -88,6 +97,9 @@
       <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\templates\board" />
       <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\static\files" />
       <recent name="C:\Users\hoooo\github_workspace\samjungTech" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\hcy\202301\samjungTech\src\main\resources\static\img" />
     </key>
   </component>
   <component name="RunManager" selected="Application.samjungTechApplication (1)">
@@ -201,7 +213,15 @@
       <option name="project" value="LOCAL" />
       <updated>1687775388601</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="230627 - 수정">
+      <option name="closed" value="true" />
+      <created>1687828475737</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1687828475737</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -228,6 +248,7 @@
     <MESSAGE value="230620 - 커밋 2" />
     <MESSAGE value="230622 - 커밋" />
     <MESSAGE value="230626 - 메인 배경 이미지 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="230626 - 메인 배경 이미지 추가" />
+    <MESSAGE value="230627 - 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="230627 - 수정" />
   </component>
 </project>
