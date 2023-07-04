@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41206d8d-082f-4436-99fc-9abd45071831" name="Changes" comment="save">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/header.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/layout/default.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/MainController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/img/plug-3285062_1920.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileContent/fileContent.lock" afterDir="false" />
@@ -14,14 +14,14 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-06-23__10_04__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2023-06-23_오전_10_04_[Changes]/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/files/5fc647bc-1783-498d-b31c-4dccdc7b07c4_KakaoTalk_20230322_114955053.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/files/781ad0d3-2f09-4877-a188-599f13ea8f49_삭제금지.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/files/7985f8ad-ebfb-4879-9716-4643f4da7199_삭제금지.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/files/ac663c6a-b1a7-42f2-ab15-02b8122d3bd4_삭제금지.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/files/d945baaa-15b1-4114-9b40-3a97c5be3784_화면 캡처 2023-05-09 191656.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/ServiceAccountKey.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/static/css/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/aiu-n.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/aiu.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/d-ups.png" beforeDir="false" />
@@ -29,19 +29,31 @@
       <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/logo.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/logotext.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/resources/main/static/img/r-ups.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/aiu-n.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/aiu.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/d-ups.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/hfu.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/js/ckeditor.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/static/js/ckeditor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/js/scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/static/js/scripts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/board/update.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/board/update.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/header.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/itemList.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/itemList.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/resources/main/templates/itemView.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/itemView.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/resources/main/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/r-ups.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/MainController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/5fc647bc-1783-498d-b31c-4dccdc7b07c4_KakaoTalk_20230322_114955053.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/781ad0d3-2f09-4877-a188-599f13ea8f49_삭제금지.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/7985f8ad-ebfb-4879-9716-4643f4da7199_삭제금지.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/ac663c6a-b1a7-42f2-ab15-02b8122d3bd4_삭제금지.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/files/d945baaa-15b1-4114-9b40-3a97c5be3784_화면 캡처 2023-05-09 191656.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/seller/itemForm.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/seller/itemForm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/seller/itemManage.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/seller/itemManage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/seller/itemModify.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/seller/itemModify.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/seller/saleList.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/seller/saleList.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/seller/sellerPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/seller/sellerPage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/signin.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/signin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/signup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/user/cash.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/user/cash.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/user/userCart.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/user/userCart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/user/userOrderList.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/user/userOrderList.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/user/userPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/user/userPage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/userModify.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/userModify.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/bootJar/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/bootJar/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/BoardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/BoardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/ItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/ItemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ServiceAccountKey.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/aiu-n.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/aiu-n.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/aiu.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/aiu.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/d-ups.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/d-ups.png" afterDir="false" />
@@ -49,10 +61,14 @@
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/logo.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/logotext.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/logotext.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/img/r-ups.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/files/r-ups.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/footer.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/footer.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/header.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/scripts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/itemList.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/itemList.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/itemView.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/itemView.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/itemManage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/seller/itemManage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/itemModify.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/seller/itemModify.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/saleList.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/seller/saleList.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/sellerPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/seller/sellerPage.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,6 +101,12 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="mamuriYearBook" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="mamuriYearBook" type="f1a62948:ProjectNode" />
                 <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
               </path>
             </expand>
@@ -98,6 +120,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -113,19 +136,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/hoooo/github_workspace/samjungTech",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/hoooo/github_workspace/samjungTech&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\static\asset" />
@@ -134,11 +157,12 @@
       <recent name="C:\Users\hoooo\github_workspace\samjungTech" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\templates\fragments" />
+      <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\static\img" />
       <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\static\files" />
+      <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\templates\fragments" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.samjungTechApplication">
+  <component name="RunManager" selected="Gradle.samjungTech [bootJar]">
     <configuration name="samjungTechApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.chieyoun.board.samjungTechApplication" />
       <module name="mamuriYearBook.main" />
@@ -238,10 +262,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.samjungTechApplication" />
-        <item itemvalue="Gradle.samjungTech [clean]" />
-        <item itemvalue="Gradle.samjungTech [build]" />
         <item itemvalue="Gradle.samjungTech [bootJar]" />
+        <item itemvalue="Gradle.samjungTech [clean]" />
+        <item itemvalue="Application.samjungTechApplication" />
+        <item itemvalue="Gradle.samjungTech [build]" />
         <item itemvalue="Gradle.samjungTech [jar]" />
       </list>
     </recent_temporary>

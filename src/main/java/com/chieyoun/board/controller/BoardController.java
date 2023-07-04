@@ -1,6 +1,8 @@
 package com.chieyoun.board.controller;
 
+import com.chieyoun.board.domain.item.Item;
 import com.chieyoun.board.service.BoardService;
+import com.chieyoun.board.service.ItemService;
 import com.chieyoun.board.web.dto.auth.BoardDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,19 +15,36 @@ import java.util.List;
 @AllArgsConstructor
 public class BoardController {
     private BoardService boardService;
-
+//
     /* 게시글 목록 */
-    @GetMapping("/")
-    public String list(Model model, @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
-        List<BoardDto> boardList = boardService.getBoardlist(pageNum);
-        Integer[] pageList = boardService.getPageList(pageNum);
+//    @GetMapping("/list")
+//    public String list(Model model, @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
+//        List<BoardDto> boardList = boardService.getBoardlist(pageNum);
+//        Integer[] pageList = boardService.getPageList(pageNum);
+//
+//        model.addAttribute("boardList", boardList);
+//        model.addAttribute("pageList", pageList);
+//
+//        return "board/list";
+//    }
 
-        model.addAttribute("boardList", boardList);
-        model.addAttribute("pageList", pageList);
-
-        return "main.html";
-    }
     //바꿈
+    private final ItemService itemService;
+
+//    @GetMapping("/")
+//    public String main(Model model, @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
+//        List<BoardDto> boardList = boardService.getBoardlist(pageNum);
+//        Integer[] pageList = boardService.getPageList(pageNum);
+//
+//        model.addAttribute("boardList", boardList);
+//        model.addAttribute("pageList", pageList);
+//
+//        List<Item> items = itemService.allItemView();
+//        model.addAttribute("items", items);
+//
+//
+//        return "main.html";
+//    }
 
 
     /* 게시글 상세 */

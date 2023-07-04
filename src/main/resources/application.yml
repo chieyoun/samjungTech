@@ -26,6 +26,3 @@ logging:
 server:
   port: 80
   address: 0.0.0.0
-#app:
-#  firebase-configuration-file: ./ServiceAccountKey.json
-#  firebase-bucket: mamuri-2b044.appspot.com/

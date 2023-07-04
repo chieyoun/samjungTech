@@ -41,6 +41,7 @@
         </div>
         <hr/>
         <div class="col-md-7 col-lg-8">
+
             <form th:action="@{/item/modify/pro/{id}(id=${item.id})}" method="post" enctype="multipart/form-data">
                 <div class="row g-3">
                     <hr/>
@@ -54,7 +55,7 @@
                     </div>
                     <div class="col-12">
                         <label for="name" class="form-label">상품 이름</label>
-                        <input type="text" class="form-control" id="name" name="name" th:placeholder="${item.getName()}">
+                        <input type="text" class="form-control" id="name" name="name" th:value="${item.getName()}">
                         <div class="invalid-feedback">
                             Your name is required.
                         </div>
@@ -70,7 +71,7 @@
                     <div class="col-12">
                         <label class="form-label">상품 설명</label>
                         <!--                    <input type="text" class="form-control" name="text" id="text" placeholder="상품 설명을 입력하세요.">-->
-                        <textarea class="form-control" name="text" id="editor" th:placeholder="${item.getEditor()}"></textarea>
+                        <textarea class="form-control" name="editor" id="editor" th:utext="${item.getEditor()}"></textarea>
 
                         <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
                         <script>
@@ -84,7 +85,7 @@
 
                     <div class="col-12">
                         <label for="price" class="form-label">상품 가격</label>
-                        <input type="text" class="form-control" id="price" name="price" th:placeholder="${item.getPrice()}">
+                        <input type="text" class="form-control" id="price" name="price" th:value="${item.getPrice()}">
                         <div class="invalid-feedback">
                             Input is empty.
                         </div>
@@ -92,7 +93,7 @@
                     <div class="col-12">
                         <label for="stock" class="form-label">상품 재고</label>
                         <input type="text" class="form-control" id="stock" name="stock"
-                               th:placeholder="${item.getStock()}">
+                               th:value="${item.getStock()}">
                         <div class="invalid-feedback">
                             Input is empty.
                         </div>

@@ -18,62 +18,38 @@
 </head>
 <body>
 <!-- Navigation-->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" th:href="@{/main}" sec:authorize="isAuthenticated()">회사이름</a>
-        <a class="navbar-brand" th:href="@{/}" sec:authorize="!isAuthenticated()">회사이름</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/main}" sec:authorize="isAuthenticated()">Home</a></li>
-                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/}" sec:authorize="!isAuthenticated()">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" th:href="@{/item/new}" sec:authorize="hasRole('ROLE_SELLER')">Upload</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" th:href="@{/seller/manage/{id}(id=${user.getId()})}" sec:authorize="hasRole('ROLE_SELLER')">Manage</a></li>
+        <a class="navbar-brand" th:href="@{/}"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto my-2 my-lg-0">
 
+                <!--            <a class="navbar-brand" th:href="@{/main}" sec:authorize="isAuthenticated()">대충 이름</a>&ndash;&gt;-->
+                <!--            <a class="navbar-brand" th:href="@{/}" sec:authorize="!isAuthenticated()">대충 이름2</a>-->
+                <li class="nav-item"><a class="nav-link" th:href="@{/item/new}">item</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/signin}">관리자 로그인</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/signup}">관리자 회원가입</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about">회사소개</a></li>
+                <li class="nav-item"><a class="nav-link" href="#product_intro">제품소개</a></li>
+                <li class="nav-item"><a class="nav-link" href="#support">고객지원</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">견적문의</a></li>
+
+                <form class="d-flex" sec:authorize="hasRole('ROLE_SELLER')">
+                    <a class="btn btn-outline-dark" th:href="@{/seller/{id}(id=${user.getId()})}" th:text="|${user.getName()}님 환영합니다.|">
+                        관리자 페이지
+                    </a>
+                    <a class="btn btn-outline-dark" th:href="@{/logout}">
+                        로그아웃
+                    </a>
+                </form>
             </ul>
-            <form th:action="@{/signin}" sec:authorize="!isAuthenticated()">
-                <button class="btn btn-outline-dark" type="submit">
-                    로그인
-                </button>
-            </form>
-            <form th:action="@{/signup}" sec:authorize="!isAuthenticated()">
-                <button class="btn btn-outline-dark" type="submit">
-                    회원가입
-                </button>
-            </form>
-
-            <form class="d-flex" sec:authorize="hasRole('ROLE_USER')">
-<!--                <a class="btn btn-outline-dark" href="#" th:text="|현재잔액 : ${user.getCoin()} ₩|">-->
-<!--                    현재잔액 : 10000 ₩-->
-<!--                </a>-->
-                <a class="btn btn-outline-dark" th:href="@{/user/cart/{id}(id=${user.getId()})}">
-                    <i class="bi-cart-fill me-1"></i>
-                    Cart
-                    <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${cartCount}">0</span>
-                </a>
-                <a class="btn btn-outline-dark" th:href="@{/user/{id}(id=${user.getId()})}" th:text="|${user.getName()}님 환영합니다.|">
-                    마이페이지
-                </a>
-                <a class="btn btn-outline-dark" th:href="@{/logout}">
-                    로그아웃
-                </a>
-            </form>
-
-            <form class="d-flex" sec:authorize="hasRole('ROLE_SELLER')">
-<!--                <a class="btn btn-outline-dark" href="#" th:text="|현재수익 : ${user.getCoin()} ₩|">-->
-<!--                    현재잔액 : 10000 ₩-->
-<!--                </a>-->
-                <a class="btn btn-outline-dark" th:href="@{/seller/{id}(id=${user.getId()})}" th:text="|${user.getName()}님 환영합니다.|">
-                    관리자 페이지
-                </a>
-                <a class="btn btn-outline-dark" th:href="@{/logout}">
-                    로그아웃
-                </a>
-            </form>
-
         </div>
     </div>
 </nav>
+
+
+
 <!-- Product section-->
 <section class="py-5">
     <div class="container px-4 px-lg-5 my-5">
@@ -89,7 +65,7 @@
 <!--                    <p class="lead" th:text="${item.getEditor()}">상품 설명</p>-->
 
                 </div>
-                <p class="lead" th:text="${item.getEditor()}">상품 설명</p>
+                <p class="lead" th:utext="${item.getEditor()}">상품 설명</p>
 <!--                <p class="lead">상품 설명입니다.</p>-->
 
 
@@ -108,15 +84,15 @@
                     </div>
                 </form>
 
-                <form class="d-flex" sec:authorize="hasRole('ROLE_USER')" onsubmit="return orderitem();" th:action="@{/user/{id}/checkout/{itemId}(id=${user.id}, itemId=${item.id})}" method="post">
-                    <div class="d-flex">
-<!--                        <input class="form-control text-center me-3" id="count" name="count" type="num" value="1"-->
-<!--                               style="max-width: 3rem"/>-->
-<!--                        <button class="btn btn-outline-dark flex-shrink-0" id="basket" type="submit">-->
-<!--                            구매하기-->
-<!--                        </button>-->
-                    </div>
-                </form>
+<!--                <form class="d-flex" sec:authorize="hasRole('ROLE_USER')" onsubmit="return orderitem();" th:action="@{/user/{id}/checkout/{itemId}(id=${user.id}, itemId=${item.id})}" method="post">-->
+<!--                    <div class="d-flex">-->
+<!--&lt;!&ndash;                        <input class="form-control text-center me-3" id="count" name="count" type="num" value="1"&ndash;&gt;-->
+<!--&lt;!&ndash;                               style="max-width: 3rem"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <button class="btn btn-outline-dark flex-shrink-0" id="basket" type="submit">&ndash;&gt;-->
+<!--&lt;!&ndash;                            구매하기&ndash;&gt;-->
+<!--&lt;!&ndash;                        </button>&ndash;&gt;-->
+<!--                    </div>-->
+<!--                </form>-->
                 <!--<script th:inline="javascript">
                     /* <![CDATA[ */
                     var itemstock = [[${item.Stock}]];
@@ -137,19 +113,19 @@
                 </script>-->
 
 
-                <form class="d-flex" sec:authorize="hasRole('ROLE_USER')" onsubmit="return additem();" th:action="@{/user/cart/{id}/{itemId}(id=${user.id}, itemId=${item.id})}" method="post">
-                    <input class="form-control text-center me-3" id="amount" name="amount" type="num" value="1" style="max-width: 3rem"/>
-                    <button class="btn btn-outline-dark flex-shrink-0" id="basket" type="submit"><i class="bi-cart-fill me-1"></i>관심상품</button>
-                </form>
-                <script th:inline="javascript">
-                    /* <![CDATA[ */
+<!--                <form class="d-flex" sec:authorize="hasRole('ROLE_USER')" onsubmit="return additem();" th:action="@{/user/cart/{id}/{itemId}(id=${user.id}, itemId=${item.id})}" method="post">-->
+<!--                    <input class="form-control text-center me-3" id="amount" name="amount" type="num" value="1" style="max-width: 3rem"/>-->
+<!--                    <button class="btn btn-outline-dark flex-shrink-0" id="basket" type="submit"><i class="bi-cart-fill me-1"></i>관심상품</button>-->
+<!--                </form>-->
+<!--                <script th:inline="javascript">-->
+<!--                    /* <![CDATA[ */-->
 
 
 
 
-                    <!--button.addEventListener("click",additem)-->
-                    /* ]]> */
-                </script>
+<!--                    &lt;!&ndash;button.addEventListener("click",additem)&ndash;&gt;-->
+<!--                    /* ]]> */-->
+<!--                </script>-->
 
 
                 <!--<form class="d-flex" sec:authorize="hasRole('ROLE_USER')" th:action="@{/user/cart/{id}/{itemId}(id=${user.id}, itemId=${item.id})}" method="post">
@@ -163,19 +139,19 @@
                     </div>
                 </form>-->
 
-                <form class="d-flex" sec:authorize="!isAuthenticated()">
-                    <div class="d-flex">
-<!--                        <a th:href="@{/signin}">-->
-<!--                            <button class="btn btn-outline-dark flex-shrink-0" type="button">-->
-<!--                                구매하기-->
-<!--                            </button>-->
+<!--                <form class="d-flex" sec:authorize="!isAuthenticated()">-->
+<!--                    <div class="d-flex">-->
+<!--&lt;!&ndash;                        <a th:href="@{/signin}">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <button class="btn btn-outline-dark flex-shrink-0" type="button">&ndash;&gt;-->
+<!--&lt;!&ndash;                                구매하기&ndash;&gt;-->
+<!--&lt;!&ndash;                            </button>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </a>&ndash;&gt;-->
+<!--                        <a class="btn btn-outline-dark" th:href="@{/signin}">-->
+<!--                            <i class="bi-cart-fill me-1"></i>-->
+<!--                            관심상품-->
 <!--                        </a>-->
-                        <a class="btn btn-outline-dark" th:href="@{/signin}">
-                            <i class="bi-cart-fill me-1"></i>
-                            관심상품
-                        </a>
-                    </div>
-                </form>
+<!--                    </div>-->
+<!--                </form>-->
             </div>
         </div>
     </div>
