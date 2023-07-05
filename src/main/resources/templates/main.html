@@ -167,7 +167,7 @@
             </div>
         </div>
     </div>
-    <div style="text-align: center;">
+    <div class="more-align">
         <a href="/nonlogin/item/list" sec:authorize="!hasRole('ROLE_SELLER')">더보기</a>
         <a href="/item/list" sec:authorize="hasRole('ROLE_SELLER')">더보기</a>
     </div>
@@ -176,62 +176,57 @@
 <!-- support -->
 <div id="support">
     <div class="container px-4 px-lg-5">
-
-        <h2 class="text-center mt-0">고객지원</h2>
+        <h2 class="text-center mt-0"><b>고객지원</b></h2>
         <hr class="divider" />
         <div class="row gx-4 gx-lg-5">
-            <div style="height: 30px;"></div>
-
+            <div class="write-align">
                 <a th:href="@{/admin/qna/post}">글쓰기</a>
+            </div>
+
+            <div style="height: 30px;"></div>
 
             <div class="table-responsive" style="text-align: center;">
                 <h4>공지사항</h4>
                 <div style="height: 20px;"></div>
-
             </div>
 
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="one wide">번호</th>
+                        <th class="ten wide">글제목</th>
+                        <th class="two wide">작성자</th>
+                        <th class="three wide">작성일</th>
+                    </tr>
+                </thead>
 
+                <tbody>
+                    <tr th:each="board : ${boardList}">
+                        <td>
+                            <span th:text="${board.id}"></span>
+                        </td>
+                        <td>
+                            <a th:href="@{'/qna/post/' + ${board.id}}">
+                                <span th:text="${board.title}"></span>
+                            </a>
+                        </td>
+                        <td>
+                            <span th:text="${board.writer}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
 
-    <table>
-        <thead>
-        <tr>
-            <th class="one wide">번호</th>
-            <th class="ten wide">글제목</th>
-            <th class="two wide">작성자</th>
-            <th class="three wide">작성일</th>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-        </tr>
-        </thead>
-
-        <tbody>
-        <!-- CONTENTS !-->
-        <tr th:each="board : ${boardList}">
-            <td>
-                <span th:text="${board.id}"></span>
-            </td>
-            <td>
-                <a th:href="@{'/qna/post/' + ${board.id}}">
-                    <span th:text="${board.title}"></span>
-                </a>
-            </td>
-            <td>
-                <span th:text="${board.writer}"></span>
-            </td>
-            <td>
-                <span th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
-
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <div class="container">
-        <span th:each="pageNum : ${pageList}" th:inline="text">
-            <a th:href="@{'/qna/page=' + ${pageNum}}">[[${pageNum}]]</a>
-        </span>
-    </div>
-
-    <hr>
+            <div class="main-pageNum-align">
+                <span th:each="pageNum : ${pageList}" th:inline="text">
+                    <a th:href="@{'/qna/page=' + ${pageNum}}">[[${pageNum}]]</a>
+                </span>
+            </div>
+            <hr>
 
     <!-- 검색 form -->
 <!--    <form action="/qna/board/search" method="GET">-->
@@ -242,9 +237,6 @@
 <!--        <button>검색하기</button>-->
 <!--    </form>-->
 
-
-            <div style="height: 100px;"></div>
-
             <div class="table-responsive">
                 <h4 style="text-align: center;">FAQ</h4>
                 <div style="height: 20px;"></div>
@@ -254,46 +246,19 @@
                             <ul>
                                 <li>
                                     <div class="faq-box__question">
-                                        <span>질문 1</span>
+                                        <span>제품 사양은 어떻게 확인하나요?</span>
                                     </div>
                                     <div class="faq-box__answer">
-                                        답변 1
+                                        제품 소개에 있는 상세 보기 버튼을 누르시면 확인하실 수 있습니다.
                                     </div>
                                 </li>
 
                                 <li>
                                     <div class="faq-box__question">
-                                        <span>질문 2</span>
+                                        <span>제품은 어떤 것들이 있나요?</span>
                                     </div>
                                     <div class="faq-box__answer">
-                                        답변 2
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="faq-box__question">
-                                        <span>질문 3</span>
-                                    </div>
-                                    <div class="faq-box__answer">
-                                        답변 3
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="faq-box__question">
-                                        <span>질문 4</span>
-                                    </div>
-                                    <div class="faq-box__answer">
-                                        답변 4
-                                    </div>
-                                </li>
-
-                                <li>
-                                    <div class="faq-box__question">
-                                        <span>질문 5</span>
-                                    </div>
-                                    <div class="faq-box__answer">
-                                        답변 5
+                                        디지털 UPS, 렉장비용 UPS, HFU, AIU-N, AIU가 있습니다.
                                     </div>
                                 </li>
                             </ul>
@@ -311,7 +276,7 @@
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-lg-8 col-xl-6 text-center">
-                <h2 class="mt-0 b_title_st2">견적문의</h2>
+                <h2 class="mt-0 b_title_st2"><b>견적문의</b></h2>
                 <hr class="divider" />
             </div>
         </div>

@@ -11062,3 +11062,24 @@ ul {
 .fixed {
     background-attachment: fixed;
 }
+
+
+
+
+
+
+.write-align {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.more-align {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.main-pageNum-align {
+    text-align: center;
+    margin-bottom: 20px;
+}
