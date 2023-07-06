@@ -26,13 +26,60 @@
         emailjs.init("Xu4zXyTG8Bri5lUv2");
     })();
     </script>
+    <style>
+    .containers {
+      position: relative;
+      width: 250px;
+      height: 540px;
+    }
+
+    #plug {
+      position: absolute;
+      bottom: 43px; /* 수정된 부분: 플러그의 아래 부분을 레이어로 숨기기 위해 값 조정 */
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      z-index: 1;
+    }
+
+    #plug img {
+      width: 100%;
+      height: 100%;
+    }
+
+    #sprout {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.5s ease, bottom 0.5s ease;
+    }
+
+    #sprout img {
+      width: 250px;
+    }
+
+    #layer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 87px; /* 수정된 부분: 레이어의 높이를 조정하여 플러그의 아래 부분을 숨김 */
+      background-color: black;
+      z-index: 2;
+      transition: background-color 1s ease; /* 추가된 부분: 배경색 변화에 대한 트랜지션 설정 */
+    }
+  </style>
 </head>
 
 <body id="page-top">
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" th:href="@{/}"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>
+        <a class="navbar-brand" th:href="@{/}" sec:authorize="!isAuthenticated()"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>
+        <a class="navbar-brand" th:href="@{/main}" sec:authorize="isAuthenticated()"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto my-2 my-lg-0">
@@ -46,13 +93,15 @@
                 <li class="nav-item"><a class="nav-link" href="#product_intro">제품소개</a></li>
                 <li class="nav-item"><a class="nav-link" href="#support">고객지원</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contact">견적문의</a></li>
+                <li class="nav-item"><a class="nav-link" sec:authorize="hasRole('ROLE_SELLER')" th:href="@{/admin/qna/post}">글쓰기</a></li>
                 <form class="d-flex" sec:authorize="hasRole('ROLE_SELLER')">
-                    <a class="btn btn-outline-dark" th:href="@{/seller/{id}(id=${user.getId()})}" th:text="|${user.getName()}님 환영합니다.|">
-                        관리자 페이지
-                    </a>
+<!--                    <a class="btn btn-outline-dark" th:href="@{/seller/{id}(id=${user.getId()})}" th:text="|${user.getName()}님 환영합니다.|">-->
+<!--                        관리자 페이지-->
+<!--                    </a>-->
 <!--                    <a class="btn btn-outline-dark" th:href="@{/logout}">-->
 <!--                        로그아웃-->
 <!--                    </a>-->
+                    <li class="nav-item"><a class="nav-link" th:href="@{/seller/{id}(id=${user.getId()})}">관리</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/logout}">로그아웃</a></li>
                 </form>
             </ul>
@@ -79,8 +128,20 @@
 
 <!-- About-->
 <section class="page-section bg-primary" id="about">
+<!--    <div class="containers">-->
+<!--        <div id="plug">-->
+<!--            <img src="/asset/plug.png" alt="Plug" />-->
+<!--        </div>-->
+<!--        <div id="sprout">-->
+<!--            <img src="/asset/sprout.png" alt="Sprout" />-->
+<!--        </div>-->
+<!--        <div id="layer"></div>-->
+<!--    </div>-->
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
+
+
+
             <div class="col-lg-8 text-center">
                 <h2 class="text-white mt-0">삼정테크</h2>
                 <hr class="divider divider-light" />
@@ -142,6 +203,8 @@
 <!--</section>-->
 <section class="py-5" id="product_intro">
     <div class="container px-4 px-lg-5 mt-5">
+        <h2 class="text-center mt-0"><b>제품소개</b></h2>
+        <hr class="divider" />
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
 
@@ -153,25 +216,27 @@
                     <div class="card-body p-4">
                         <div class="text-center">
                             <!-- Product name\-->
-                            <h5 class="fw-bolder" th:text="${item.getName()}">상품이름</h5>
+                            <h5 class="fw-bolder product-name" th:text="${item.getName()}">상품이름</h5>
                             <!-- Product price-->
 <!--                            <p th:text="|${item.getPrice()} 원|">상품 가격</p>-->
                         </div>
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" sec:authorize="!hasRole('ROLE_SELLER')">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/item/view/{id}(id=${item.getId()})}">상세보기</a></div>
+                        <div class="text-center"><a class="btn btn-outline mt-auto btn-background" th:href="@{/item/view/{id}(id=${item.getId()})}">상세보기</a></div>
                     </div>
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" sec:authorize="hasRole('ROLE_SELLER')">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/admin/item/view/{id}(id=${item.getId()})}">상세보기</a></div>
+                        <div class="text-center"><a class="btn btn-outline mt-auto btn-background" th:href="@{/admin/item/view/{id}(id=${item.getId()})}">상세보기</a></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="more-align">
-        <a href="/nonlogin/item/list" sec:authorize="!hasRole('ROLE_SELLER')">더보기</a>
-        <a href="/item/list" sec:authorize="hasRole('ROLE_SELLER')">더보기</a>
+        <div class="text-center"><a class="btn btn-outline mt-auto btn-background" th:href="@{/nonlogin/item/list}" sec:authorize="!hasRole('ROLE_SELLER')">더보기</a></div>
+        <div class="text-center"><a class="btn btn-outline mt-auto btn-background" th:href="@{/item/list}" sec:authorize="hasRole('ROLE_SELLER')">더보기</a></div>
+<!--        <a href="/nonlogin/item/list" sec:authorize="!hasRole('ROLE_SELLER')">더보기</a>-->
+<!--        <a href="/item/list" sec:authorize="hasRole('ROLE_SELLER')">더보기</a>-->
     </div>
 </section>
 
@@ -181,9 +246,9 @@
         <h2 class="text-center mt-0"><b>고객지원</b></h2>
         <hr class="divider" />
         <div class="row gx-4 gx-lg-5">
-            <div class="write-align">
-                <a th:href="@{/admin/qna/post}">글쓰기</a>
-            </div>
+<!--            <div class="write-align">-->
+<!--                <a th:href="@{/admin/qna/post}">글쓰기</a>-->
+<!--            </div>-->
 
             <div style="height: 30px;"></div>
 
@@ -318,7 +383,6 @@
     </div>
 </section>
 
-
 <!-- Footer-->
 <footer class="bg-light py-5">
     <div class="container px-4 px-lg-5">
@@ -329,8 +393,25 @@
     </div>
 
 </footer>
-
-
-
 </body>
+<script>
+    const plug = document.getElementById('plug');
+    const sprout = document.getElementById('sprout');
+    const layer = document.getElementById('layer');
+
+    plug.addEventListener('click', () => {
+      plug.style.transform = 'translateY(-100%)';
+      plug.style.opacity = '0';
+
+      setTimeout(() => {
+        layer.style.bottom = '0';
+        sprout.style.bottom = '87px'; // 수정된 부분: 새싹의 위치를 플러그 아래로 설정
+        sprout.style.opacity = '1';
+        setTimeout(() => {
+          layer.style.backgroundColor = 'green'; // 추가된 부분: 레이어의 색을 초록색으로 변경
+        }, 500);
+      }, 500);
+    });
+  </script>
+
 </html>

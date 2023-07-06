@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -25,7 +25,8 @@
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" th:href="@{/}"><img src="/asset/logo.png"></a>
+        <a class="navbar-brand" th:href="@{/}" sec:authorize="!isAuthenticated()"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>
+        <a class="navbar-brand" th:href="@{/main}" sec:authorize="isAuthenticated()"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto my-2 my-lg-0">
@@ -51,6 +52,12 @@
 
         <tr>
             <td><span style="color: grey" th:text="${#temporals.format(boardDto.createdDate, 'yyyy-MM-dd HH:mm')}"></span></td>
+        </tr>
+
+        <tr>
+            <td>
+                <div style="height: 30px;"></div>
+            </td>
         </tr>
 
         <tr>

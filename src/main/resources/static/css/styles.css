@@ -6658,6 +6658,7 @@ textarea.form-control-lg {
 .text-bg-primary {
   color: #fff !important;
   background-color: RGBA(244, 98, 58, var(--bs-bg-opacity, 1)) !important;
+
 }
 
 .text-bg-secondary {
@@ -8127,7 +8128,8 @@ textarea.form-control-lg {
 
 .bg-primary {
   --bs-bg-opacity: 1;
-  background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
+  background-image: url("https://img.freepik.com/premium-photo/field-green-grass-blue-sky-with-cloud-cloudy-landscape-background_36078-508.jpg");
+  background-size: cover;
 }
 
 .bg-secondary {
@@ -11082,4 +11084,21 @@ ul {
 .main-pageNum-align {
     text-align: center;
     margin-bottom: 20px;
+}
+
+.btn-background {
+    border: 1px solid black;
+    background-color: white;
+}
+
+.btn-background:hover {
+    border: 1px solid black;
+    background-color: #f0f0f0;
+}
+
+.product-name {
+        position: absolute;
+        bottom: 70px; /* 조정 가능한 값으로 수정 */
+        left: 50%;
+        transform: translateX(-50%);
 }
