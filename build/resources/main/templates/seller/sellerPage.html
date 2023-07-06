@@ -31,18 +31,19 @@
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" th:href="@{/main}">회사ㅇ름</a>
+        <!--        <a class="navbar-brand" th:href="@{/main}">대충홈피 이름</a>-->
+        <a class="navbar-brand" th:href="@{/main}"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/main}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" th:href="@{/item/new}">Upload</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" th:href="@{/seller/manage/{id}(id=${user.getId()})}">Manage</a></li>
+                <!--                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/main}">Home</a></li>-->
+                <li class="nav-item"><a class="nav-link" href="#" th:href="@{/item/new}">상품 등록</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" th:href="@{/seller/manage/{id}(id=${user.getId()})}">상품 관리</a></li>
             </ul>
             <form class="d-flex">
-<!--                <a class="btn btn-outline-dark" href="#" th:text="|현재수익 : ${user.getCoin()} ₩|">-->
-<!--                    현재잔액 : 10000 ₩-->
-<!--                </a>-->
+                <!--                <a class="btn btn-outline-dark" href="#" th:text="|현재수익 : ${user.getCoin()} ₩|">-->
+                <!--                    현재잔액 : 10000 ₩-->
+                <!--                </a>-->
                 <a class="btn btn-outline-dark" th:href="@{/seller/{id}(id=${user.getId()})}" th:text="|${user.getName()}님 환영합니다.|">
                     관리자 페이지
                 </a>
@@ -54,34 +55,35 @@
     </div>
 </nav>
 
-<!-- SIDE BAR -->
-<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-    <div class="position-sticky pt-3">
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" th:href="@{/seller/{id}(id=${user.getId()})}">
-                    <span data-feather="home"></span>
-                    관리자페이지
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" th:href="@{/seller/manage/{id}(id=${user.getId()})}">
-                    <span data-feather="home"></span>
-                    상품관리
-                </a>
-            </li>
+<!--&lt;!&ndash; SIDE BAR &ndash;&gt;-->
+<!--<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">-->
+<!--    <div class="position-sticky pt-3">-->
+<!--        <ul class="nav flex-column">-->
 <!--            <li class="nav-item">-->
-<!--                <a class="nav-link" th:href="@{/seller/salelist/{id}(id=${user.getId()})}">-->
-<!--                    <span data-feather="file"></span>-->
-<!--                    판매내역-->
+<!--                <a class="nav-link active" aria-current="page" th:href="@{/seller/{id}(id=${user.getId()})}">-->
+<!--                    <span data-feather="home"></span>-->
+<!--                    관리자페이지-->
 <!--                </a>-->
 <!--            </li>-->
-        </ul>
-    </div>
-</nav>
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link active" aria-current="page" th:href="@{/seller/manage/{id}(id=${user.getId()})}">-->
+<!--                    <span data-feather="home"></span>-->
+<!--                    상품관리-->
+<!--                </a>-->
+<!--            </li>-->
+<!--&lt;!&ndash;            <li class="nav-item">&ndash;&gt;-->
+<!--&lt;!&ndash;                <a class="nav-link" th:href="@{/seller/salelist/{id}(id=${user.getId()})}">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <span data-feather="file"></span>&ndash;&gt;-->
+<!--&lt;!&ndash;                    판매내역&ndash;&gt;-->
+<!--&lt;!&ndash;                </a>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--</nav>-->
+<div style="height: 80px"></div>
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">관리자페이지</h1>
+        <h1 class="h2" style="text-align: center">관리자페이지</h1>
     </div>
 </main>
 
@@ -158,8 +160,15 @@
 
     </div>
 </div>
-<footer class="my-5 pt-5 text-muted text-center text-small">
-    <p class="mb-1">&copy; 아직 카피라이트 안넣은 사람이 있다?!?!?</p>
+
+<div style="height: 200px"></div>
+<!-- Footer-->
+<footer class="bg-light py-5 fixed-bottom">
+    <div class="container px-4 px-lg-5">
+        <!--                <div class="small text-center text-muted"><a href="login">ADMIN</a>&nbsp;&nbsp;&nbsp;&nbsp;대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div>-->
+        <div class="small text-center text-muted">대구본사 : 대구광역시 달서구 문화회관 9길 66(장동)&nbsp;&nbsp;&nbsp;&nbsp;본사전화 : 053)744-3897&nbsp;&nbsp;&nbsp;&nbsp;Fax : 742-4658&nbsp;&nbsp;&nbsp;&nbsp;담당자 휴대폰 : 010-8895-9141</div>
+    </div>
+
 </footer>
 </body>
 </html>

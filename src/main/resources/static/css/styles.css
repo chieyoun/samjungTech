@@ -8128,8 +8128,7 @@ textarea.form-control-lg {
 
 .bg-primary {
   --bs-bg-opacity: 1;
-  background-image: url("https://img.freepik.com/premium-photo/field-green-grass-blue-sky-with-cloud-cloudy-landscape-background_36078-508.jpg");
-  background-size: cover;
+  background-color: RGBA(244, 98, 58, var(--bs-bg-opacity, 1)) !important;
 }
 
 .bg-secondary {

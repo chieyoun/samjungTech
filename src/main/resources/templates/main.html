@@ -26,52 +26,6 @@
         emailjs.init("Xu4zXyTG8Bri5lUv2");
     })();
     </script>
-    <style>
-    .containers {
-      position: relative;
-      width: 250px;
-      height: 540px;
-    }
-
-    #plug {
-      position: absolute;
-      bottom: 43px; /* 수정된 부분: 플러그의 아래 부분을 레이어로 숨기기 위해 값 조정 */
-      left: 0;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.5s ease, opacity 0.5s ease;
-      z-index: 1;
-    }
-
-    #plug img {
-      width: 100%;
-      height: 100%;
-    }
-
-    #sprout {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      transition: opacity 0.5s ease, bottom 0.5s ease;
-    }
-
-    #sprout img {
-      width: 250px;
-    }
-
-    #layer {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 87px; /* 수정된 부분: 레이어의 높이를 조정하여 플러그의 아래 부분을 숨김 */
-      background-color: black;
-      z-index: 2;
-      transition: background-color 1s ease; /* 추가된 부분: 배경색 변화에 대한 트랜지션 설정 */
-    }
-  </style>
 </head>
 
 <body id="page-top">
@@ -128,20 +82,8 @@
 
 <!-- About-->
 <section class="page-section bg-primary" id="about">
-<!--    <div class="containers">-->
-<!--        <div id="plug">-->
-<!--            <img src="/asset/plug.png" alt="Plug" />-->
-<!--        </div>-->
-<!--        <div id="sprout">-->
-<!--            <img src="/asset/sprout.png" alt="Sprout" />-->
-<!--        </div>-->
-<!--        <div id="layer"></div>-->
-<!--    </div>-->
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
-
-
-
             <div class="col-lg-8 text-center">
                 <h2 class="text-white mt-0">삼정테크</h2>
                 <hr class="divider divider-light" />
@@ -394,24 +336,4 @@
 
 </footer>
 </body>
-<script>
-    const plug = document.getElementById('plug');
-    const sprout = document.getElementById('sprout');
-    const layer = document.getElementById('layer');
-
-    plug.addEventListener('click', () => {
-      plug.style.transform = 'translateY(-100%)';
-      plug.style.opacity = '0';
-
-      setTimeout(() => {
-        layer.style.bottom = '0';
-        sprout.style.bottom = '87px'; // 수정된 부분: 새싹의 위치를 플러그 아래로 설정
-        sprout.style.opacity = '1';
-        setTimeout(() => {
-          layer.style.backgroundColor = 'green'; // 추가된 부분: 레이어의 색을 초록색으로 변경
-        }, 500);
-      }, 500);
-    });
-  </script>
-
 </html>
