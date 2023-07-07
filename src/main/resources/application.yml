@@ -24,7 +24,7 @@ logging:
               BasicBinder: TRACE
 
 server:
-  port: 8090
+  port: 80
   address: 0.0.0.0
 #app:
 #  firebase-configuration-file: ./ServiceAccountKey.json
