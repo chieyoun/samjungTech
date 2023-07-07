@@ -23,6 +23,7 @@ public class Item {
 
     private String name;
 
+    @Column(length = 1000)
     private String editor; // 물건에 대한 상세설명
 
     private int price; // 가격

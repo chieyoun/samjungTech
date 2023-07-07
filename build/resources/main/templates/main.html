@@ -175,8 +175,8 @@
         </div>
     </div>
     <div class="more-align">
-        <div class="text-center"><a class="btn btn-outline mt-auto btn-background" th:href="@{/nonlogin/item/list}" sec:authorize="!hasRole('ROLE_SELLER')">더보기</a></div>
-        <div class="text-center"><a class="btn btn-outline mt-auto btn-background" th:href="@{/item/list}" sec:authorize="hasRole('ROLE_SELLER')">더보기</a></div>
+        <div class="text-center"><a class="btn btn-bg" th:href="@{/nonlogin/item/list}" sec:authorize="!hasRole('ROLE_SELLER')">더보기</a></div>
+        <div class="text-center"><a class="btn btn-bg" th:href="@{/item/list}" sec:authorize="hasRole('ROLE_SELLER')">더보기</a></div>
 <!--        <a href="/nonlogin/item/list" sec:authorize="!hasRole('ROLE_SELLER')">더보기</a>-->
 <!--        <a href="/item/list" sec:authorize="hasRole('ROLE_SELLER')">더보기</a>-->
     </div>
