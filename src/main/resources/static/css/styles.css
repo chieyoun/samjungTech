@@ -11110,3 +11110,17 @@ ul {
         left: 50%;
         transform: translateX(-50%);
 }
+
+/* footer 하단 고정 */
+#content{
+    min-height: calc(100vh - 162px); /* 푸터의 높이를 고려하여 최소 높이 설정 */
+    padding-bottom: 150px; /* 푸터의 높이만큼 아래쪽 여백 추가 */
+}
+
+#footer {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f5f5f5;
+  display: none; /* 초기에는 푸터 숨김 */
+}

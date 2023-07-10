@@ -4,21 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="41206d8d-082f-4436-99fc-9abd45071831" name="Changes" comment="230707 - 디자인 수정">
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+    <list default="true" id="41206d8d-082f-4436-99fc-9abd45071831" name="Changes" comment="230707 - 디자인 수정 22222222222222">
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/static/css/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/itemList.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/itemList.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/BoardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/BoardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/item/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/domain/item/Item.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/seller/itemForm.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/seller/itemForm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/ItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/ItemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/scripts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/itemList.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/itemList.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/itemView.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/itemView.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/itemForm.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/seller/itemForm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/itemManage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/seller/itemManage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/sellerPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/seller/sellerPage.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -363,7 +361,15 @@
       <option name="project" value="LOCAL" />
       <updated>1688690730022</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="230707 - 디자인 수정 22222222222222">
+      <option name="closed" value="true" />
+      <created>1688698664096</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1688698664096</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -394,6 +400,7 @@
     <MESSAGE value="230706 - 디자인 수정 33333333333333333333" />
     <MESSAGE value="230707 - 디자인 수정 222" />
     <MESSAGE value="230707 - 디자인 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="230707 - 디자인 수정" />
+    <MESSAGE value="230707 - 디자인 수정 22222222222222" />
+    <option name="LAST_COMMIT_MESSAGE" value="230707 - 디자인 수정 22222222222222" />
   </component>
 </project>

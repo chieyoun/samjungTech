@@ -185,8 +185,35 @@ public class ItemController {
     }
 
     // 상품 리스트 페이지 - 로그인 유저
+//    @GetMapping("/item/list")
+//    public String itemList(Model model, @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+//                           String searchKeyword, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+//
+//        User user = userPageService.findUser(principalDetails.getUser().getId());
+//
+//        Page<Item> items = null;
+//
+//        if (searchKeyword == null) {  // 검색이 들어왔을 때
+//            items = itemService.allItemViewPage(pageable);
+//        } else {  // 검색이 들어오지 않았을 때
+//            items = itemService.itemSearchList(searchKeyword, pageable);
+//        }
+//
+//        int nowPage = items.getPageable().getPageNumber() + 1;
+//        int startPage = Math.max(nowPage - 4, 1);
+//        int endPage = Math.min(nowPage + 5, items.getTotalPages());
+//
+//        model.addAttribute("items", items);
+//        model.addAttribute("nowPage", nowPage);
+//        model.addAttribute("startPage", startPage);
+//        model.addAttribute("endPage", endPage);
+//        model.addAttribute("user", user);
+//
+//        return "itemList";
+//    }
+
     @GetMapping("/item/list")
-    public String itemList(Model model, @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+    public String itemList(Model model, @PageableDefault(page = 0, size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                            String searchKeyword, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
         User user = userPageService.findUser(principalDetails.getUser().getId());
@@ -214,7 +241,7 @@ public class ItemController {
 
     // 상품 리스트 페이지 - 로그인 안 한 유저
     @GetMapping("/nonlogin/item/list")
-    public String itemList(Model model, @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+    public String itemList(Model model, @PageableDefault(page = 0, size = 8, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                            String searchKeyword) {
 
         Page<Item> items = null;

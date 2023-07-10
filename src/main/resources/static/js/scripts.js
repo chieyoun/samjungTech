@@ -105,39 +105,22 @@ function sendMail(){
     }
 }
 
-//function check() {
-//    if (document.contactForm.name.value == "") {
-//        alert("이름을 입력해주세요.");
-//        document.contactForm.name.focus();
-//        return null;
-//    } else if (document.contactForm.email.value == "") {
-//        alert("이메일을 입력해주세요.");
-//        document.contactForm.email.focus();
-//        return null;
-//    } else if (document.contactForm.phone.value == "") {
-//        alert("연락처를 입력해주세요.");
-//        document.contactForm.phone.focus();
-//        return null;
-//    } else if (document.contactForm.message.value == "") {
-//        alert("기초사양을 입력해주세요.");
-//        document.contactForm.message.focus();
-//        return null;
-//    } else {
-//        alert("견적 문의가 완료되었습니다.")
-//         document.contactForm.sendMail();
-//    }
-//}
+window.addEventListener('DOMContentLoaded', function() {
+  var content = document.getElementById('content');
+  var footer = document.getElementById('footer');
 
-//function admincheck() {
-//    if (document.contactForm.email.value == "") {
-//        alert("이메일을 입력해주세요.");
-//        document.contactForm.email.focus();
-//        return null;
-//    } else if (document.contactForm.password.value == "") {
-//        alert("비밀번호를 입력해주세요.");
-//        document.contactForm.password.focus();
-//        return null;
-//    } else {
-//        document.contactForm.submit();
-//    }
-//}
+  var hasScroll = content.scrollHeight > content.clientHeight;
+  if (hasScroll) {
+    footer.style.display = 'none';
+
+    content.addEventListener('scroll', function() {
+      if (content.scrollTop + content.clientHeight >= content.scrollHeight) {
+        footer.style.display = 'block';
+      } else {
+        footer.style.display = 'none';
+      }
+    });
+  } else {
+    footer.style.display = 'block';
+  }
+});
