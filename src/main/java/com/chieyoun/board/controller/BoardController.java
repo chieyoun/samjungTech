@@ -17,16 +17,16 @@ public class BoardController {
     private BoardService boardService;
 //
     /* 게시글 목록 */
-//    @GetMapping("/list")
-//    public String list(Model model, @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
-//        List<BoardDto> boardList = boardService.getBoardlist(pageNum);
-//        Integer[] pageList = boardService.getPageList(pageNum);
-//
-//        model.addAttribute("boardList", boardList);
-//        model.addAttribute("pageList", pageList);
-//
-//        return "board/list";
-//    }
+    @GetMapping("/list")
+    public String list(Model model, @RequestParam(value="page", defaultValue = "1") Integer pageNum) {
+        List<BoardDto> boardList = boardService.getBoardlist(pageNum);
+        Integer[] pageList = boardService.getPageList(pageNum);
+
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("pageList", pageList);
+
+        return "board/list";
+    }
 
     //바꿈
     private final ItemService itemService;

@@ -4,11 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="41206d8d-082f-4436-99fc-9abd45071831" name="Changes" comment="230706 - 디자인 수정 33333333333333333333">
+    <list default="true" id="41206d8d-082f-4436-99fc-9abd45071831" name="Changes" comment="230706 - 디자인 수정">
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.6.2/javaCompile/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/static/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/static/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/board/write.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/board/write.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/itemList.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/itemList.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/seller/itemForm.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/seller/itemForm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/templates/seller/sellerPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/templates/seller/sellerPage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/BoardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/BoardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/ItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/ItemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/SellerPageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/controller/SellerPageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/service/ItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chieyoun/board/service/ItemService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/board/write.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/board/write.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/itemList.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/itemList.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/itemView.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/itemView.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/itemForm.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/seller/itemForm.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/itemModify.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/seller/itemModify.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/seller/sellerPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/seller/sellerPage.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +129,7 @@
       <recent name="C:\Users\hoooo\github_workspace\samjungTech\src\main\resources\templates\fragments" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.samjungTechApplication (1)">
+  <component name="RunManager" selected="Gradle.samjungTech [bootJar]">
     <configuration name="samjungTechApplication (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.chieyoun.board.samjungTechApplication" />
       <module name="com.chieyoun.board.mamuriYearBook.main" />
@@ -153,7 +175,6 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
       <method v="2" />
     </configuration>
     <configuration name="samjungTech [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -175,7 +196,6 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
       <method v="2" />
     </configuration>
     <configuration name="samjungTech [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -197,13 +217,12 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.samjungTechApplication (1)" />
         <item itemvalue="Gradle.samjungTech [bootJar]" />
+        <item itemvalue="Application.samjungTechApplication (1)" />
         <item itemvalue="Gradle.samjungTech [clean]" />
         <item itemvalue="Application.samjungTechApplication" />
         <item itemvalue="Gradle.samjungTech [build]" />
@@ -313,23 +332,7 @@
       <option name="project" value="LOCAL" />
       <updated>1688622276366</updated>
     </task>
-    <task id="LOCAL-00014" summary="230706 - 디자인 수정 2222222">
-      <option name="closed" value="true" />
-      <created>1688643106281</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1688643106282</updated>
-    </task>
-    <task id="LOCAL-00015" summary="230706 - 디자인 수정 33333333333333333333">
-      <option name="closed" value="true" />
-      <created>1688648531048</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1688648531049</updated>
-    </task>
-    <option name="localTasksCounter" value="16" />
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -356,8 +359,6 @@
     <MESSAGE value="230705 - 디자인 수정" />
     <MESSAGE value="230705 - 디자인 수정 2" />
     <MESSAGE value="230706 - 디자인 수정" />
-    <MESSAGE value="230706 - 디자인 수정 2222222" />
-    <MESSAGE value="230706 - 디자인 수정 33333333333333333333" />
-    <option name="LAST_COMMIT_MESSAGE" value="230706 - 디자인 수정 33333333333333333333" />
+    <option name="LAST_COMMIT_MESSAGE" value="230706 - 디자인 수정" />
   </component>
 </project>

@@ -9,8 +9,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.ResourceUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,31 +29,29 @@ public class ItemService {
 //    private final CartService cartService;
 
     // 상품 등록
-    public void saveItem(Item item, MultipartFile imgFile) throws Exception {
 
+
+    public void saveItem(Item item, MultipartFile imgFile) throws Exception {
         String oriImgName = imgFile.getOriginalFilename();
         String imgName = "";
 
-        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files/";
+        String projectPath = StringUtils.cleanPath(System.getProperty("user.dir")) + "/file/";
 
         // UUID 를 이용하여 파일명 새로 생성
-        // UUID - 서로 다른 객체들을 구별하기 위한 클래스
         UUID uuid = UUID.randomUUID();
-
-        String savedFileName = uuid + "_" + oriImgName; // 파일명 -> imgName
-
+        String savedFileName = uuid + "_" + oriImgName;
         imgName = savedFileName;
 
+        InputStream inputStream = imgFile.getInputStream();
         File saveFile = new File(projectPath, imgName);
-
-        imgFile.transferTo(saveFile);
+        Files.copy(inputStream, saveFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
         item.setImgName(imgName);
-
-        item.setImgPath("/files/" + imgName);
+        item.setImgPath("/file/" + imgName);
 
         itemRepository.save(item);
     }
+
 
     // 상품 개별 불러오기
     public Item itemView(Integer id) {
@@ -64,14 +69,19 @@ public class ItemService {
     }
 
     // 상품 수정
+
+
     @Transactional
     public void itemModify(Item item, Integer id, MultipartFile imgFile) throws Exception {
+        String projectPath = StringUtils.cleanPath(System.getProperty("user.dir")) + "/file/";
 
-        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files/";
         UUID uuid = UUID.randomUUID();
         String fileName = uuid + "_" + imgFile.getOriginalFilename();
-        File saveFile = new File(projectPath, fileName);
-        imgFile.transferTo(saveFile);
+
+        try (InputStream inputStream = imgFile.getInputStream()) {
+            Path filePath = Paths.get(projectPath, fileName);
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        }
 
         Item update = itemRepository.findItemById(id);
         update.setName(item.getName());
@@ -80,7 +90,8 @@ public class ItemService {
         update.setStock(item.getStock());
         update.setIsSoldout(item.getIsSoldout());
         update.setImgName(fileName);
-        update.setImgPath("/files/"+fileName);
+        update.setImgPath("/file/" + fileName);
+
         itemRepository.save(update);
     }
 

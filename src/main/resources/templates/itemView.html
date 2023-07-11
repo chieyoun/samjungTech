@@ -73,7 +73,7 @@
 
                 <form class="d-flex" sec:authorize="hasRole('ROLE_SELLER')" th:if="${item.getSeller().getId()} == ${user.getId()}">
                     <div class="d-flex">
-                        <a th:href="@{/item/modify/{id} (id=${item.getId()})}">
+                        <a th:href="@{/admin/item/modify/{id} (id=${item.getId()})}">
                             <button class="btn btn-outline-dark flex-shrink-0" type="button">
                                 상품 수정
                             </button>
