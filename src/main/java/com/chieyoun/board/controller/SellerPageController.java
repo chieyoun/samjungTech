@@ -32,7 +32,7 @@ public class SellerPageController {
             // 로그인이 되어있는 판매자의 id와 판매자 페이지에 접속하는 id가 같아야 함
             model.addAttribute("user", userPageService.findUser(id));
 
-            return "/seller/sellerPage";
+            return "seller/sellerPage";
         } else {
             return "redirect:/main";
         }

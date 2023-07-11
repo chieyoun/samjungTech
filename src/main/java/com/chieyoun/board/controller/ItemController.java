@@ -59,13 +59,13 @@ public class ItemController {
 //    }
 
     // 상품 등록 페이지 - 판매자만 가능
-    @GetMapping("/item/new")
+    @GetMapping("/admin/item/new")
     public String itemSaveForm(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model) {
         if(principalDetails.getUser().getRole().equals("ROLE_SELLER")) {
             // 판매자
             model.addAttribute("user", principalDetails.getUser());
 
-            return "/seller/itemForm";
+            return "seller/itemForm";
         } else {
             // 일반 회원이면 거절 -> main
             return "redirect:/main";
@@ -73,7 +73,7 @@ public class ItemController {
     }
 
     // 상품 등록 (POST) - 판매자만 가능
-    @PostMapping("/item/new/pro")
+    @PostMapping("/admin/item/new/pro")
     public String itemSave(Item item, @AuthenticationPrincipal PrincipalDetails principalDetails, MultipartFile imgFile) throws Exception {
         if(principalDetails.getUser().getRole().equals("ROLE_SELLER")) {
             // 판매자
@@ -88,7 +88,7 @@ public class ItemController {
     }
 
     // 상품 수정 페이지 - 판매자만 가능
-    @GetMapping("/item/modify/{id}")
+    @GetMapping("/admin/item/modify/{id}")
     public String itemModifyForm(@PathVariable("id") Integer id, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         if(principalDetails.getUser().getRole().equals("ROLE_SELLER")) {
             // 판매자''
@@ -99,7 +99,7 @@ public class ItemController {
                 model.addAttribute("item", itemService.itemView(id));
                 model.addAttribute("user", principalDetails.getUser());
 
-                return "/seller/itemModify";
+                return "seller/itemModify";
             } else {
                 return "redirect:/main";
             }
@@ -110,7 +110,7 @@ public class ItemController {
     }
 
     // 상품 수정 (POST) - 판매자만 가능
-    @PostMapping("/item/modify/pro/{id}")
+    @PostMapping("/admin/item/modify/pro/{id}")
     public String itemModify(Item item, @PathVariable("id") Integer id, @AuthenticationPrincipal PrincipalDetails principalDetails, MultipartFile imgFile) throws Exception{
         if(principalDetails.getUser().getRole().equals("ROLE_SELLER")) {
             // 판매자
