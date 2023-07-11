@@ -7,7 +7,7 @@
     <meta name="author" content="" />
     <title>전체 상품 보기</title>
     <!-- Bootstrap icons-->
-<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />-->
+    <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />-->
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="/css/styles.css" rel="stylesheet" />
     <script src="/js/scripts.js"></script>
@@ -22,129 +22,129 @@
 </head>
 <body>
 <div id="content">
-<!-- Navigation-->
-<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
-    <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" th:href="@{/}" sec:authorize="!isAuthenticated()"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>
-        <a class="navbar-brand" th:href="@{/main}" sec:authorize="isAuthenticated()"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto my-2 my-lg-0">
-            </ul>
-            <form sec:authorize="isAuthenticated()" th:action="@{/item/list}" method="get">
-                <input type="text" name="searchKeyword">
-                <button class="btn btn-outline-dark mt-auto" type="submit">검색</button>
-            </form>
-            <form sec:authorize="!isAuthenticated()" th:action="@{/nonlogin/item/list}" method="get">
-                <input type="text" name="searchKeyword">
-                <button class="btn btn-outline-dark mt-auto" type="submit">검색</button>
-            </form>
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" th:href="@{/}" sec:authorize="!isAuthenticated()"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>
+            <a class="navbar-brand" th:href="@{/main}" sec:authorize="isAuthenticated()"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto my-2 my-lg-0">
+                </ul>
+                <form sec:authorize="isAuthenticated()" th:action="@{/item/list}" method="get">
+                    <input type="text" name="searchKeyword">
+                    <button class="btn btn-outline-dark mt-auto" type="submit">검색</button>
+                </form>
+                <form sec:authorize="!isAuthenticated()" th:action="@{/nonlogin/item/list}" method="get">
+                    <input type="text" name="searchKeyword">
+                    <button class="btn btn-outline-dark mt-auto" type="submit">검색</button>
+                </form>
+            </div>
         </div>
-    </div>
-</nav>
-<!-- Navigation-->
-<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
-<!--    <div class="container px-4 px-lg-5">-->
-<!--        <a class="navbar-brand" th:href="@{/main}" sec:authorize="isAuthenticated()"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>-->
-<!--        <a class="navbar-brand" th:href="@{/}" sec:authorize="!isAuthenticated()"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>-->
-<!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>-->
-<!--        <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-<!--            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">-->
-<!--                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/main}" sec:authorize="isAuthenticated()">Home</a></li>-->
-<!--                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/}" sec:authorize="!isAuthenticated()">Home</a></li>-->
-<!--                <li class="nav-item"><a class="nav-link" href="#" th:href="@{/item/new}" sec:authorize="hasRole('ROLE_SELLER')">Upload</a></li>-->
-<!--                <li class="nav-item"><a class="nav-link" href="#" th:href="@{/seller/manage/{id}(id=${user.getId()})}" sec:authorize="hasRole('ROLE_SELLER')">Manage</a></li>-->
+    </nav>
+    <!-- Navigation-->
+    <!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+    <!--    <div class="container px-4 px-lg-5">-->
+    <!--        <a class="navbar-brand" th:href="@{/main}" sec:authorize="isAuthenticated()"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>-->
+    <!--        <a class="navbar-brand" th:href="@{/}" sec:authorize="!isAuthenticated()"><img src="https://github.com/chieyoun/samjungTech/blob/main/src/main/resources/static/asset/logo.png?raw=true"></a>-->
+    <!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>-->
+    <!--        <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+    <!--            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">-->
+    <!--                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/main}" sec:authorize="isAuthenticated()">Home</a></li>-->
+    <!--                <li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/}" sec:authorize="!isAuthenticated()">Home</a></li>-->
+    <!--                <li class="nav-item"><a class="nav-link" href="#" th:href="@{/item/new}" sec:authorize="hasRole('ROLE_SELLER')">Upload</a></li>-->
+    <!--                <li class="nav-item"><a class="nav-link" href="#" th:href="@{/seller/manage/{id}(id=${user.getId()})}" sec:authorize="hasRole('ROLE_SELLER')">Manage</a></li>-->
 
-<!--            </ul>-->
-<!--&lt;!&ndash;            <form th:action="@{/signin}" sec:authorize="!isAuthenticated()">&ndash;&gt;-->
-<!--&lt;!&ndash;                <button class="btn btn-outline-dark" type="submit">&ndash;&gt;-->
-<!--&lt;!&ndash;                    로그인&ndash;&gt;-->
-<!--&lt;!&ndash;                </button>&ndash;&gt;-->
-<!--&lt;!&ndash;            </form>&ndash;&gt;-->
-<!--&lt;!&ndash;            <form th:action="@{/signup}" sec:authorize="!isAuthenticated()">&ndash;&gt;-->
-<!--&lt;!&ndash;                <button class="btn btn-outline-dark" type="submit">&ndash;&gt;-->
-<!--&lt;!&ndash;                    회원가입&ndash;&gt;-->
-<!--&lt;!&ndash;                </button>&ndash;&gt;-->
-<!--&lt;!&ndash;            </form>&ndash;&gt;-->
+    <!--            </ul>-->
+    <!--&lt;!&ndash;            <form th:action="@{/signin}" sec:authorize="!isAuthenticated()">&ndash;&gt;-->
+    <!--&lt;!&ndash;                <button class="btn btn-outline-dark" type="submit">&ndash;&gt;-->
+    <!--&lt;!&ndash;                    로그인&ndash;&gt;-->
+    <!--&lt;!&ndash;                </button>&ndash;&gt;-->
+    <!--&lt;!&ndash;            </form>&ndash;&gt;-->
+    <!--&lt;!&ndash;            <form th:action="@{/signup}" sec:authorize="!isAuthenticated()">&ndash;&gt;-->
+    <!--&lt;!&ndash;                <button class="btn btn-outline-dark" type="submit">&ndash;&gt;-->
+    <!--&lt;!&ndash;                    회원가입&ndash;&gt;-->
+    <!--&lt;!&ndash;                </button>&ndash;&gt;-->
+    <!--&lt;!&ndash;            </form>&ndash;&gt;-->
 
-<!--&lt;!&ndash;            <form class="d-flex" sec:authorize="hasRole('ROLE_USER')">&ndash;&gt;-->
-<!--&lt;!&ndash;                <a class="btn btn-outline-dark" href="#" th:text="|현재잔액 : ${user.getCoin()} ₩|">&ndash;&gt;-->
-<!--&lt;!&ndash;                    현재잔액 : 10000 ₩&ndash;&gt;-->
-<!--&lt;!&ndash;                </a>&ndash;&gt;-->
-<!--&lt;!&ndash;                <a class="btn btn-outline-dark" th:href="@{/user/cart/{id}(id=${user.getId()})}">&ndash;&gt;-->
-<!--&lt;!&ndash;                    <i class="bi-cart-fill me-1"></i>&ndash;&gt;-->
-<!--&lt;!&ndash;                    Cart&ndash;&gt;-->
-<!--&lt;!&ndash;                    <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${user.getCart().getCount()}">0</span>&ndash;&gt;-->
-<!--&lt;!&ndash;                </a>&ndash;&gt;-->
-<!--&lt;!&ndash;                <a class="btn btn-outline-dark" th:href="@{/seller/{id}(id=${user.getId()})}" th:text="|${user.getName()}님 환영합니다.|">&ndash;&gt;-->
-<!--&lt;!&ndash;                    마이페이지&ndash;&gt;-->
-<!--&lt;!&ndash;                </a>&ndash;&gt;-->
-<!--&lt;!&ndash;                <a class="btn btn-outline-dark" th:href="@{/logout}">&ndash;&gt;-->
-<!--&lt;!&ndash;                    로그아웃&ndash;&gt;-->
-<!--&lt;!&ndash;                </a>&ndash;&gt;-->
-<!--&lt;!&ndash;            </form>&ndash;&gt;-->
+    <!--&lt;!&ndash;            <form class="d-flex" sec:authorize="hasRole('ROLE_USER')">&ndash;&gt;-->
+    <!--&lt;!&ndash;                <a class="btn btn-outline-dark" href="#" th:text="|현재잔액 : ${user.getCoin()} ₩|">&ndash;&gt;-->
+    <!--&lt;!&ndash;                    현재잔액 : 10000 ₩&ndash;&gt;-->
+    <!--&lt;!&ndash;                </a>&ndash;&gt;-->
+    <!--&lt;!&ndash;                <a class="btn btn-outline-dark" th:href="@{/user/cart/{id}(id=${user.getId()})}">&ndash;&gt;-->
+    <!--&lt;!&ndash;                    <i class="bi-cart-fill me-1"></i>&ndash;&gt;-->
+    <!--&lt;!&ndash;                    Cart&ndash;&gt;-->
+    <!--&lt;!&ndash;                    <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${user.getCart().getCount()}">0</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;                </a>&ndash;&gt;-->
+    <!--&lt;!&ndash;                <a class="btn btn-outline-dark" th:href="@{/seller/{id}(id=${user.getId()})}" th:text="|${user.getName()}님 환영합니다.|">&ndash;&gt;-->
+    <!--&lt;!&ndash;                    마이페이지&ndash;&gt;-->
+    <!--&lt;!&ndash;                </a>&ndash;&gt;-->
+    <!--&lt;!&ndash;                <a class="btn btn-outline-dark" th:href="@{/logout}">&ndash;&gt;-->
+    <!--&lt;!&ndash;                    로그아웃&ndash;&gt;-->
+    <!--&lt;!&ndash;                </a>&ndash;&gt;-->
+    <!--&lt;!&ndash;            </form>&ndash;&gt;-->
 
-<!--&lt;!&ndash;            <form class="d-flex" sec:authorize="hasRole('ROLE_SELLER')">&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                <a class="btn btn-outline-dark" href="#" th:text="|현재수익 : ${user.getCoin()} ₩|">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                    현재잔액 : 10000 ₩&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;                </a>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;                <a class="btn btn-outline-dark" th:href="@{/seller/{id}(id=${user.getId()})}" th:text="|${user.getName()}님 환영합니다.|">&ndash;&gt;-->
-<!--&lt;!&ndash;                    관리자 페이지&ndash;&gt;-->
-<!--&lt;!&ndash;                </a>&ndash;&gt;-->
-<!--&lt;!&ndash;                <a class="btn btn-outline-dark" th:href="@{/logout}">&ndash;&gt;-->
-<!--&lt;!&ndash;                    로그아웃&ndash;&gt;-->
-<!--&lt;!&ndash;                </a>&ndash;&gt;-->
-<!--&lt;!&ndash;            </form>&ndash;&gt;-->
-<!--            <form sec:authorize="isAuthenticated()" th:action="@{/item/list}" method="get">-->
-<!--                <input type="text" name="searchKeyword">-->
-<!--                <button type="submit">검색</button>-->
-<!--            </form>-->
-<!--            <form sec:authorize="!isAuthenticated()" th:action="@{/nonlogin/item/list}" method="get">-->
-<!--                <input type="text" name="searchKeyword">-->
-<!--                <button type="submit">검색</button>-->
-<!--            </form>-->
+    <!--&lt;!&ndash;            <form class="d-flex" sec:authorize="hasRole('ROLE_SELLER')">&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;                <a class="btn btn-outline-dark" href="#" th:text="|현재수익 : ${user.getCoin()} ₩|">&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;                    현재잔액 : 10000 ₩&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash;                </a>&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;                <a class="btn btn-outline-dark" th:href="@{/seller/{id}(id=${user.getId()})}" th:text="|${user.getName()}님 환영합니다.|">&ndash;&gt;-->
+    <!--&lt;!&ndash;                    관리자 페이지&ndash;&gt;-->
+    <!--&lt;!&ndash;                </a>&ndash;&gt;-->
+    <!--&lt;!&ndash;                <a class="btn btn-outline-dark" th:href="@{/logout}">&ndash;&gt;-->
+    <!--&lt;!&ndash;                    로그아웃&ndash;&gt;-->
+    <!--&lt;!&ndash;                </a>&ndash;&gt;-->
+    <!--&lt;!&ndash;            </form>&ndash;&gt;-->
+    <!--            <form sec:authorize="isAuthenticated()" th:action="@{/item/list}" method="get">-->
+    <!--                <input type="text" name="searchKeyword">-->
+    <!--                <button type="submit">검색</button>-->
+    <!--            </form>-->
+    <!--            <form sec:authorize="!isAuthenticated()" th:action="@{/nonlogin/item/list}" method="get">-->
+    <!--                <input type="text" name="searchKeyword">-->
+    <!--                <button type="submit">검색</button>-->
+    <!--            </form>-->
 
-<!--        </div>-->
-<!--    </div>-->
-<!--</nav>-->
-<div style="margin-top: 200px"></div>
-<!-- Section-->
-<section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            <div class="col mb-5" th:each="item : ${items}">
-                <div class="card h-100">
-                    <!-- Product image-->
-                    <img class="card-img-top" th:src="@{${item.getImgPath()}}" alt="..." />
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name\-->
-                            <h5 class="fw-bolder product-name" th:text="${item.getName()}">상품이름</h5>
-                            <!-- Product price-->
-<!--                            <p th:text="|${item.getPrice()} 원|">상품 가격</p>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--</nav>-->
+    <div style="margin-top: 200px"></div>
+    <!-- Section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <div class="col mb-5" th:each="item : ${items}">
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <img class="card-img-top" th:src="@{${item.getImgPath()}}" alt="..." />
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name\-->
+                                <h5 class="fw-bolder product-name" th:text="${item.getName()}">상품이름</h5>
+                                <!-- Product price-->
+                                <!--                            <p th:text="|${item.getPrice()} 원|">상품 가격</p>-->
+                            </div>
                         </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" sec:authorize="!hasRole('ROLE_SELLER')">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/item/view/{id}(id=${item.getId()})}">상세보기</a></div>
-                    </div>
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" sec:authorize="hasRole('ROLE_SELLER')">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/admin/item/view/{id}(id=${item.getId()})}">상세보기</a></div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" sec:authorize="!hasRole('ROLE_SELLER')">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/item/view/{id}(id=${item.getId()})}">상세보기</a></div>
+                        </div>
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" sec:authorize="hasRole('ROLE_SELLER')">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="@{/admin/item/view/{id}(id=${item.getId()})}">상세보기</a></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="page">
-            <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
-                <a th:if="${page != nowPage}" th:href="@{/item/list(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
-                <strong th:if="${page == nowPage}" th:text="${page}" style="color : red"></strong>
-            </th:block>
+            <div class="page">
+                <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                    <a th:if="${page != nowPage}" th:href="@{/item/list(page = ${page - 1}, searchKeyword = ${param.searchKeyword})}" th:text="${page}"></a>
+                    <strong th:if="${page == nowPage}" th:text="${page}" style="color : red"></strong>
+                </th:block>
+            </div>
+
         </div>
 
-    </div>
-
-</section>
+    </section>
 </div>
 <!-- Footer-->
 <footer class="bg-light py-5" id="footer">
