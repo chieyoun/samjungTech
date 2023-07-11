@@ -82,40 +82,47 @@
 <!--                </ul>-->
 <!--            </div>-->
 <!--        </nav>-->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">상품관리</h1>
+        <div class="d-flex justify-content-center align-items-center">
+        <main class="col-md-9 col-lg-10 px-md-4"> <!--ms-sm-auto-->
+            <div class="row justify-content-center">
+                <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom" style="text-align: center">
+                    <h1 class="h2" style="text-align: center">상품관리</h1>
+                    <div style="height: 50px"></div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                        <tr>
+                            <th scope="col">번호</th>
+                            <th scope="col">상품ID</th>
+                            <th scope="col">상품명</th>
+                            <th scope="col">가격</th>
+                            <th scope="col">재고</th>
+                            <th scope="col">등록날짜</th>
+                            <th scope="col">삭제</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="useritem, i: ${userItem}">
+                            <td th:text="${i.count}">1</td>
+                            <td th:text="${useritem.getId()}">3번상품</td>
+                            <td th:text="${useritem.getName()}">상품명</td>
+                            <td th:text="${useritem.getPrice()}">가격</td>
+                            <td th:text="${useritem.getStock()}">재고</td>
+                            <td th:text="${useritem.getCreateDate()}">등록날짜</td>
+                            <td>
+                                <div class="btn btn-outline-dark" style="background-color: white;">
+                                    <a th:href="@{/item/delete/{id}(id=${useritem.getId()})}" style="color: black; text-decoration: none; background-color: white">삭제</a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
             </div>
-            <div class="table-responsive">
-                <table class="table table-striped table-sm">
-                    <thead>
-                    <tr>
-                        <th scope="col">번호</th>
-                        <th scope="col">상품ID</th>
-                        <th scope="col">상품명</th>
-                        <th scope="col">가격</th>
-                        <th scope="col">재고</th>
-                        <th scope="col">등록날짜</th>
-                        <th scope="col">삭제</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="useritem, i: ${userItem}">
-                        <td th:text="${i.count}">1</td>
-                        <td th:text="${useritem.getId()}">3번상품</td>
-                        <td th:text="${useritem.getName()}">상품명</td>
-                        <td th:text="${useritem.getPrice()}">가격</td>
-                        <td th:text="${useritem.getStock()}">재고</td>
-                        <td th:text="${useritem.getCreateDate()}">등록날짜</td>
-                        <td class="btn btn-outline-dark">
-                            <a th:href="@{/item/delete/{id}(id=${useritem.getId()})}" style="text-decoration: none; background-color: white">삭제</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <hr>
         </main>
+        </div>
     </div>
 </div>
 

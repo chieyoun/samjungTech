@@ -42,10 +42,6 @@
         </div>
     </div>
 </nav>
-
-
-
-
 <!-- Navigation-->
 <!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
 <!--    <div class="container px-4 px-lg-5">-->
@@ -111,17 +107,11 @@
 <!--        </div>-->
 <!--    </div>-->
 <!--</nav>-->
-
-
-
 <div style="margin-top: 200px"></div>
-
 <!-- Section-->
 <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-
-            <!-- 첫번째 아이템 -->
             <div class="col mb-5" th:each="item : ${items}">
                 <div class="card h-100">
                     <!-- Product image-->
@@ -130,7 +120,7 @@
                     <div class="card-body p-4">
                         <div class="text-center">
                             <!-- Product name\-->
-                            <h5 class="fw-bolder" th:text="${item.getName()}">상품이름</h5>
+                            <h5 class="fw-bolder product-name" th:text="${item.getName()}">상품이름</h5>
                             <!-- Product price-->
 <!--                            <p th:text="|${item.getPrice()} 원|">상품 가격</p>-->
                         </div>
